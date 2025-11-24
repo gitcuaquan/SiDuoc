@@ -23,6 +23,7 @@
 
         <!-- Item -->
         <div
+          v-for="order in listOrder?.getData"
           class="cart-item d-block border w-100 d-lg-table-row align-middle border rounded-3 p-3 mb-3 bg-white shadow-sm"
         >
           <!-- Product -->
@@ -31,9 +32,16 @@
           >
             <span class="d-lg-none fw-semibold">Mã Đơn Hàng:</span>
             <div class="d-flex flex-column align-items-lg-start">
-              <span class="fw-medium ms-2 text-end">#DH00123</span>
+              <span class="fw-medium ms-2 text-end">#{{ order.stt_rec }}</span>
               <small class="text-muted ms-2 fst-italic">
-                Ngày tạo: 22/12/2024
+                Ngày tạo:
+                {{
+                  formatDate(
+                    typeof order.ngay_ct === "string"
+                      ? order.ngay_ct
+                      : order.ngay_ct?.toISOString()
+                  )
+                }}
               </small>
             </div>
           </div>
@@ -43,7 +51,7 @@
             class="cart-price w-custom text-lg-start d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3"
           >
             <span class="d-lg-none fw-semibold">Đơn Giá:</span>
-            <span>200.000đ</span>
+            <span>2000 Đ</span>
           </div>
 
           <!-- Quantity -->
@@ -51,7 +59,7 @@
             class="cart-qty w-custom align-middle d-flex text-lg-center mb-2 mb-lg-0 justify-content-between align-items-center d-lg-table-cell p-lg-3"
           >
             <span class="d-lg-none fw-semibold"> Khách hàng:</span>
-            <span class="text-lg-center">Nguyễn Văn A</span>
+            <span class="text-lg-center">{{ order.created_by }}</span>
           </div>
           <div
             class="cart-total align-middle d-flex mb-2 text-lg-end mb-lg-0 justify-content-between d-lg-table-cell p-lg-3"
@@ -61,7 +69,9 @@
               <span
                 class="badge bg-warning d-flex fw-normal align-items-center gap-1 bg-opacity-10 text-dark border border-warning"
               >
-                <FolderClock :stroke-width="2" :size="16" />Đang xử lý</span
+                <FolderClock :stroke-width="2" :size="16" />{{
+                  StatusGiaoVan[order.status_giao_van]
+                }}</span
               >
             </span>
           </div>
@@ -71,7 +81,7 @@
           >
             <div class="d-flex gap-1">
               <button
-                @click="showModalDetail = true"
+                @click="showModalDetail = order.stt_rec"
                 class="btn-sm text-nowrap me-lg-2 btn btn-primary"
               >
                 <Eye :size="16" />
@@ -95,11 +105,11 @@
   <ClientOnly>
     <AuthModalOrderDetail
       v-if="showModalDetail"
-      @close="showModalDetail = false"
-      :order_id="route.query.order_id as string"
+      @close="showModalDetail = undefined"
+      :order_id="showModalDetail"
       @ticket="
         showModalCreateTicket = true;
-        showModalDetail = false;
+        showModalDetail = undefined;
       "
     />
     <AuthModalCreateTicket
@@ -110,7 +120,18 @@
 </template>
 
 <script lang="ts" setup>
-import type { ProjectConfig } from "~/model";
+import {
+  BodyFilter,
+  FilterItem,
+  OperatorType,
+  type BaseResponse,
+  type ProjectConfig,
+} from "~/model";
+import {
+  StatusGiaoVan,
+  type TapmedOrder,
+  type TapmedOrderItem,
+} from "~/model/item/ITemsTapmed";
 const { $appServices } = useNuxtApp();
 const { setUser, clearUser } = useAuth();
 const route = useRoute();
@@ -124,14 +145,34 @@ const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Đơn hàng của bạn" },
 ]);
 
-const showModalDetail = ref(false);
+const showModalDetail = ref<string | undefined>(undefined);
 const showModalCreateTicket = ref(false);
+const filterListOrder = ref(
+  new BodyFilter<TapmedOrderItem>({
+    pageIndex: 1,
+    pageSize: 10,
+    filters: [
+      // new FilterItem<TapmedOrder>({
+      //   filterValue: "ten_vt",
+      //   operatorType: OperatorType.Contains,
+      //   valueSearch: "",
+      // }),
+      // new FilterItem<TapmedOrder>({
+      //   filterValue: "ten_nhasanxuat",
+      //   operatorType: OperatorType.Contains,
+      //   valueSearch: "",
+      // }),
+    ],
+  })
+);
+
+const listOrder = ref<BaseResponse<TapmedOrderItem>>();
 
 watch(
   () => route.fullPath,
   () => {
     if (route.query.order_id) {
-      showModalDetail.value = true;
+      showModalDetail.value = route.query.order_id as string;
       useRouter().replace({ query: {} });
     }
   },
@@ -149,10 +190,18 @@ async function getUser() {
     clearUser();
   }
 }
-$appServices.order.listOrder().then((res) => {
-  console.log("🚀 ~ res=>", res);
+async function getListOrder() {
+  try {
+    const response = await $appServices.order.listOrder(filterListOrder.value);
+    listOrder.value = response;
+  } catch (error) {
+    console.log("🚀 ~ error=>", error);
+  }
+}
+onMounted(async () => {
+  await getUser();
+  await getListOrder();
 });
-getUser();
 </script>
 
 <style scoped>

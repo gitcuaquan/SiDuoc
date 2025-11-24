@@ -5,6 +5,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         return;
     }
     initCartFromStorage();
+
     try {
         interface ApiResponse {
             data: any; // Replace 'any' with the actual type if known
@@ -15,9 +16,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
             body: {},
             headers: {
                 'Authorization': `Bearer ${token.value}`
-            }
+            },
         });
         if (error.value) {
+            if (error.value.statusCode === 401 || error.value.statusCode === 403) {
+                clearToken();
+                clearUser();
+            }
             return;
         }
         data.value?.data && setUser(data.value.data);

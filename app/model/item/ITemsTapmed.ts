@@ -125,3 +125,33 @@ export class TapmedOrder {
 
     }
 }
+
+export class TapmedOrderItem {
+    stt_rec?: string;
+    ngay_ct?: string | Date;
+    status?: string;
+    status_soan_hang: number = 0;
+    status_giao_van: number = 0;
+    so_ct?: string;
+    created_by?: string;
+    item_count?: number;
+    constructor(value: Partial<TapmedOrderItem>) {
+        Object.assign(this, value);
+    }
+}
+export const StatusSoanHang = [
+    "Đang cập nhật",
+    "Chuyển kho",
+    "Mới chia đơn",
+    "Đang xử lý",
+    "Chờ đóng gói",
+    "Đã đóng gói",
+    "Đang đóng gói"
+];
+
+export const StatusGiaoVan = [
+    "Đang cập nhật",
+    "Chờ giao",
+    "Đã giao",
+    "Thất bại"
+]

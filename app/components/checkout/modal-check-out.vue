@@ -25,34 +25,56 @@
           <div class="modal-body" style="min-height: 70vh">
             {{ idOrder }}
             <section class="mb-3">
-              <h6 class="text-dark">Thông tin khách hàng :</h6>
               <!-- {{ user }} -->
-              <table class="table m-0 table-borderless table-sm">
-                <tbody>
-                  <tr>
-                    <td class="fw-normal text-muted" style="width: 130px">
-                      Họ và tên
-                    </td>
-                    <td>: {{ user?.ten_kh }}</td>
-                  </tr>
-                  <tr>
-                    <td class="fw-normal text-muted">Số điện thoại</td>
-                    <td>: {{ user?.dien_thoai }}</td>
-                  </tr>
-                  <tr>
-                    <td class="fw-normal text-muted">Địa chỉ</td>
-                    <td>
-                      : {{ user?.dia_chi }} - {{ user?.ten_xa_phuong }} -
-                      {{ user?.ten_thanh_pho }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <small class="text-muted fw-light fst-italic">
-                Theo mặc định các thông tin trên được lấy từ hồ sơ khách hàng và
-                đã được xác nhận, các thông tin này sẽ được làm căn cứ cho địa
-                chỉ giao hàng .
-              </small>
+              <div class="row">
+                <div class="col-lg-5">
+                  <h6 class="text-dark fw-bold">Thông tin khách hàng :</h6>
+                  <table class="table m-0 table-borderless table-sm">
+                    <tbody>
+                      <tr>
+                        <td class="fw-normal text-muted" style="width: 110px">
+                          Họ và tên
+                        </td>
+                        <td>: {{ user?.ten_kh }}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-normal text-muted">Số điện thoại</td>
+                        <td>: {{ user?.dien_thoai }}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-normal text-muted">Địa chỉ</td>
+                        <td>
+                          : {{ user?.dia_chi }} - {{ user?.ten_xa_phuong }} -
+                          {{ user?.ten_thanh_pho }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!-- <small class="text-muted fw-light fst-italic">
+                    Theo mặc định các thông tin trên được lấy từ hồ sơ khách hàng và
+                    đã được xác nhận, các thông tin này sẽ được làm căn cứ cho địa
+                    chỉ giao hàng .
+                  </small> -->
+                </div>
+                <div class="col-lg-4">
+                  <h6 class="text-dark fw-bold">Phương thức vận chuyển :</h6>
+                  <div
+                    class="form-check"
+                    v-for="(method,index) in shippingMethods"
+                    :key="method.ma_htvc"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="shippingMethod"
+                      :id="`shippingMethod${method.ma_htvc}`"
+                    />
+                    <label class="form-check-label" :for="`shippingMethod${method.ma_htvc}`">
+                     {{ method.ten_htvc }}
+                    </label>
+                  </div>
+                </div>
+              </div>
             </section>
             <section>
               <h6 class="text-dark">Chi tiết đơn hàng :</h6>
@@ -138,6 +160,7 @@ const { user } = useAuth();
 const { $appServices } = useNuxtApp();
 const idOrder = ref("");
 const loading = ref(false);
+const shippingMethods = ref<Array<any>>([]);
 // order để post
 const order = ref<TapmedOrder>(
   new TapmedOrder({
@@ -168,8 +191,8 @@ function initModal() {
     emit("close");
   });
 }
-$appServices.order.listVanChuyen().then((res) => {
-  console.log("🚀 ~ res=>", res);
+$appServices.order.listVanChuyen().then((res: { data?: { data?: any } }) => {
+  shippingMethods.value = res.data?.data as any;
 });
 function createOrder() {
   order.value.details = useCart().cart.value.map((item) => ({

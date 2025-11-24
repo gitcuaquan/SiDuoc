@@ -1,4 +1,4 @@
-import type { TapmedOrder } from "~/model/item/ITemsTapmed";
+import type { TapmedOrder, TapmedOrderItem } from "~/model/item/ITemsTapmed";
 import BaseService from "./BaseService";
 import { BaseResponse, BaseResponseOne } from "~/model/http/BaseResponse";
 import type { BodyFilter } from "~/model";
@@ -16,12 +16,12 @@ export class OrderService extends BaseService {
         });
         return res as BaseResponseOne<TapmedOrder>;
     }
-    async listOrder(filter?: BodyFilter<TapmedOrder>) {
+    async listOrder(filter?: BodyFilter<TapmedOrderItem>) {
         const res = await this.post(`/orders/minimal`, JSON.stringify(filter || {}), undefined, true);
-        return new BaseResponse<TapmedOrder[]>(res);
+        return new BaseResponse<TapmedOrderItem>(res);
     }
     async listVanChuyen(filter?: BodyFilter<TapmedOrder>) {
         const res = await this.post(`/htvc`, JSON.stringify(filter || {}), undefined, true);
-        return new BaseResponseOne(res);
+        return res;
     }
 }
