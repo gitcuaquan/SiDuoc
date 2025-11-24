@@ -1,11 +1,11 @@
 
-import type { CustomerDetail } from "~/model/customer/Customer";
+import type { CustomerDetail, CustomerResponse } from "~/model/customer/Customer";
 
 export const useAuth = () => {
   const NAME_TOKEN_IN_COOKIE = 'tapmed_token_access';
 
   const token = useCookie<string | null>(NAME_TOKEN_IN_COOKIE);
-  const user = useState<CustomerDetail | null>('user', () => null);
+  const user = useState<CustomerResponse | null>('user', () => null);
   const showLogin = useState<boolean>('showLogin', () => false);
   const showRegister = useState<boolean>('showRegister', () => false);
 

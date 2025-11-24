@@ -1,7 +1,7 @@
 <template>
   <LayoutAuth
     :loading="loading"
-    :name="'Đơn hàng của bạn'"
+  
     :breadcrumb="breadcrumb"
   >
     <input

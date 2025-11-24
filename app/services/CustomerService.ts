@@ -1,3 +1,4 @@
+import type { CustomerResponse } from "~/model/customer/Customer";
 import BaseService from "./BaseService";
 
 export default class CustomerService extends BaseService {

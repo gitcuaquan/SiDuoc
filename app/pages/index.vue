@@ -1,4 +1,8 @@
 <template>
+  <UiTest>
+    ádasd hihiđá
+    <h1>Trang index</h1>
+  </UiTest>
   <HomeModuleHero />
 
   <section class="container">
@@ -36,8 +40,10 @@
       Khách hàng nói về chúng tôi
     </h2>
     <p class="text-center text-muted mb-3">
-      <small>Đọc những đánh giá và phản hồi từ khách hàng đã trải nghiệm dịch vụ của
-        TapMed.</small>
+      <small
+        >Đọc những đánh giá và phản hồi từ khách hàng đã trải nghiệm dịch vụ của
+        TapMed.</small
+      >
     </p>
     <HomeModuleTestimonial />
   </section>
@@ -50,26 +56,28 @@
         Đối tác của <b class="text-primary">TapMed</b>
       </h2>
       <p class="text-muted">
-        <small>Chúng tôi hợp tác với các thương hiệu và nhà cung cấp uy tín để mang
-          đến cho bạn những sản phẩm tốt nhất.</small>
+        <small
+          >Chúng tôi hợp tác với các thương hiệu và nhà cung cấp uy tín để mang
+          đến cho bạn những sản phẩm tốt nhất.</small
+        >
       </p>
     </div>
     <HomeModuleMarquee :speed="70" class="my-2">
-      <img 
-        v-for="partner in partners" 
+      <img
+        v-for="partner in partners"
         :key="partner.id"
-        style="width: 100px;" 
-        :src="partner.src" 
-        :alt="partner.alt" 
+        style="width: 100px"
+        :src="partner.src"
+        :alt="partner.alt"
       />
     </HomeModuleMarquee>
     <HomeModuleMarquee :speed="50" direction="right" class="my-2">
-      <img 
-        v-for="partner in partners" 
+      <img
+        v-for="partner in partners"
         :key="`right-${partner.id}`"
-        style="width: 100px;" 
-        :src="partner.src" 
-        :alt="partner.alt" 
+        style="width: 100px"
+        :src="partner.src"
+        :alt="partner.alt"
       />
     </HomeModuleMarquee>
   </section>
@@ -78,24 +86,72 @@
 <script lang="ts" setup>
 // Danh sách đối tác
 const partners = ref([
-  { id: 1, src: "https://tapmed.vn/TapMedVn/images/partner/16.png", alt: "Partner 16" },
-  { id: 2, src: "https://tapmed.vn/TapMedVn/images/partner/17.png", alt: "Partner 17" },
-  { id: 3, src: "https://tapmed.vn/TapMedVn/images/partner/18.png", alt: "Partner 18" },
-  { id: 4, src: "https://tapmed.vn/TapMedVn/images/partner/19.png", alt: "Partner 19" },
-  { id: 5, src: "https://tapmed.vn/TapMedVn/images/partner/20.png", alt: "Partner 20" },
-  { id: 6, src: "https://tapmed.vn/TapMedVn/images/partner/21.png", alt: "Partner 21" },
-  { id: 7, src: "https://tapmed.vn/TapMedVn/images/partner/22.png", alt: "Partner 22" },
-  { id: 8, src: "https://tapmed.vn/TapMedVn/images/partner/23.png", alt: "Partner 23" },
-  { id: 9, src: "https://tapmed.vn/TapMedVn/images/partner/25.png", alt: "Partner 25" },
-  { id: 10, src: "https://tapmed.vn/TapMedVn/images/partner/26.png", alt: "Partner 26" },
-  { id: 11, src: "https://tapmed.vn/TapMedVn/images/partner/27.png", alt: "Partner 27" },
-  { id: 12, src: "https://tapmed.vn/TapMedVn/images/partner/28.png", alt: "Partner 28" }
+  {
+    id: 1,
+    src: "https://tapmed.vn/TapMedVn/images/partner/16.png",
+    alt: "Partner 16",
+  },
+  {
+    id: 2,
+    src: "https://tapmed.vn/TapMedVn/images/partner/17.png",
+    alt: "Partner 17",
+  },
+  {
+    id: 3,
+    src: "https://tapmed.vn/TapMedVn/images/partner/18.png",
+    alt: "Partner 18",
+  },
+  {
+    id: 4,
+    src: "https://tapmed.vn/TapMedVn/images/partner/19.png",
+    alt: "Partner 19",
+  },
+  {
+    id: 5,
+    src: "https://tapmed.vn/TapMedVn/images/partner/20.png",
+    alt: "Partner 20",
+  },
+  {
+    id: 6,
+    src: "https://tapmed.vn/TapMedVn/images/partner/21.png",
+    alt: "Partner 21",
+  },
+  {
+    id: 7,
+    src: "https://tapmed.vn/TapMedVn/images/partner/22.png",
+    alt: "Partner 22",
+  },
+  {
+    id: 8,
+    src: "https://tapmed.vn/TapMedVn/images/partner/23.png",
+    alt: "Partner 23",
+  },
+  {
+    id: 9,
+    src: "https://tapmed.vn/TapMedVn/images/partner/25.png",
+    alt: "Partner 25",
+  },
+  {
+    id: 10,
+    src: "https://tapmed.vn/TapMedVn/images/partner/26.png",
+    alt: "Partner 26",
+  },
+  {
+    id: 11,
+    src: "https://tapmed.vn/TapMedVn/images/partner/27.png",
+    alt: "Partner 27",
+  },
+  {
+    id: 12,
+    src: "https://tapmed.vn/TapMedVn/images/partner/28.png",
+    alt: "Partner 28",
+  },
 ]);
 </script>
 
 <style scoped>
-  img {
-    mix-blend-mode: multiply !important;
-    /* Hòa trộn điểm ảnh trắng với nền bên dưới */
-  }
+img {
+  mix-blend-mode: multiply !important;
+  /* Hòa trộn điểm ảnh trắng với nền bên dưới */
+}
 </style>

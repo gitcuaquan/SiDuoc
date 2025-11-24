@@ -172,7 +172,7 @@
                     <div class="ms-2 text-start d-none d-md-block">
                       <small class="d-block">Xin chào !</small>
                       <small class="fw-semibold d-block text-primary">
-                        {{ user?.ten_kh }}
+                        {{ user?.data?.ten_kh }}
                       </small>
                     </div>
                     <ChevronDown :stroke-width="0.75" />

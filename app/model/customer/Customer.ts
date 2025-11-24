@@ -73,3 +73,35 @@ export class CustomerDetail {
         this.url_giay_to3 = init.url_giay_to3 ?? null;
     }
 }
+
+export class Status {
+    isSucceded: boolean;
+    message: string;
+
+    constructor(init: Partial<Status>) {
+        this.isSucceded = init.isSucceded ?? false;
+        this.message = init.message || '';
+    }
+}
+
+export class Nhom {
+    ma_nh: string;
+    ten_nh: string;
+
+    constructor(init: Partial<Nhom>) {
+        this.ma_nh = init.ma_nh || '';
+        this.ten_nh = init.ten_nh || '';
+    }
+}
+
+export class CustomerResponse {
+    status: Status;
+    data: CustomerDetail;
+    nhoms: Nhom[];
+
+    constructor(init: Partial<CustomerResponse>) {
+        this.status = new Status(init.status || {});
+        this.data = new CustomerDetail(init.data || {});
+        this.nhoms = (init.nhoms || []).map((n: any) => new Nhom(n));
+    }
+}

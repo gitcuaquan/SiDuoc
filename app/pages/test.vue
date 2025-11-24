@@ -1,11 +1,5 @@
 <template>
-  <div>
-    <div
-      style="width: 100%; height: 600px; position: relative; overflow: hidden"
-    >
-      <div v-for="value in data" class="col-3 mb-2"></div>
-    </div>
-  </div>
+  <h1>Trang test</h1>
 </template>
 
 <script lang="ts" setup>

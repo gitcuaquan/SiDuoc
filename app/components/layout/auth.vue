@@ -9,7 +9,7 @@
         <div
           v-if="loading"
           class="position-absolute w-100 h-100 top-0 end-0 d-flex justify-content-center align-items-center bg-white bg-opacity-75"
-          style="backdrop-filter: blur(3px)"
+          style="backdrop-filter: blur(3px); z-index: 9999"
         >
           <UiLoading />
         </div>

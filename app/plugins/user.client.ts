@@ -18,6 +18,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
                 'Authorization': `Bearer ${token.value}`
             },
         });
+        console.log("🚀 ~ data=>", data.value?.data)
         if (error.value) {
             if (error.value.statusCode === 401 || error.value.statusCode === 403) {
                 clearToken();
@@ -26,6 +27,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
             return;
         }
         data.value?.data && setUser(data.value.data);
+
     } catch (error) {
         console.error('Error fetching user details:', error);
         // Xử lý lỗi nếu cần thiết
