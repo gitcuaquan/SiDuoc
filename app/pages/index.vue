@@ -1,10 +1,5 @@
 <template>
-  <UiTest>
-    ádasd hihiđá
-    <h1>Trang index</h1>
-  </UiTest>
   <HomeModuleHero />
-
   <section class="container">
     <h2 class="text-center text-capitalize">Ưu đãi mới nhất</h2>
     <p class="text-muted text-center mb-3">

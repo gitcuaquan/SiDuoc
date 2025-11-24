@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt-lucide-icons": "^1.0.5"
+    "@vueup/vue-quill": "^1.2.0",
+    "nuxt-lucide-icons": "^1.0.5",
+    "quill-blot-formatter": "^1.0.5"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",

@@ -9,7 +9,12 @@ export const Post = defineMongooseModel({
         },
         slug: {
             type: 'string',
+            required: false,
+        },
+        category: {
+            type: 'string',
             required: true,
+            enum: ['news', 'promotion'],
         },
         content: {
             type: 'string',
@@ -22,6 +27,10 @@ export const Post = defineMongooseModel({
         seo_content: {
             type: 'string',
             required: false,
+        },
+        updated_at: { // sửa đúng chính tả từ "update_at" thành "updated_at"
+            type: Date,
+            required: true,
         },
         created_at: { // sửa đúng chính tả từ "create_at" thành "created_at"
             type: Date,
