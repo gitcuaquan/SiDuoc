@@ -1,149 +1,169 @@
 <template>
-  <SharedModuleBreadcrumb :data="breadcrumb" />
-  <div class="container mt-3">
-    <div class="row py-3 g-3">
-      <div class="col-lg-3 h-100">
-        <LayoutAuthSiderbar class="sticky-top" />
+  <LayoutAuth :name="'Thông tin cá nhân'" :breadcrumb="breadcrumb">
+    <h6 class="fw-bold text-primary pb-2 d-inline-block text-capitalize">
+      Thông tin cá nhân
+    </h6>
+    <form class="row gy-1 gx-3">
+      <div class="col-12 col-md-6">
+        <label for="name" class="form-label">Họ và tên</label>
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.ten_kh"
+          id="name"
+          placeholder="Nhập họ và tên đầy đủ của bạn"
+        />
       </div>
-      <div class="col-lg-9">
-        <h6 class="fw-bold text-primary pb-2 d-inline-block text-capitalize">
-          Thông tin cá nhân
-        </h6>
-        <form class="row gy-1 gx-3">
-          <div class="col-12 col-md-6">
-            <label for="name" class="form-label">Họ và tên</label>
-            <input
-              type="text"
-              class="form-control"
-              required
-              readonly
-              id="name"
-              placeholder="Nhập họ và tên đầy đủ của bạn"
-            />
-          </div>
-          <div class="col-md-6 col-12">
-            <label for="address" class="form-label">Số căn cước công dân</label>
-            <input
-              type="text"
-              class="form-control"
-              required
-              readonly
-              id="address"
-              placeholder="Nhập số căn cước công dân"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="businessName" class="form-label">Tên cơ sở</label>
-            <input
-              type="text"
-              class="form-control"
-              required
-              readonly
-              id="businessName"
-              placeholder="Nhập tên cơ sở đang kinh doanh"
-            />
-          </div>
+      <div class="col-md-6 col-12">
+        <label for="cccd" class="form-label">Số căn cước công dân</label>
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.cccd"
+          id="cccd"
+          placeholder="Nhập số căn cước công dân"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="businessName" class="form-label">Tên cơ sở</label>
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.co_so"
+          id="businessName"
+          placeholder="Nhập tên cơ sở đang kinh doanh"
+        />
+      </div>
 
-          <div class="col-12 col-md-6">
-            <label for="phone" class="form-label">Số điện thoại</label>
-            <input
-              type="phone"
-              class="form-control"
-              required
-              readonly
-              id="phone"
-              placeholder="Nhập số điện thoại"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="password" class="form-label">Mật khẩu</label>
-            <input
-              type="password"
-              class="form-control"
-              required
-              readonly
-              id="password"
-              placeholder="Nhập mật khẩu"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="city" class="form-label">Thành phố</label>
-            <SharedAddressCity v-model="citySelect" />
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="ward" class="form-label">Xã phường</label>
-            <SharedAddressWard
-              :city-code="citySelect?.code"
-              v-model="wardSelect"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <label for="address" class="form-label">Địa chỉ</label>
-            <input
-              type="text"
-              class="form-control"
-              required
-              readonly
-              id="address"
-              placeholder="Nhập địa chỉ"
-            />
-          </div>
-        </form>
-        <!-- Giấy tờ liên quan -->
-        <div class="row justify-content-center mt-2 g-3">
-          <div class="col-6 col-md-4">
-            <label for="file1" class="form-label">Giấy tờ 1</label>
-            <SharedModuleUpload />
-          </div>
-          <div class="col-6 col-md-4">
-            <label for="file2" class="form-label">Giấy tờ 2</label>
-            <SharedModuleUpload />
-          </div>
-          <div class="col-6 col-md-4">
-            <label for="file3" class="form-label">Giấy tờ 3</label>
-            <SharedModuleUpload />
-          </div>
+      <div class="col-12 col-md-6">
+        <label for="phone" class="form-label">Số điện thoại</label>
+        <input
+          type="phone"
+          class="form-control"
+          required
+          :value="detailUser?.dien_thoai"
+          readonly
+          id="phone"
+          placeholder="Nhập số điện thoại"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="ten_thanh_pho" class="form-label">Thành phố</label>
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.ten_thanh_pho"
+          id="ten_thanh_pho"
+          placeholder="Nhập địa chỉ"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="ten_xa_phuong" class="form-label">Xã phường</label>
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.ten_xa_phuong"
+          id="ten_xa_phuong"
+          placeholder="Nhập địa chỉ"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="address" class="form-label">Địa chỉ</label>
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.dia_chi"
+          id="address"
+          placeholder="Nhập địa chỉ"
+        />
+      </div>
+    </form>
+    <!-- Giấy tờ liên quan -->
+    <div class="row justify-content-center mt-2 g-3">
+      <div class="col-6 col-md-4">
+        <label for="file1" class="form-label">Giấy tờ 1</label>
+        <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
+          <img
+            :src="detailUser?.url_giay_to1 || '/images/image-error.svg'"
+            alt=""
+          />
         </div>
-        <h6
-          class="my-3 fw-bold text-primary pb-2 d-inline-block text-capitalize"
-        >
-          Nhóm Thuốc Kinh Doanh
-        </h6>
-        <div class="row gy-2 gx-3">
-          <div
-            v-for="(column, colIndex) in medicineGroups"
-            :key="colIndex"
-            class="col-12 col-md-4"
-          >
-            <div
-              v-for="medicine in column"
-              :key="medicine.id"
-              class="d-flex align-items-start gap-2 mb-2"
-            >
-              <SquareCheck  v-if="medicine.checked" class="flex-shrink-0 text-white bg-primary" />
-              <Square class="flex-shrink-0 text-muted" v-else />
-              <small class="form-check-label" :for="medicine.id">
-                {{ medicine.label }}
-              </small>
-            </div>
-          </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <label for="file2" class="form-label">Giấy tờ 2</label>
+        <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
+          <img
+            :src="detailUser?.url_giay_to2 || '/images/image-error.svg'"
+            alt=""
+          />
+        </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <label for="file3" class="form-label">Giấy tờ 3</label>
+        <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
+          <img
+            :src="detailUser?.url_giay_to3 || '/images/image-error.svg'"
+            alt=""
+          />
         </div>
       </div>
     </div>
-  </div>
+    <h6 class="my-3 fw-bold text-primary pb-2 d-inline-block text-capitalize">
+      Nhóm Thuốc Kinh Doanh
+    </h6>
+    {{ detailUser }}
+    <div class="row gy-2 gx-3">
+      <div
+        v-for="(column, colIndex) in medicineGroups"
+        :key="colIndex"
+        class="col-12 col-md-4"
+      >
+        <div
+          v-for="medicine in column"
+          :key="medicine.id"
+          class="d-flex align-items-start gap-2 mb-2"
+        >
+          <SquareCheck
+            v-if="medicine.checked"
+            class="flex-shrink-0 text-white bg-primary"
+          />
+          <Square class="flex-shrink-0 text-muted" v-else />
+          <small class="form-check-label" :for="medicine.id">
+            {{ medicine.label }}
+          </small>
+        </div>
+      </div>
+    </div>
+  </LayoutAuth>
 </template>
 
 <script lang="ts" setup>
 import type { ProjectConfig } from "~/model";
+import type { CustomerDetail } from "~/model/customer/Customer";
 definePageMeta({
   middleware: "auth",
 });
+
+const { $appServices } = useNuxtApp();
+
 const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Tài khoản", to: "/auth" },
   { label: "Hồ sơ khách hàng" },
 ]);
-const citySelect = ref<ProjectConfig.CitySetting | null>(null);
-const wardSelect = ref<ProjectConfig.DistrictSetting | null>(null);
+
+const detailUser = ref<CustomerDetail | null>(null);
 
 // Danh sách nhóm thuốc kinh doanh được tổ chức thành 3 cột
 const medicineGroups = ref([
@@ -189,6 +209,19 @@ const medicineGroups = ref([
     { id: "thuoc12", label: "Thuốc không kê đơn", checked: false },
   ],
 ]);
+
+async function getDetailUser() {
+  try {
+    const response = await $appServices.customer.detail();
+    detailUser.value = response?.data as CustomerDetail;
+    console.log("🚀 ~ getDetailUser ~  response?.data=>",  response.data)
+  } catch (error) {
+    console.log("🚀 ~ error=>", error);
+  }
+}
+onMounted(() => {
+  getDetailUser();
+});
 </script>
 
 <style scoped>

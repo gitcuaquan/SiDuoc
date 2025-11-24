@@ -31,6 +31,11 @@ export type TapmedDiscount = {
 }
 
 export class TapmedOrderHeader {
+    stt_rec?: string;
+    so_ct?: string;
+    tien_hang_nt: number = 0;
+    thue_nt: number = 0;
+    tong_tt_nt: number = 0;
     ma_kh?: string;
     dien_giai?: string;
     so_dt?: string;
@@ -38,18 +43,21 @@ export class TapmedOrderHeader {
     email?: string;
     ngay_ct?: string | Date;
     ma_gd?: string;
-    status?: string;
+    status: number|string = '0';
     ma_nt?: string;
     ty_gia?: number;
     ten?: string;
     kenh_ban?: string;
     kho_ban?: string;
     bang_gia?: string;
+    ghi_chu_giao_hang?: string;
+    mahtvc?: string ; // phương thức vận chuyển
+    fnote3?: string ; // phươ thức thanh toán
     voucher_code?: string;
     constructor(value: Partial<TapmedOrderHeader>) {
         Object.assign(this, value);
         if (!this.status) {
-            this.status = '';
+            this.status = 0;
         }
         if (!this.ty_gia) {
             this.ty_gia = 1;
@@ -97,6 +105,7 @@ export class TapmedOrderHeader {
 }
 
 export class TapmedOrderDetail {
+    ten_vt?: string;
     ma_vt?: string;
     dvt?: string;
     so_luong?: number;
@@ -127,6 +136,7 @@ export class TapmedOrder {
 }
 
 export class TapmedOrderItem {
+    tong_tien?: number;
     stt_rec?: string;
     ngay_ct?: string | Date;
     status?: string;

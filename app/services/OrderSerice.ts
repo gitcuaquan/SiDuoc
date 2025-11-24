@@ -8,7 +8,7 @@ export class OrderService extends BaseService {
         super('OrderTapmed');
     }
     createOrder(orderData: TapmedOrder) {
-        return this.post('/import', JSON.stringify(orderData));
+        return this.post('/import', JSON.stringify(orderData), undefined, true);
     }
     async detail(id: string) {
         const res = await this.get<TapmedOrder>(`/${id}`, {

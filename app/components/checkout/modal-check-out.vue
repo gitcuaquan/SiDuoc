@@ -60,17 +60,51 @@
                   <h6 class="text-dark fw-bold">Phương thức vận chuyển :</h6>
                   <div
                     class="form-check"
-                    v-for="(method,index) in shippingMethods"
+                    v-for="(method, index) in shippingMethods"
                     :key="method.ma_htvc"
                   >
                     <input
                       class="form-check-input"
                       type="radio"
                       name="shippingMethod"
+                      :value="method.ma_htvc"
+                      v-model="order.header!.mahtvc"
                       :id="`shippingMethod${method.ma_htvc}`"
                     />
-                    <label class="form-check-label" :for="`shippingMethod${method.ma_htvc}`">
-                     {{ method.ten_htvc }}
+                    <label
+                      class="form-check-label"
+                      :for="`shippingMethod${method.ma_htvc}`"
+                    >
+                      {{ method.ten_htvc }}
+                    </label>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <h6 class="text-dark fw-bold">Phương thức thanh toán:</h6>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
+                      id="cod"
+                      value="1"
+                      v-model="order.header!.fnote3"
+                    />
+                    <label class="form-check-label" for="cod">
+                      Thanh toán khi nhận hàng (COD)
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      value="2"
+                      type="radio"
+                      name="paymentMethod"
+                      id="bankTransfer"
+                      v-model="order.header!.fnote3"
+                    />
+                    <label class="form-check-label" for="bankTransfer">
+                      Thanh toán chuyển khoản ngân hàng
                     </label>
                   </div>
                 </div>
@@ -91,7 +125,7 @@
                       </small>
                       <textarea
                         id="dien_gian"
-                        v-model="order.header!.dien_giai"
+                        v-model="order.header!.ghi_chu_giao_hang"
                         class="form-control"
                         rows="3"
                       ></textarea>
@@ -131,9 +165,9 @@
               thể.
             </p>
             <p>
-              <nuxt-link :to="`/auth?order_id=${idOrder}`">
+              <a @click="viewOrder" class="text-primary fw-semibold" style="cursor: pointer">
                 Xem chi tiết đơn hàng {{ idOrder }}
-              </nuxt-link>
+              </a>
             </p>
             <button
               @click="modalInstance?.hide()"
@@ -170,7 +204,10 @@ const order = ref<TapmedOrder>(
       so_dt: user.value?.dien_thoai || "",
       dia_chi: user.value?.dia_chi || "",
       ten: user.value?.ten_kh || "",
-      dien_giai: "",
+      ghi_chu_giao_hang: "",
+      status: "0",
+      fnote3: "1", // phương thức thanh toán: 1: COD, 2: chuyển khoản
+      mahtvc: "01", // phương thức vận chuyển
     }),
   })
 );
@@ -191,9 +228,11 @@ function initModal() {
     emit("close");
   });
 }
+
 $appServices.order.listVanChuyen().then((res: { data?: { data?: any } }) => {
   shippingMethods.value = res.data?.data as any;
 });
+
 function createOrder() {
   order.value.details = useCart().cart.value.map((item) => ({
     ma_vt: item.ma_vt,
@@ -205,6 +244,10 @@ function createOrder() {
     loading.value = false;
     idOrder.value = res.data.stt_rec;
   });
+}
+function viewOrder() {
+  modalInstance.value?.hide();
+  useRouter().push(`/auth?order_id=${idOrder.value}`);
 }
 </script>
 
