@@ -1,4 +1,5 @@
 <template>
+  <h1>Hu huhuuhuhuhu</h1>
   <HomeModuleHero />
 
   <section class="container">
