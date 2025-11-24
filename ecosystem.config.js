@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "Si Duoc V1",
+      name: "siduoc",
       port: "9999",
       exec_mode: "cluster",
       instances: "max", // Or a number of instances
