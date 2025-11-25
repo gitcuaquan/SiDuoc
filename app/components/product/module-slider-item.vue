@@ -7,7 +7,7 @@
       ref="containerRef"
     >
       <swiper-slide
-        v-for="(item, index) in listProduct"
+        v-for="(item, index) in listProduct?.getData"
         :key="index"
         class="p-2"
       >
@@ -48,33 +48,18 @@
 const containerRef = ref(null);
 
 import {
-  BodyFilter,
-  FilterItem,
-  OperatorType,
+  BaseResponse,
   type ITemsTapmed,
 } from "~/model";
 
 const { $appServices } = useNuxtApp();
-const listProduct = ref<ITemsTapmed[]>([]);
-const filterListProduct = ref(
-  new BodyFilter<ITemsTapmed>({
-    pageIndex: 1,
-    pageSize: 10,
-    filters: [
-      new FilterItem<ITemsTapmed>({
-        filterValue: "ten_vt",
-        operatorType: OperatorType.Contains,
-        valueSearch: "",
-      }),
-      new FilterItem<ITemsTapmed>({
-        filterValue: "ten_nhasanxuat",
-        operatorType: OperatorType.Contains,
-        valueSearch: "",
-      }),
-    ],
-  })
-);
+const listProduct = ref<BaseResponse<ITemsTapmed>>();
 
+const queryList = ref({
+  PageIndex: 1,
+  PageSize: 8,
+  search: "",
+});
 const swiper = useSwiper(containerRef, {
   loop: true,
   grabCursor: true,
@@ -96,16 +81,16 @@ const swiper = useSwiper(containerRef, {
   },
 });
 
-async function getProducts() {
+async function getProductSuggest() {
   try {
-    const products = await $appServices.items.getItems(filterListProduct.value);
-    listProduct.value = products.getData;
+    const rsData = await $appServices.items.productSuggest<ITemsTapmed>(queryList.value);
+    listProduct.value = rsData;
   } catch (error) {
-    console.error("Error fetching featured products:", error);
+    console.error("Error fetching product suggest:", error);
   }
 }
 onBeforeMount(() => {
-  getProducts();
+ getProductSuggest();
 });
 </script>
 <style>

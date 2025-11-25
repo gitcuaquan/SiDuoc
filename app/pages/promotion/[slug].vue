@@ -9,10 +9,7 @@
         <div class="ratio ratio-16x9 rounded-5 overflow-hidden mb-4">
           <img
             alt="Si Dược Image"
-            :src="
-              data?.thumbnail ||
-              'https://tapmed.vn/storage/image/76,000%C4%91%C4%91%20(B%E1%BA%A3n%20thuy%E1%BA%BFt%20tr%C3%ACnh)%20(16)1725852981.png'
-            "
+            :src="data?.thumbnail || '/images/image-error.svg'"
             class="object-fit-cover"
           />
         </div>
@@ -22,10 +19,26 @@
       </div>
       <div class="col-12 col-lg-3">
         <h5 class="mb-3">Bài viết liên quan</h5>
-        <ul v-if="!relatedPending && relatedNews?.data?.length" class="list-group-flush ps-0 m-0 list-group">
-          <li v-for="value in relatedNews?.data" :key="value.slug" class="list-group-item ps-0">
-            <NuxtLink :to="`/promotion/${value.slug}`">
-              {{ value.title }} 
+        <ul
+          v-if="!relatedPending && relatedNews?.data?.length"
+          class="list-group-flush ps-0 m-0 list-group"
+        >
+          <li
+            v-for="value in relatedNews?.data"
+            :key="value.slug"
+            class="list-group-item ps-0"
+          >
+            <NuxtLink class="text-decoration-none" :to="`/promotion/${value.slug}`">
+              <div class="d-flex gap-2">
+                <div class="ratio ratio-16x9" style="width: 60px; ">
+                  <img
+                    :src="value.thumbnail || '/images/image-error.svg'"
+                    alt="thumbnail"
+                    class="object-fit-cover"
+                  />
+                </div>
+                <small>{{ textTruncate(value.title, 50) }}</small>
+              </div>
             </NuxtLink>
           </li>
         </ul>
@@ -62,7 +75,9 @@ const { data, pending, error, refresh } = await useAsyncData(
   }
 );
 
-const { data: relatedNews, pending: relatedPending } = useFetch<{ data: News[] }>(`/api/post/list`, {
+const { data: relatedNews, pending: relatedPending } = useFetch<{
+  data: News[];
+}>(`/api/post/list`, {
   query: {
     category: data.value?.category || "",
   },

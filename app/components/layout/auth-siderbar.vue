@@ -3,7 +3,9 @@
     <div class="d-flex gap-2 align-items-center">
       <div>
         <h5 class="mb-1">Tài khoản của bạn</h5>
-        <div class="text-muted small">Tạ Quân, SĐT: {{ user?.data?.dien_thoai }}</div>
+        <div class="text-muted small">
+          Tạ Quân, SĐT: {{ user?.data?.dien_thoai }}
+        </div>
       </div>
       <button
         class="btn d-lg-none ms-auto btn-sm"
@@ -34,6 +36,17 @@
           </nuxt-link>
         </li>
       </template>
+      <li
+        class="account-item mb-1 d-flex align-items-center position-relative p-2 rounded"
+      >
+        <div
+          @click="logoutUser()"
+          class="text-decoration-none stretched-link text-dark d-flex align-items-center w-100 cursor-pointer"
+        >
+          <LogOut class="me-2 text-primary" :size="20" />
+          <span>Đăng xuất</span>
+        </div>
+      </li>
     </ul>
   </div>
 </template>
@@ -48,8 +61,7 @@ import {
   User,
 } from "lucide-vue-next";
 const { user } = useAuth();
-const isManager = computed(()=>user.value?.data.ma_kh ==='0982315950');
-
+const isManager = computed(() => user.value?.data.ma_kh === "0982315950");
 
 const sidebarItems = [
   { icon: Truck, label: "Đơn hàng của tôi", to: "/auth" },
@@ -68,18 +80,21 @@ const sidebarItems = [
     is_manager: true,
   },
   { icon: MessageCircle, label: "Hỗ trợ khách hàng", to: "/auth/ticket" },
-  { icon: LogOut, label: "Đăng xuất", to: "/" },
 ];
 const route = useRoute();
 
 const menuWithManager = computed(() => {
-  if(!isManager.value){
-    return sidebarItems.filter(item => !item.is_manager);
-  }else{
-    return sidebarItems.filter(item => item.is_manager);
+  if (!isManager.value) {
+    return sidebarItems.filter((item) => !item.is_manager);
+  } else {
+    return sidebarItems.filter((item) => item.is_manager);
   }
-
 });
+function logoutUser() {
+  useAuth().clearToken();
+  useAuth().clearUser();
+  useRouter().push("/");
+}
 </script>
 
 <style scoped>

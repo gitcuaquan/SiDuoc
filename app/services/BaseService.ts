@@ -81,4 +81,29 @@ export default class BaseService {
     protected delete<T = any>(endpoint: string, params?: Record<string, any>, auth: boolean = false) {
         return this.request<T>(endpoint, { method: 'DELETE', params, auth })
     }
+
+    async uploadFile(file: File) {
+        const uuid = crypto.randomUUID();
+        const body = new FormData();
+        body.append("file", file);
+        body.append("controllerFields", "dmkh");
+        body.append("isPublicAccess", "true");
+        body.append("keyFields", uuid);
+        body.append("slug", file.name.slice(0,20));
+        try {
+            const response = await $fetch('https://api-tapmed.sse.net.vn/api/FileUpload/upload', {
+                method: 'POST',
+                body: body,
+                headers: {
+                    "api-sse-code": "e0cc6288e60584582eb706fd6c2612e1",
+                    "Authorization": `Bearer ${useCookie(this.NAME_TOKEN_IN_COOKIE).value}`,
+                },
+            });
+            return response;
+        } catch (error) {
+            console.error("Upload file error:", error);
+            throw error;
+        }
+    }
 }
+

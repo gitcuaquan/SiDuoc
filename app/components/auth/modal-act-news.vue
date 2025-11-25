@@ -4,6 +4,13 @@
       class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"
     >
       <div class="modal-content">
+        <div
+          v-if="loading"
+          style="z-index: 999999"
+          class="text-center position-absolute bg-blur w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75"
+        >
+          <UiLoading />
+        </div>
         <div class="modal-header">
           <h5 class="modal-title">
             {{ props.editId ? "Sửa" : "Tạo" }} Bài viết
@@ -43,7 +50,6 @@
                   rows="3"
                   v-model="newsObject.seo_content"
                 ></textarea>
-
               </div>
             </div>
             <div class="col-lg-3">
@@ -62,7 +68,12 @@
               </div>
               <div class="mb-3">
                 <label class="form-label"> Ảnh đại diện bài viết </label>
-                <shared-module-upload />
+                <shared-module-upload
+                  :ratio="'16x9'"
+                  @change="onChangeFile"
+                  :imageUrl="newsObject.thumbnail"
+                  :placeholder="'Tải ảnh đại diện bài viết (.jpg, .png) tỷ lệ 16x9'"
+                />
               </div>
             </div>
           </div>
@@ -100,14 +111,17 @@
 <script lang="ts" setup>
 import { Modal } from "bootstrap";
 import type { News } from "~/model/news";
+import BaseService from "~/services/BaseService";
 
 const modalInstance = ref<Modal | null>(null);
 const { $bootstrap } = useNuxtApp();
-
+const baseService = new BaseService("any");
 const emit = defineEmits(["close", "created"]);
 const props = defineProps<{
   editId?: string;
 }>();
+const loading = ref(false);
+const fileUpload = ref<File | null>(null);
 const newsObject = ref<News>({
   id: "",
   title: "",
@@ -140,6 +154,8 @@ function initModal() {
 }
 async function updateNews() {
   try {
+    loading.value = true;
+    await uploadImage();
     await $fetch(`/api/post/${props.editId}`, {
       //@ts-ignore
       method: "PUT",
@@ -150,11 +166,15 @@ async function updateNews() {
     emit("created");
   } catch (error) {
     useToast().error("Có lỗi xảy ra khi cập nhật bài viết.");
+  } finally {
+    loading.value = false;
   }
 }
 
 async function createNews() {
   try {
+    loading.value = true;
+    await uploadImage();
     await $fetch("/api/post", {
       method: "POST",
       body: newsObject.value,
@@ -164,7 +184,18 @@ async function createNews() {
     emit("created");
   } catch (error) {
     useToast().error("Có lỗi xảy ra khi tạo bài viết.");
+  } finally {
+    loading.value = false;
   }
+}
+
+async function uploadImage() {
+  if (!fileUpload.value) return;
+  const rsData = await baseService.uploadFile(fileUpload.value);
+  newsObject.value.thumbnail = (rsData as any).fileUrl;
+}
+function onChangeFile(file: File | null) {
+  fileUpload.value = file;
 }
 </script>
 

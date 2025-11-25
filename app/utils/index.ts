@@ -17,3 +17,10 @@ export function formatDate(dateString: string | undefined): string {
         year: 'numeric',
     });
 }
+
+export function textTruncate(text: string, maxLength: number): string {
+    if (text.length <= maxLength) {
+        return text;
+    }
+    return text.slice(0, maxLength) + '...';
+}

@@ -5,7 +5,6 @@
     </div>
   </div>
   <slot :pagination="listNews?.meta" :loading="loading" :pageChanged="fetchNewsList">
-    Phân trang ở đây
   </slot>
 </template>
 

@@ -1,12 +1,10 @@
 <template>
-  <SharedModuleBreadcrumb :data="breadcrumb" />
-
-  <div class="container py-3">
-    <h5 class="my-3">Tin tức nổi bật</h5>
-    <news-list :limit="12" category="promotion" :page="page">
+  <shared-module-breadcrumb :data="breadcrumb" />
+  <div class="container mt-3">
+    <news-list :category="'promotion'" :limit="12"  :page="page">
       <template #default="{ pagination, loading }">
         <div
-          class="d-flex justify-content-center min-vh-100 align-items-center my-4"
+          class="d-flex min-vh-100 justify-content-center align-items-center my-4"
           v-if="loading"
         >
           <UiLoading />
@@ -21,7 +19,6 @@
     </news-list>
   </div>
 </template>
-
 <script lang="ts" setup>
 import type { ProjectConfig } from "~/model";
 
@@ -29,34 +26,8 @@ const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Khuyến mãi" },
 ]);
 
-interface Promotion {
-  id: number;
-  title: string;
-  description: string;
-  expiry: string;
-}
 const page = ref(1);
-const promotions = ref<Promotion[]>([
-  {
-    id: 1,
-    title: "Giảm giá 20% cho đơn hàng đầu tiên",
-    description:
-      "Áp dụng cho tất cả sản phẩm. Không giới hạn giá trị đơn hàng.",
-    expiry: "30/09/2025",
-  },
-  {
-    id: 2,
-    title: "Mua 2 tặng 1",
-    description: "Chỉ áp dụng cho sản phẩm thuộc danh mục chăm sóc sức khỏe.",
-    expiry: "15/10/2025",
-  },
-  {
-    id: 3,
-    title: "Freeship toàn quốc",
-    description: "Miễn phí vận chuyển cho đơn hàng từ 500.000đ.",
-    expiry: "31/12/2025",
-  },
-]);
+
 </script>
 
 <style>

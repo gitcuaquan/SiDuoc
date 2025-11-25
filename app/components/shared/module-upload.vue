@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-3 p-3 shared-module-upload ratio ratio-1x1">
+  <div :class="['rounded-3 p-3 shared-module-upload', `ratio ratio-${props.ratio || '1x1'}`]">
     <div class="d-flex align-items-center justify-content-center w-100">
       <label
         v-if="!data.urlTemp"
@@ -38,6 +38,8 @@ const id = useId();
 
 const props = defineProps<{
   placeholder?: string;
+  imageUrl?: string;
+  ratio?: '1x1' | '4x3' | '16x9';
 }>();
 
 const emit = defineEmits<{
@@ -46,8 +48,14 @@ const emit = defineEmits<{
 
 const data = reactive({
   file: null as File | null,
-  urlTemp: "",
+  urlTemp: props.imageUrl || "",
 });
+watch(
+  () => props.imageUrl,
+  (newVal) => {
+    data.urlTemp = newVal || "";
+  }
+);
 
 const fileInput = ref<HTMLInputElement | null>(null);
 

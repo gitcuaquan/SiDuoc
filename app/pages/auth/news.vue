@@ -18,7 +18,7 @@
           v-model="keyword"
         />
       </div>
-      <div class="col-4">
+      <div class="col-lg-4">
         <select
           class="form-select"
           v-model="queryList.category"
@@ -64,31 +64,29 @@
             <div
               class="d-flex flex-column align-items-center justify-content-center"
             >
-              <img
-                :src="value.thumbnail_url || '/images/image-error.svg'"
-                alt="thumbnail"
-                class="img-thumbnail"
-                style="width: 50px; height: auto"
-              />
+              <div class="ratio ratio-1x1" style="width: 80px; height: 80px">
+                <img
+                  :src="value.thumbnail || '/images/image-error.svg'"
+                  alt="thumbnail"
+                  class="img-thumbnail"
+                />
+              </div>
             </div>
           </div>
-          
+
           <div
-            class="cart-product w-custom text-lg-start d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3"
+            class="cart-product text-lg-start d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3"
           >
-            <span class="d-lg-none fw-semibold">Tiêu đề:</span>
+            <span class="d-lg-none text-nowrap me-2 fw-semibold">Tiêu đề:</span>
             <div
               class="d-flex flex-column align-items-end align-items-lg-start justify-content-center"
             >
-              <span class="fw-medium text-truncate w-custom">
-                {{ value.title }}</span
+              <span class="fw-medium">
+                {{ textTruncate(value.title, 50) }}</span
               >
               <small class="text-muted">
-                <NuxtLink
-                  class="text-truncate w-50"
-                  :to="`/news/${value.slug}`"
-                >
-                  {{ value.slug }}
+                <NuxtLink class="" :to="`/news/${value.slug}`">
+                  {{ textTruncate(value.slug, 50) }}
                 </NuxtLink>
               </small>
             </div>

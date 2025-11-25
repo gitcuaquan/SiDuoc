@@ -196,12 +196,30 @@
               </div>
             </ClientOnly>
           </div>
-          <h6>Mã giảm giá</h6>
-          <div class="d-flex flex-column gap-3">
-            <div v-for="value in listDiscount">
-              <SharedModuleCoupon :coupon="value" />
-            </div>
-          </div>
+          <h6>Chương trình khuyến mãi</h6>
+          <ul class="list-group">
+            <li
+              v-for="discount in listNews?.data"
+              :key="discount._id"
+              class="list-group-item d-flex gap-2 position-relative justify-content-between align-items-center"
+            >
+              <NuxtLink
+                :to="`/promotion/${discount.slug}`"
+                class="stretched-link"
+              ></NuxtLink>
+              <div
+                class="ratio ratio-16x9 rounded overflow-hidden mb-2"
+                style="width: 120px"
+              >
+                <img
+                  :src="discount.thumbnail || '/images/image-error.svg'"
+                  :alt="discount.title"
+                  style="object-fit: cover"
+                />
+              </div>
+              <small>{{ discount.title }}</small>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -250,7 +268,7 @@ const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
 const showMoreFilters = ref(false);
 const keyword = useDebouncedRef("", 500);
 const ten_nhasx = useDebouncedRef("", 500);
-const listDiscount = ref<TapmedDiscount[]>([]);
+
 const showCheckoutModal = ref(false);
 const parameterDiscount = ref<BaseParameters>({
   PageIndex: 1,
@@ -310,7 +328,13 @@ const filterNhaSX = ref(
 );
 const listNhomVatTu = ref<Item.NhomVatTu[]>([]);
 const listNhaSanXuat = ref<Item.NhaSanXuat[]>([]);
-
+const listNews = ref<any>();
+const loading = ref(true);
+const queryList = ref({
+  page: 1,
+  limit: 4,
+  category: "promotion",
+});
 watch(keyword, (newVal) => {
   filterListProduct.value.setValue("ten_vt", newVal, OperatorType.Contains);
   filterListProduct.value.pageIndex = 1;
@@ -328,11 +352,27 @@ watch(
   { deep: true }
 );
 
+async function fetchNewsList() {
+  loading.value = true;
+  try {
+    const rsData = await $fetch("/api/post/list", {
+      query: {
+        ...queryList.value,
+      },
+    });
+    listNews.value = rsData;
+  } catch (error) {
+    console.error("Error fetching news list:", error);
+  } finally {
+    loading.value = false;
+  }
+}
 // ======================== HOOKS ========================
 onBeforeMount(() => {
   getListProduct();
   getNhomVatTu();
   getNhaSX();
+  fetchNewsList();
 });
 // ======================== METHODS ========================
 
@@ -405,10 +445,6 @@ function selectNhaSX(nhasx: Item.NhaSanXuat) {
   filterListProduct.value.pageIndex = 1;
   getListProduct();
 }
-
-$appServices.discount.getListDiscount(parameterDiscount.value).then((res) => {
-  listDiscount.value = res.getData;
-});
 </script>
 
 <style scoped>
