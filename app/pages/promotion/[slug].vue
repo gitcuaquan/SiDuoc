@@ -30,7 +30,7 @@
           >
             <NuxtLink class="text-decoration-none" :to="`/promotion/${value.slug}`">
               <div class="d-flex gap-2">
-                <div class="ratio ratio-16x9" style="width: 60px; ">
+               <div class="ratio flex-shrink-0 ratio-16x9 rounded overflow-hidden" style="width: 100px">
                   <img
                     :src="value.thumbnail || '/images/image-error.svg'"
                     alt="thumbnail"
@@ -80,6 +80,8 @@ const { data: relatedNews, pending: relatedPending } = useFetch<{
 }>(`/api/post/list`, {
   query: {
     category: data.value?.category || "",
+    page:1,
+    limit:5
   },
 });
 

@@ -22,17 +22,17 @@
           </button>
         </div>
         <template v-if="!idOrder">
-          <div class="modal-body" style="min-height: 70vh">
+          <div class="modal-body" style="min-height: 70vh;font-size: 0.875rem;">
             {{ idOrder }}
             <section class="mb-3">
               <!-- {{ user }} -->
-              <div class="row">
+              <div class="row g-3">
                 <div class="col-lg-5">
                   <h6 class="text-dark fw-bold">Thông tin khách hàng :</h6>
                   <table class="table m-0 table-borderless table-sm">
                     <tbody>
                       <tr>
-                        <td class="fw-normal text-muted" style="width: 110px">
+                        <td class="fw-normal text-muted" style="width: 100px">
                           Họ và tên
                         </td>
                         <td>: {{ user?.data?.ten_kh }}</td>
@@ -114,7 +114,7 @@
               <h6 class="text-dark">Chi tiết đơn hàng :</h6>
               <div class="row">
                 <div class="col-lg-8">
-                  <CartModuleList />
+                  <CartModuleList is-show />
                 </div>
                 <div class="col-lg-4">
                   <CartModuleSummary>
@@ -144,13 +144,13 @@
           <div class="modal-footer">
             <button
               data-bs-dismiss="modal"
-              class="btn btn-outline-dark border-0 ms-auto fw-semibold"
+              class="btn btn-outline-secondary border-0 ms-auto"
             >
-              Đóng Tạo Đơn Hàng
+              Đóng 
             </button>
             <button
               @click="createOrder"
-              class="btn btn-primary ms-2 fw-semibold"
+              class="btn btn-primary ms-2"
             >
               Xác nhận thanh toán
             </button>

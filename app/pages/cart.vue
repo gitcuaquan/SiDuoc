@@ -1,12 +1,19 @@
 <template>
   <SharedModuleBreadcrumb :data="breadcrumb" />
   <div class="container my-4">
-    <div class="row">
+    <div class="row" v-if="cart.length > 0">
       <div class="col-lg-8">
         <CartModuleList />
       </div>
       <div class="col-lg-4">
-        <CartModuleSummary class="border rounded shadow-sm" />
+        <CartModuleSummary class="border rounded shadow-sm">
+          <button
+            class="btn btn-primary w-100 mt-2"
+            @click="showCheckoutModal = true"
+          >
+            Đặt hàng nhanh
+          </button>
+        </CartModuleSummary>
         <div class="d-flex mt-3 flex-column gap-3">
           <!-- <div v-for="value in 4" :key="value">
             <SharedModuleCoupon />
@@ -14,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div v-if="false" class="row justify-content-center">
+    <div v-else class="row justify-content-center">
       <div class="col-4">
         <div class="d-flex flex-column align-items-center">
           <img src="/images/cart-empty.svg" class="w-75" alt="" />
@@ -28,14 +35,19 @@
       </div>
     </div>
   </div>
+  <ClientOnly>
+    <CheckoutModalCheckOut
+      v-if="showCheckoutModal"
+      @close="showCheckoutModal = false"
+    />
+  </ClientOnly>
 </template>
 
 <script lang="ts" setup>
 import type { ProjectConfig } from "~/model";
-
 const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Giỏ hàng" },
 ]);
+const { cart } = useCart();
+const showCheckoutModal = ref(false);
 </script>
-
-<style></style>

@@ -4,8 +4,14 @@
     <div class="cart-header d-none border d-lg-table-row bg-light fw-semibold">
       <span class="d-lg-table-cell p-3 py-2">Sản phẩm</span>
       <span class="d-lg-table-cell p-3 py-2 text-center">Đơn giá</span>
-      <span class="d-lg-table-cell p-3 py-2 text-center">Số lượng</span>
+      <span class="d-lg-table-cell p-3 py-2 text-nowrap text-center"
+        >Số lượng</span
+      >
       <span class="d-lg-table-cell p-3 py-2 text-end">Tổng</span>
+      <span
+        v-if="!props.isShow"
+        class="d-lg-table-cell p-3 py-2 text-end"
+      ></span>
     </div>
 
     <!-- Item -->
@@ -72,7 +78,8 @@
         class="cart-qty d-flex text-lg-center mb-2 mb-lg-0 justify-content-between align-items-center d-lg-table-cell p-lg-3"
       >
         <span class="d-lg-none fw-semibold">Số lượng:</span>
-        <UiBtnGroup size="sm" v-model="item.quantity" />
+        <UiBtnGroup size="sm" v-model="item.quantity" v-if="!props.isShow" />
+        <div v-else>{{ item.quantity }} {{ item.dvt }}</div>
       </div>
 
       <!-- Total -->
@@ -85,12 +92,28 @@
         </span>
         <span v-else class="text-lg-center"> Liên hệ </span>
       </div>
+      <div
+        v-if="!props.isShow"
+        class="cart-total d-flex mb-2 text-lg-end mb-lg-0 justify-content-between d-lg-table-cell p-lg-3"
+      >
+        <span class="d-lg-none fw-semibold">Tổng:</span>
+        <span class="text-lg-center">
+          <Trash2
+            :size="16"
+            :stroke-width="1"
+            @click="removeFromCart(item.ma_vt)"
+          />
+        </span>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const { cart } = useCart();
+const { cart, removeFromCart } = useCart();
+const props = defineProps<{
+  isShow?: boolean;
+}>();
 </script>
 
 <style scoped>

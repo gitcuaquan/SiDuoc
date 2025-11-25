@@ -197,19 +197,19 @@
             </ClientOnly>
           </div>
           <h6>Chương trình khuyến mãi</h6>
-          <ul class="list-group">
+          <ul class="list-group list-group-flush">
             <li
               v-for="discount in listNews?.data"
               :key="discount._id"
-              class="list-group-item d-flex gap-2 position-relative justify-content-between align-items-center"
+              class="list-group-item d-flex gap-2 p-1 position-relative justify-content-between align-items-center"
             >
               <NuxtLink
                 :to="`/promotion/${discount.slug}`"
                 class="stretched-link"
               ></NuxtLink>
               <div
-                class="ratio ratio-16x9 rounded overflow-hidden mb-2"
-                style="width: 120px"
+                class="ratio ratio-16x9 rounded overflow-hidden flex-shrink-0"
+                style="width: 70px"
               >
                 <img
                   :src="discount.thumbnail || '/images/image-error.svg'"
