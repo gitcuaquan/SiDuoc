@@ -31,6 +31,9 @@ export default defineNuxtConfig({
         },
       }
     }
+    , optimizeDeps: {
+      include: ['quill-blot-formatter']
+    }
   },
   plugins: ['~/plugins/bootstrap.client.ts', '~/plugins/appServices.ts'],
   runtimeConfig: {

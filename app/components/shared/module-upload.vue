@@ -26,7 +26,7 @@
       :id="id"
       ref="fileInput"
       type="file"
-      accept=".png,.jpg,.jpeg,.pdf,.webp"
+      accept=".png,.jpg,.jpeg"
       @input="handleFileInput"
       class="form-control d-none"
     />

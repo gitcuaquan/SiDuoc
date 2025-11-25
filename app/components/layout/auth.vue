@@ -13,9 +13,14 @@
         >
           <UiLoading />
         </div>
-        <h2 class="text-capitalize mb-3">
-          {{ props.name }}
-        </h2>
+        <div class="d-flex flex-wrap ">
+          <h2 class="text-capitalize mb-3">
+            {{ props.name }}
+          </h2>
+          <div class="ms-lg-auto mb-lg-0 mb-3">
+            <slot name="actions"> </slot>
+          </div>
+        </div>
         <slot> mặc định </slot>
       </div>
     </div>

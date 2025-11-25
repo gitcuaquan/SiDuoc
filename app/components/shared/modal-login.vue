@@ -147,9 +147,8 @@ async function login() {
     useToast().success("Đăng nhập thành công");
     useRouter().push("/auth");
     modalInstance.value?.hide();
-  } catch (error) {
-    console.error("Login failed:", error);
-    useToast().error("Đăng nhập thất bại. Vui lòng kiểm tra lại.");
+  } catch (error:any) {
+    useToast().error( error.data.message || "Đăng nhập thất bại");
     // Handle login failure (e.g., show error message)
   } finally {
     loading.value = false;

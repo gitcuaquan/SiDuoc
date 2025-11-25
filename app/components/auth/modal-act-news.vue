@@ -6,7 +6,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            {{ props.detail ? "Chi tiết" : "Tạo" }} Bài viết
+            {{ props.editId ? "Sửa" : "Tạo" }} Bài viết
           </h5>
           <button
             type="button"
@@ -36,13 +36,14 @@
               </div>
               <div>
                 <label for="seoContent" class="form-label">Nội dung SEO</label>
-                <input
-                  type="text"
+                <textarea
+                  name="seoContent"
                   class="form-control"
                   id="seoContent"
+                  rows="3"
                   v-model="newsObject.seo_content"
-                  placeholder="Nhập nội dung SEO"
-                />
+                ></textarea>
+
               </div>
             </div>
             <div class="col-lg-3">
@@ -76,10 +77,19 @@
           </button>
           <button
             type="button"
+            v-if="!props.editId"
             @click="createNews"
             class="btn btn-primary border-0 me-3"
           >
             Tạo bài viết
+          </button>
+          <button
+            type="button"
+            v-if="props.editId"
+            @click="updateNews"
+            class="btn btn-primary border-0 me-3"
+          >
+            Cập nhật bài viết
           </button>
         </div>
       </div>
@@ -94,15 +104,17 @@ import type { News } from "~/model/news";
 const modalInstance = ref<Modal | null>(null);
 const { $bootstrap } = useNuxtApp();
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "created"]);
 const props = defineProps<{
-  detail?: boolean;
+  editId?: string;
 }>();
 const newsObject = ref<News>({
   id: "",
   title: "",
   content: "",
+  slug: "",
   seo_content: "",
+  thumbnail: "",
   category: "news",
   created_at: new Date(),
   updated_at: new Date(),
@@ -110,6 +122,12 @@ const newsObject = ref<News>({
 
 onMounted(() => {
   initModal();
+  if (props.editId) {
+    // Fetch existing news data for editing
+    $fetch<News>(`/api/post/${props.editId}`).then((data) => {
+      newsObject.value = data;
+    });
+  }
 });
 
 function initModal() {
@@ -120,6 +138,20 @@ function initModal() {
     emit("close");
   });
 }
+async function updateNews() {
+  try {
+    await $fetch(`/api/post/${props.editId}`, {
+      //@ts-ignore
+      method: "PUT",
+      body: newsObject.value,
+    });
+    useToast().success("Cập nhật bài viết thành công.");
+    modalInstance.value?.hide();
+    emit("created");
+  } catch (error) {
+    useToast().error("Có lỗi xảy ra khi cập nhật bài viết.");
+  }
+}
 
 async function createNews() {
   try {
@@ -129,6 +161,7 @@ async function createNews() {
     });
     useToast().success("Tạo bài viết thành công.");
     modalInstance.value?.hide();
+    emit("created");
   } catch (error) {
     useToast().error("Có lỗi xảy ra khi tạo bài viết.");
   }

@@ -12,7 +12,7 @@
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import BlotFormatter from "quill-blot-formatter";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps<{
   modelValue?: string;
@@ -22,7 +22,7 @@ const emits = defineEmits<{
 }>();
 
 
-const editorData = ref<string>(JSON.parse(JSON.stringify(props.modelValue || "")));
+const editorData = ref<string>(props.modelValue ?? "");
 const options = {
   theme: "snow",
   placeholder: "Viết nội dung tại đây...",
@@ -41,6 +41,15 @@ watch(
   () => editorData.value,
   (newVal) => {
     emits("update:modelValue", newVal);
+  }
+);
+
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    if (newVal !== editorData.value) {
+      editorData.value = newVal ?? "";
+    }
   }
 );
 </script>

@@ -3,8 +3,22 @@
 
   <div class="container py-3">
     <h5 class="my-3">Tin tức nổi bật</h5>
-    <news-list />
-    <shared-module-pagination class="mt-5" />
+    <news-list :limit="12" category="promotion" :page="page">
+      <template #default="{ pagination, loading }">
+        <div
+          class="d-flex justify-content-center min-vh-100 align-items-center my-4"
+          v-if="loading"
+        >
+          <UiLoading />
+        </div>
+        <div class="d-flex justify-content-end my-4" v-else-if="pagination">
+          <SharedModulePagination
+            :pagination="pagination"
+            @page-change="page = $event"
+          />
+        </div>
+      </template>
+    </news-list>
   </div>
 </template>
 
@@ -21,7 +35,7 @@ interface Promotion {
   description: string;
   expiry: string;
 }
-
+const page = ref(1);
 const promotions = ref<Promotion[]>([
   {
     id: 1,

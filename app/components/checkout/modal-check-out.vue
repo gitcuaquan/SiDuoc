@@ -35,17 +35,17 @@
                         <td class="fw-normal text-muted" style="width: 110px">
                           Họ và tên
                         </td>
-                        <td>: {{ user?.ten_kh }}</td>
+                        <td>: {{ user?.data?.ten_kh }}</td>
                       </tr>
                       <tr>
                         <td class="fw-normal text-muted">Số điện thoại</td>
-                        <td>: {{ user?.dien_thoai }}</td>
+                        <td>: {{ user?.data?.dien_thoai }}</td>
                       </tr>
                       <tr>
                         <td class="fw-normal text-muted">Địa chỉ</td>
                         <td>
-                          : {{ user?.dia_chi }} - {{ user?.ten_xa_phuong }} -
-                          {{ user?.ten_thanh_pho }}
+                          : {{ user?.data?.dia_chi }} - {{ user?.data?.ten_xa_phuong }} -
+                          {{ user?.data?.ten_thanh_pho }}
                         </td>
                       </tr>
                     </tbody>
@@ -200,10 +200,10 @@ const order = ref<TapmedOrder>(
   new TapmedOrder({
     details: [],
     header: new TapmedOrderHeader({
-      ma_kh: user.value?.ma_kh || "",
-      so_dt: user.value?.dien_thoai || "",
-      dia_chi: user.value?.dia_chi || "",
-      ten: user.value?.ten_kh || "",
+      ma_kh: user.value?.data?.ma_kh || "",
+      so_dt: user.value?.data?.dien_thoai || "",
+      dia_chi: user.value?.data?.dia_chi || "",
+      ten: user.value?.data?.ten_kh || "",
       ghi_chu_giao_hang: "",
       status: "0",
       fnote3: "1", // phương thức thanh toán: 1: COD, 2: chuyển khoản

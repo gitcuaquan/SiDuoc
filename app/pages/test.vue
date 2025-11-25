@@ -8,9 +8,9 @@ import type { BaseParameters } from "~/model";
 const { $appServices } = useNuxtApp();
 
 const data = ref([]);
-$appServices.order.listOrder().then((res) => {
-  console.log("🚀 ~ res=>", res);
-});
+// $appServices.items.getFeatured().then((resp) => {
+//   console.log("Featured items:", resp);
+// });
 </script>
 
 <style></style>

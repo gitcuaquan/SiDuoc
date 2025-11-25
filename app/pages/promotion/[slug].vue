@@ -24,8 +24,8 @@
         <h5 class="mb-3">Bài viết liên quan</h5>
         <ul v-if="!relatedPending && relatedNews?.data?.length" class="list-group-flush ps-0 m-0 list-group">
           <li v-for="value in relatedNews?.data" :key="value.slug" class="list-group-item ps-0">
-            <NuxtLink :to="`/news/${value.slug}`">
-              {{ value.title }}
+            <NuxtLink :to="`/promotion/${value.slug}`">
+              {{ value.title }} 
             </NuxtLink>
           </li>
         </ul>
@@ -39,8 +39,8 @@ import type { ProjectConfig } from "~/model";
 import type { News } from "~/model/news";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
-  { label: "Tin tức", to: "/news" },
-  { label: "Chi tiết tin tức" },
+  { label: "Khuyến mãi", to: "/promotion" },
+  { label: "Chi tiết khuyến mãi" },
 ]);
 
 const route = useRoute();
