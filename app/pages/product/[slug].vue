@@ -151,6 +151,7 @@ const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Đặt hàng nhanh", to: "/quick-order" },
   { label: "Thần kinh não" },
 ]);
+const {isAuthenticated,togglePopupLogin} = useAuth();
 
 const quantity = ref(1);
 
@@ -184,6 +185,11 @@ useSeoMeta({
 
 function addToCartPage() {
   if (!detailProduct?.value?.data) return;
+  if(!isAuthenticated.value){
+    useToast().error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+    togglePopupLogin();
+    return;
+  }
   detailProduct.value.data.quantity = quantity.value;
   addToCart(detailProduct.value.data);
   useToast().success("Đã thêm vào giỏ hàng");
