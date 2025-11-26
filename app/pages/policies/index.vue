@@ -2,7 +2,7 @@
   <SharedModuleBreadcrumb :data="breadcrumb" />
   <div class="container mx-autobg-white rounded-lg shadow-md">
     <div class="row pt-3 justify-content-center">
-      <div class="col-lg-8">
+      <div class="col-lg-8 ">
         <h2 class="text-xl font-bold mb-4 mt-6">I. CHÍNH SÁCH VẬN CHUYỂN</h2>
         <ul class="list-disc pl-6 mb-6 space-y-2">
           <li>
@@ -129,7 +129,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-4 border-md-left">
         <h5 class="mb-3">Các chương trình khuyến mãi</h5>
         <ul
           v-if="!relatedPending && relatedNews?.data?.length"

@@ -75,6 +75,20 @@
                   :placeholder="'Tải ảnh đại diện bài viết (.jpg, .png) tỷ lệ 16x9'"
                 />
               </div>
+              <div class="mb-3">
+                <label class="form-label"> Hiển thị trang chủ </label>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="showInHome"
+                    v-model="newsObject.show_in_home"
+                  />
+                  <label class="form-check-label" for="showInHome">
+                    {{ newsObject.show_in_home ? "Có hiển thị" : "Không hiển thị" }}
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -132,6 +146,7 @@ const newsObject = ref<News>({
   category: "news",
   created_at: new Date(),
   updated_at: new Date(),
+  show_in_home: false,
 });
 
 onMounted(() => {

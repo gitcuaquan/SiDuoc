@@ -8,4 +8,5 @@ export interface News {
   category: string;
   created_at: Date;
   updated_at: Date;
+  show_in_home: boolean;
 }

@@ -32,6 +32,11 @@ export const Post = defineMongooseModel({
             type: Date,
             required: true,
         },
+        show_in_home: {
+            type: Boolean,
+            required: false,
+            
+        },
         created_at: { // sửa đúng chính tả từ "create_at" thành "created_at"
             type: Date,
             required: true,

@@ -6,32 +6,31 @@
       <!-- Product Images -->
       <div class="col-lg-5 col-md-6">
         <div class="sticky-top" style="top: 50px; z-index: 0">
-          <ProductModuleImg :images="productImages" />
+          <ProductModuleImg :images="detailProduct?.data?.image_urls" />
 
           <p class="text-muted mt-2 small">
             Màu mã sản phẩm có thể thay đổi theo lô hàng
           </p>
         </div>
       </div>
-
       <!-- Product Info -->
       <div class="col-lg-7 col-md-6">
         <div class="product-info">
           <!-- Brand -->
           <p class="text-muted mb-2">
-            Thương hiệu: <span class="text-primary fw-bold">VKENKO</span>
+            Danh mục: <span class="text-primary fw-bold">{{ detailProduct?.data?.ten_nhthkd || 'Sỉ ' }}</span>
           </p>
 
           <!-- Product Title -->
           <h1 class="h3 fw-bold mb-3 text-dark">
-            {{ detailProduct?.ten_vt || "Tên sản phẩm không xác định" }}
+            {{ detailProduct?.data?.ten_vt || "Tên sản phẩm không xác định" }}
           </h1>
 
           <!-- Rating and Reviews -->
           <div class="d-flex align-items-center gap-2 mb-3">
             <span class="text-muted me-2"
               >Mã sản phẩm:
-              <b>{{ detailProduct?.ma_vt || "00000000" }}</b></span
+              <b>{{ detailProduct?.data?.ma_vt || "00000000" }}</b></span
             >
             <!-- <div class="me-3 d-flex gap-1 align-items-center">
               <Star :size="16" class="text-warning" :stroke-width="1" />
@@ -41,36 +40,37 @@
             <span class="text-muted">21 bình luận</span> -->
           </div>
 
-
           <!-- Price -->
           <div class="price-section mb-4">
             <div class="d-flex align-items-center mb-2">
               <h2 class="h2 text-primary fw-bold mb-0 me-3">
                 {{
-                  (detailProduct?.gia_nt2 || 0) > 0
-                    ? formatCurrency(detailProduct?.gia_nt2 || 0)
+                  (detailProduct?.data?.gia_nt2 || 0) > 0
+                    ? formatCurrency(detailProduct?.data?.gia_nt2 || 0)
                     : "Liên hệ"
                 }}
               </h2>
-              <span v-if="(detailProduct?.gia_nt2 || 0) > 0" class="text-muted"
-                >/ Hộp</span
-              >
+              <span
+                v-if="(detailProduct?.data?.gia_nt2 || 0) > 0"
+                class="text-muted"
+                >/ {{ detailProduct?.data?.dvt || "đơn vị" }}
+              </span>
             </div>
             <p
-              v-if="detailProduct?.gia2"
+              v-if="detailProduct?.data?.gia2"
               class="text-muted text-decoration-line-through mb-3"
             >
-              {{ formatCurrency(detailProduct?.gia2 || 0) }}
+              {{ formatCurrency(detailProduct?.data?.gia2 || 0) }}
             </p>
           </div>
           <div id="action" class="row mt-3 bg-white align-items-end pb-3 g-3">
             <div class="col-md-3">
               <label class="form-label fw-bold">Số lượng</label>
               <br />
-              <UiBtnGroup />
+              <UiBtnGroup v-model="quantity" />
             </div>
             <div class="col-md-6">
-              <button id="add-to-cart" class="btn btn-primary px-5">
+              <button @click="addToCartPage" id="add-to-cart" class="btn btn-primary px-5">
                 Thêm vào giỏ hàng <ShoppingBag />
               </button>
             </div>
@@ -78,7 +78,7 @@
           <div class="ingredients-section">
             <h6 class="fw-bold mb-3">Mô tả sản phẩm</h6>
             <p class="small text-muted line-break-container">
-              {{ detailProduct?.mo_ta_san_pham }}
+              {{ detailProduct?.data?.mo_ta_san_pham }}
             </p>
           </div>
           <!-- Product Details Table -->
@@ -90,43 +90,43 @@
                     Đơn vị tính
                   </td>
                   <td class="py-2">
-                    {{ detailProduct?.dvt }}
+                    {{ detailProduct?.data?.dvt }}
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Thành phần</td>
                   <td class="py-2 line-break-container">
-                    {{ detailProduct?.thanh_phan }}
+                    {{ detailProduct?.data?.thanh_phan }}
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Công dụng</td>
                   <td class="py-2 line-break-container">
-                    {{ detailProduct?.cong_dung }}
+                    {{ detailProduct?.data?.cong_dung }}
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Cách dùng</td>
                   <td class="py-2 line-break-container">
-                    {{ detailProduct?.cach_dung }}
+                    {{ detailProduct?.data?.cach_dung }}
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Tác dụng phụ</td>
                   <td class="py-2 line-break-container">
-                    {{ detailProduct?.tac_dung_phu }}
+                    {{ detailProduct?.data?.tac_dung_phu }}
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Bảo quản</td>
                   <td class="py-2 line-break-container">
-                    {{ detailProduct?.bao_quan }}
+                    {{ detailProduct?.data?.bao_quan }}
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Lưu ý</td>
                   <td class="py-2 line-break-container">
-                    {{ detailProduct?.luu_y }}
+                    {{ detailProduct?.data?.luu_y }}
                   </td>
                 </tr>
               </tbody>
@@ -136,52 +136,58 @@
       </div>
     </div>
     <!-- End Main Product Section -->
-    <h5 class="mt-5 text-capitalize">Có thể bạn cũng thích</h5>
+    <h5 class="mt-5 text-capitalize">Sản phẩm liên quan</h5>
     <ProductModuleSliderItem />
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import type { ProjectConfig } from "~/model";
-import type { ITemsTapmed } from "~/model";
 const { $appServices } = useNuxtApp();
+const { addToCart } = useCart();
 const route = useRoute();
 const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Đặt hàng nhanh", to: "/quick-order" },
   { label: "Thần kinh não" },
 ]);
 
-// Product images
-const productImages = ref([
-  "https://placehold.co/800x800/000000/5682B1.png", // Main product image
-  "https://placehold.co/800x800/000000/FFE8DB.png", // Package front
-  "https://placehold.co/800x800/000000/AE75DA.png", // Package back with details
-  "https://placehold.co/800x800/000000/309272.png", // Certificate or additional info
-  "https://placehold.co/800x800/000000/0046FF.png", // Certificate or additional info
-  "https://placehold.co/800x800/000000/1E93AB.png", // Certificate or additional info
-]);
+const quantity = ref(1);
 
-// SEO Meta
-const { data: detailProduct } = await useAsyncData(
-  "product-details",
+// reactive slug and data fetch: ensure refetch when route param changes
+const slug = computed(() => route.params.slug as string);
+
+const { data: detailProduct, error } = await useAsyncData(
+  () => `product-details-${slug.value}`,
   async () => {
-    const slug = route.params.slug as string;
-    return await $appServices.items.getItemById(slug);
-  }
+    return await $appServices.items.getItemById(slug.value);
+  },
+  { watch: [slug] }
 );
 
 // 🧠 Reactive useHead — sẽ tự update khi detailProduct.value đổi
-useHead(() => ({
-  title: detailProduct.value
-    ? `${detailProduct.value.ten_vt} - Mua ngay tại Sỉ Dược`
-    : "Chi tiết sản phẩm - Sỉ Dược",
-  meta: [
-    {
-      name: "description",
-      content: detailProduct.value?.ten_vt || "",
-    },
-  ],
-}));
+useSeoMeta({
+  title: detailProduct?.value?.data?.ten_vt || "Tên sản phẩm",
+  ogTitle: detailProduct?.value?.data?.ten_vt || "Tên sản phẩm",
+  description:
+    detailProduct?.value?.data?.mo_ta_san_pham || "Chi tiết sản phẩm",
+  ogImage:
+    detailProduct?.value?.data?.image_urls?.[0]?.url ||
+    "/images/image-error.svg",
+  ogDescription:
+    detailProduct?.value?.data?.mo_ta_san_pham || "Chi tiết sản phẩm",
+  keywords: detailProduct?.value?.data?.ten_vt
+    ? detailProduct.value.data.ten_vt.split(" ").join(", ")
+    : "sản phẩm",
+  author: "Sỉ Dược",
+});
+
+function addToCartPage() {
+  if (!detailProduct?.value?.data) return;
+  detailProduct.value.data.quantity = quantity.value;
+  addToCart(detailProduct.value.data);
+  useToast().success("Đã thêm vào giỏ hàng");
+}
 </script>
 
 <style scoped>

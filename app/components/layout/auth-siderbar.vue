@@ -86,9 +86,8 @@ const route = useRoute();
 const menuWithManager = computed(() => {
   if (!isManager.value) {
     return sidebarItems.filter((item) => !item.is_manager);
-  } else {
-    return sidebarItems.filter((item) => item.is_manager);
   }
+  return sidebarItems;
 });
 function logoutUser() {
   useAuth().clearToken();

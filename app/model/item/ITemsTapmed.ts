@@ -5,6 +5,7 @@ export type ITemsTapmed = {
     ma_nt?: string;
     gia_nt2: number;
     gia2: number;
+    ten_nhthkd?: string;
     ma_gia?: string;
     ngay_ban?: string;
     image_urls?: { originalName: string, url: string }[];

@@ -24,7 +24,7 @@
               >Giá bán : {{ formatCurrency(item.gia_nt2) }}</small
             >
             <NuxtLink
-              :to="`/product/${item.ma_nt}`"
+              :to="`/product/${item.ma_vt}`"
               class="text-decoration-none text-dark"
             >
               <small class="text-truncate-2">
@@ -33,7 +33,7 @@
             </NuxtLink>
           </div>
           <nuxt-link
-            :to="`/product/${item.ma_nt}`"
+            :to="`/product/${item.ma_vt}`"
             class="card-footer border-0 fw-normal text-decoration-none gap-2 bg-primary py-1 text-white d-flex justify-content-center align-items-center"
           >
             <ShoppingBag :size="16" /> Chi tiết

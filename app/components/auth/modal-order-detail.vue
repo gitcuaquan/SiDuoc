@@ -14,17 +14,17 @@
           ></button>
         </div>
         <div class="modal-body p-0">
-          <div class="order-header-info mb-2 p-3 ">
+          <div class="order-header-info mb-2 p-3">
             <div class="row g-3">
               <div class="col-12 col-md-6">
                 <div>
-                  <strong>Mã đơn hàng:</strong>
-                  <span class="text-primary">{{
-                    orderDetails?.data?.header?.stt_rec
-                  }}</span>
+                  <strong>Mã đơn hàng: </strong>
+                  <span class="text-primary">
+                    {{ orderDetails?.data?.header?.stt_rec }}
+                  </span>
                 </div>
                 <div>
-                  <strong>Ngày đặt:</strong>
+                  <strong>Ngày đặt: </strong>
                   <span>
                     {{
                       formatDate(orderDetails?.data?.header?.ngay_ct as string)
@@ -32,21 +32,23 @@
                   </span>
                 </div>
                 <div>
-                  <strong>Số chứng từ:</strong>
+                  <strong>Số chứng từ: </strong>
                   <span>{{ orderDetails?.data?.header?.so_ct }}</span>
                 </div>
                 <div>
-                  <strong>Mã khách hàng:</strong>
+                  <strong>Mã khách hàng: </strong>
                   <span>{{ orderDetails?.data?.header?.ma_kh }}</span>
                 </div>
                 <div>
-                  <strong>Ghi chú:</strong>
-                  <span> {{ orderDetails?.data?.header?.ghi_chu_giao_hang }}</span>
+                  <strong>Ghi chú: </strong>
+                  <span>
+                    {{ orderDetails?.data?.header?.ghi_chu_giao_hang }}</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-md-6">
                 <div>
-                  <strong>Tổng tiền hàng:</strong>
+                  <strong>Tổng tiền hàng: </strong>
                   <span class="fw-semibold text-success">{{
                     formatCurrency(
                       orderDetails?.data?.header?.tien_hang_nt ?? 0
@@ -54,19 +56,19 @@
                   }}</span>
                 </div>
                 <div>
-                  <strong>Thuế:</strong>
+                  <strong>Thuế: </strong>
                   <span>{{
                     formatCurrency(orderDetails?.data?.header?.thue_nt ?? 0)
                   }}</span>
                 </div>
                 <div>
-                  <strong>Tổng thanh toán:</strong>
+                  <strong>Tổng thanh toán: </strong>
                   <span class="fw-bold text-danger">{{
                     formatCurrency(orderDetails?.data?.header?.tong_tt_nt ?? 0)
                   }}</span>
                 </div>
                 <div>
-                  <strong>Trạng thái:</strong>
+                  <strong>Trạng thái: </strong>
                   <span>
                     {{
                       orderDetails?.data?.header?.status !== undefined
@@ -143,6 +145,18 @@
             </div>
           </div>
         </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-secondary border-0"
+            data-bs-dismiss="modal"
+          >
+            Đóng
+          </button>
+          <button type="button" class="btn btn-primary" @click="addToCartPage">
+            Đặt lại hàng
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -187,6 +201,19 @@ async function getDetailOrder() {
   } catch (error) {
     console.log("🚀 ~ getDetailOrder ~ error=>", error);
   }
+}
+
+function addToCartPage() {
+  if (!orderDetails.value?.data?.details) return;
+  const { addToCart, clearCart } = useCart();
+  clearCart();
+  orderDetails.value.data.details.forEach((item: any) => {
+    item.quantity = item.so_luong as number;
+    addToCart(item);
+  });
+  modalInstance.value?.hide();
+  useRouter().push("/cart");
+  useToast().success("Đã thêm sản phẩm vào giỏ hàng.");
 }
 </script>
 

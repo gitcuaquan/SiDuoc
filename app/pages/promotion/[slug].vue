@@ -17,7 +17,7 @@
           <div v-html="data?.content"></div>
         </div>
       </div>
-      <div class="col-12 col-lg-3">
+      <div class="col-12 border-md-left col-lg-3">
         <h5 class="mb-3">Bài viết liên quan</h5>
         <ul
           v-if="!relatedPending && relatedNews?.data?.length"

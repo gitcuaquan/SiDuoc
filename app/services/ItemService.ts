@@ -1,6 +1,7 @@
 import { BodyFilter } from './../model/filter/BodyFilter';
 import { BaseResponse, type BaseParameters, type ITemsTapmed } from "~/model";
 import BaseService from "./BaseService";
+import type { BaseResponseOne } from '~/model/http/BaseResponse';
 
 export default class ItemService extends BaseService {
     constructor() {
@@ -20,11 +21,11 @@ export default class ItemService extends BaseService {
      * @param id 
      * @returns 
      */
-    async getItemById(id: string): Promise<ITemsTapmed | null> {
+    async getItemById(id: string): Promise<BaseResponseOne<ITemsTapmed> | null> {
         const resp = await this.get(`/details/items`, {
             ma_vt: id
         });
-        return resp.data ? (resp.data as ITemsTapmed) : null;
+        return resp.data ? (resp.data as BaseResponseOne<ITemsTapmed>) : null;
     }
 
     async getNhomVatTu<T>(filters: BodyFilter) {

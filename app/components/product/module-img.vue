@@ -1,7 +1,7 @@
 <template>
   <div id="main-image" class="position-relative">
     <div class="ratio rounded overflow-hidden ratio-1x1">
-      <img :src="selectedImage" />
+      <img :src="selectedImage?.url || '/images/image-error.svg'" alt="main image" />
     </div>
     <div class="position-absolute top-50 start-0 ms-3">
       <CircleChevronLeft @click="prevImage" role="button" :size="36" />
@@ -12,37 +12,50 @@
   </div>
   <div
     id="thumbnail-container"
+    v-if="(props.images?.length || 0) > 0"
     class="d-flex gap-2 mt-3 flex-nowrap overflow-auto w-100 justify-content-start"
   >
     <div
-      v-for="(img, index) in images"
-      :key="index"
+      v-for="(img) in props.images"
+      :key="img.url"
       class="thumbnail rounded overflow-hidden"
-      :class="{ active: img === selectedImage }"
+      :class="{ active: img.url === selectedImage?.url }"
       @click="selectedImage = img"
     >
-      <img :src="img" alt="" class="object-fit-lg-contain" />
+      <img :src="img.url || '/images/image-error.svg'" alt="thumbnail" class="object-fit-lg-contain" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+interface ImageUrl {
+  originalName: string;
+  url: string;
+}
+
 const props = defineProps<{
-  images: string[];
+  images?: ImageUrl[];
 }>();
 
-const selectedImage = ref(props.images[0]);
-
+const selectedImage = ref<ImageUrl | undefined>(props.images?.[0]);
+  
 onMounted(() => {
   initMouse();
+});
+
+// Ensure selectedImage initializes when images prop arrives/changes
+watch(() => props.images, (images) => {
+  if (images && images.length && !selectedImage.value) {
+    selectedImage.value = images[0];
+  }
 });
 
 watch(selectedImage, (newImage) => {
   const scrollContainer = document.getElementById("thumbnail-container");
   if (!scrollContainer) return;
   const thumbnails = scrollContainer.querySelectorAll(".thumbnail");
-  const newIndex = props.images.indexOf(newImage!);
-  const target = thumbnails[newIndex] as HTMLElement | undefined;
+  const newIndex = props.images ? props.images.findIndex(i => i.url === newImage?.url) : -1;
+  const target = newIndex >=0 ? (thumbnails[newIndex] as HTMLElement | undefined) : undefined;
   if (target) {
     const containerRect = scrollContainer.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
@@ -67,6 +80,9 @@ function initMouse() {
   scrollContainer.querySelectorAll("img").forEach((img) => {
     img.setAttribute("draggable", "false");
   });
+
+  // set initial cursor
+  scrollContainer.style.cursor = "grab";
 
   const startDrag = (x: number) => {
     isDragging = true;
@@ -108,15 +124,16 @@ function initMouse() {
 }
 
 const prevImage = () => {
-  const currentIndex = props.images.indexOf(selectedImage.value!);
-  const newIndex =
-    (currentIndex - 1 + props.images.length) % props.images.length;
+  if (!props.images || !props.images.length) return;
+  const currentIndex = props.images.findIndex(i => i.url === selectedImage.value?.url);
+  const newIndex = currentIndex === -1 ? 0 : (currentIndex - 1 + props.images.length) % props.images.length;
   selectedImage.value = props.images[newIndex];
 };
 
 const nextImage = () => {
-  const currentIndex = props.images.indexOf(selectedImage.value!);
-  const newIndex = (currentIndex + 1) % props.images.length;
+  if (!props.images || !props.images.length) return;
+  const currentIndex = props.images.findIndex(i => i.url === selectedImage.value?.url);
+  const newIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % props.images.length;
   selectedImage.value = props.images[newIndex];
 };
 </script>

@@ -89,7 +89,8 @@ export default class BaseService {
         body.append("controllerFields", "dmkh");
         body.append("isPublicAccess", "true");
         body.append("keyFields", uuid);
-        body.append("slug", file.name.slice(0,20));
+        body.append("slug", uuid + `.` + file.type.split('/')[1]);
+
         try {
             const response = await $fetch('https://api-tapmed.sse.net.vn/api/FileUpload/upload', {
                 method: 'POST',

@@ -160,12 +160,6 @@ const route = useRoute();
 definePageMeta({
   middleware: "auth",
 });
-const { user } = useAuth();
-const isManager = computed(() => user.value?.data.ma_kh === "0982315950");
-
-if (isManager.value) {
-  useRouter().push("/auth/news");
-}
 
 const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Tài khoản", to: "/auth" },
