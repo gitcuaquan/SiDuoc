@@ -5,7 +5,7 @@
       <div class="col-lg-8">
         <div class="card bg-white border-0 shadow-sm">
           <div
-            class="card-header shadow-sm px-1 py-1 px-md-2 bg-white border-0"
+            class="card-header sticky-top top-custom shadow-sm px-1 py-1 px-md-2 bg-white border-0"
           >
             <div class="row g-2 align-items-center">
               <div class="col-lg-6 order-2">
@@ -61,97 +61,7 @@
                   </button>
                 </div>
               </div>
-              <!-- <div class="col-lg-7">
-                <div class="input-group w-100 input-group-sm h-100 flex-nowrap">
-                  <select v-model="filterNhomVt.filters[0]!.valueSearch" class="form-select w-auto flex-grow-0" id="">
-                    <option
-                      v-for="value in loaiNhomVatTuOptions"
-                      :value="value.value.toString()"
-                    >
-                      {{ value.label }}
-                    </option>
-                  </select>
-                  <select class="form-select" >
-                    <option
-                      v-for="value in listNhomVatTu"
-                    >
-                      {{ value.ten_nh }}
-                    </option>
-                  </select>
-                </div>
-              </div> -->
-              <!-- <div class="col-6">
-                <div class="dropdown">
-                  <button
-                    class="btn w-100 px-2 text-nowrap d-flex gap-1 align-items-center border"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <BookOpenText
-                      :stroke-width="1.5"
-                      class="text-muted"
-                      :size="16"
-                    />
-                    <small class="text-dark text-opacity-50 user-select-none">
-                      Danh mục sản phẩm
-                    </small>
-                  </button>
-                  <div class="dropdown-menu ps-2 border-0 shadow dropdown-menu-custom">
-                    <div class="p-2 px-1">
-                      <UiInputSearch
-                        placeholder="Tìm kiếm danh mục"
-                        v-model="categoriesKeyword"
-                      />
-                    </div>
-                    <div class="dropdown-list p-3 py-0">
-                      <UiTreeView :categories="categoriesFilter" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="dropdown">
-                  <div
-                    data-bs-toggle="dropdown"
-                    class="form-control d-flex align-items-center gap-2"
-                  >
-                    <House :stroke-width="1.5" class="text-muted" :size="16" />
-                    <small class="text-dark text-opacity-50 user-select-none">
-                      Nhà cung cấp
-                    </small>
-                  </div>
-                  <div
-                    class="dropdown-menu border-0 shadow  dropdown-menu-custom dropdown-menu-end p-2"
-                  >
-                    <OrderModuleProvider class="mt-1" />
-                  </div>
-                </div>
-              </div> -->
             </div>
-
-            <!-- <div class="d-flex tag-scroll mt-2 flex-nowrap gap-2">
-              <div
-                class="text-uppercase badge d-flex gap-1 align-items-center bg-primary bg-opacity-10 text-primary"
-              >
-                SẢN PHẨM AIKYA <Tags :size="16" :stroke-width="1.5" />
-              </div>
-              <div
-                class="text-uppercase badge d-flex gap-1 align-items-center bg-primary bg-opacity-10 text-primary"
-              >
-                Sản Phẩm TAPMED <Tags :size="16" :stroke-width="1.5" />
-              </div>
-              <div
-                class="text-uppercase badge d-flex gap-1 align-items-center bg-primary bg-opacity-10 text-primary"
-              >
-                GIÁ TỐT TRONG TUẦN <Tags :size="14" :stroke-width="1.5" />
-              </div>
-              <div
-                class="text-uppercase badge d-flex gap-1 align-items-center bg-primary bg-opacity-10 text-primary"
-              >
-                GIÁ TỐT TRONG THÁNG <Tags :size="14" :stroke-width="1.5" />
-              </div>
-            </div> -->
           </div>
           <div class="card-body px-1 px-md-2">
             <OrderModuleList
@@ -449,7 +359,7 @@ function selectNhaSX(nhasx: Item.NhaSanXuat) {
 
 <style scoped>
 .top-custom {
-  top: 48px;
+  top: 65px;
   z-index: 1 !important;
 }
 
