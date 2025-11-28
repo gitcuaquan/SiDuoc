@@ -48,22 +48,7 @@
                 errors.FullName
               }}</small>
             </div>
-            <div class="col-md-6 col-12">
-              <label for="Cccd" class="form-label">Số căn cước công dân</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="custumerInfo.Cccd"
-                required
-                minlength="9"
-                maxlength="12"
-                id="Cccd"
-                placeholder="Nhập số căn cước công dân"
-              />
-              <small class="text-danger" v-if="errors.Cccd">{{
-                errors.Cccd
-              }}</small>
-            </div>
+
             <div class="col-12 col-md-6">
               <label for="NameCoSo" class="form-label">Tên cơ sở</label>
               <input
@@ -119,43 +104,73 @@
             </div>
             <div class="col-12 col-md-6">
               <label for="city" class="form-label">Thành phố</label>
-              <select
-                required
-                v-model="citySelect"
-                class="form-control"
+              <SharedModuleSelect @select="citySelect = $event" :data="City">
+                <template #item="{ item }">
+                  {{ (item as any).name }}
+                </template>
+                <template #default="{ selected }">
+                  <button
+                    class="form-control w-100 d-flex justify-content-between align-items-center"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    {{ selected?.name || "Chọn thành phố" }} <chevron-down />
+                  </button>
+                </template>
+              </SharedModuleSelect>
+              <input
+                type="text"
                 id="NameProvince"
-              >
-                <option disabled selected>Chọn thành phố</option>
-                <option
-                  v-for="value in City"
-                  :key="`city-${value.code}`"
-                  :value="value"
-                >
-                  {{ value.name }}
-                </option>
-              </select>
+                required
+                hidden
+                v-model="custumerInfo.NameProvince"
+              />
               <small class="text-danger" v-if="errors.NameProvince">
                 {{ errors.NameProvince }}
               </small>
             </div>
             <div class="col-12 col-md-6">
               <label for="NameDistrict" class="form-label">Xã phường</label>
-              <select
+              <SharedModuleSelect
+                :data="listCity"
+                @select="custumerInfo.NameDistrict = $event.name"
+              >
+                <template #item="{ item }">
+                  {{ (item as any).name }}
+                </template>
+                <template #default="{ selected }">
+                  <button
+                    class="form-control w-100 d-flex justify-content-between align-items-center"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    {{ selected?.name || "Chọn xã phường" }} <chevron-down />
+                  </button>
+                </template>
+              </SharedModuleSelect>
+              <input
+                type="text"
+                id="NameDistrict"
                 required
+                hidden
+                v-model="custumerInfo.NameDistrict"
+              />
+              <!-- <select
+              
                 v-model="custumerInfo.NameDistrict"
                 class="form-control"
-                id="NameDistrict"
+
               >
                 <option value="null" disabled selected>Chọn xã phường</option>
                 <option v-for="value in listCity" :value="value.name">
                   {{ value.name }}
                 </option>
-              </select>
+              </select> -->
               <small class="text-danger" v-if="errors.NameDistrict">{{
                 errors.NameDistrict
               }}</small>
             </div>
-            <div class="col-md-6 col-12">
+            <div class="col-12">
               <label for="Address" class="form-label">Địa chỉ</label>
               <input
                 type="text"
@@ -288,6 +303,7 @@ function initModal() {
     emit("close");
   });
 }
+
 function openLogin() {
   togglePopupLogin();
   modalInstance.value?.hide();
@@ -314,7 +330,6 @@ function validateForm() {
         const err = getErrorDetail(el);
         errors.value[el.id] = err.message ?? "Lỗi không xác định";
       } else {
-        console.log("✅", el.id);
         delete errors.value[el.id];
       }
     });
@@ -349,7 +364,6 @@ async function submitForm(e: Event) {
     try {
       loading.value = true;
       const response = await $appServices.auth.register(formData);
-      console.log("🚀 ~ submitForm ~ response=>", response)
       if (response && response.isSucceeded) {
         modalInstance.value?.hide();
         useToast().success("Đăng ký thành công! Vui lòng đăng nhập.");
@@ -359,8 +373,10 @@ async function submitForm(e: Event) {
           response.message || "Đăng ký thất bại! Vui lòng thử lại."
         );
       }
-    } catch (error) {
-      useToast().error("Đăng ký thất bại! Vui lòng thử lại.");
+    } catch (error: any) {
+      useToast().error(
+        error.data.message || "Đăng ký thất bại! Vui lòng thử lại."
+      );
     } finally {
       loading.value = false;
     }

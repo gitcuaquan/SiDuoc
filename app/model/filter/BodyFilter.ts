@@ -14,6 +14,8 @@ export class BodyFilter<T = any> {
     order: string[];
     pageIndex: number;
     pageSize: number;
+    fromDate?: string;
+    toDate?: string;
     constructor(init: Partial<BodyFilter<T>>) {
         this.filters = init.filters || [];
         this.order = init.order || [];

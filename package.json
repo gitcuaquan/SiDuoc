@@ -10,12 +10,15 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^12.0.5",
     "@vueup/vue-quill": "^1.2.0",
     "nuxt-lucide-icons": "^1.0.5",
-    "quill-blot-formatter": "^1.0.5"
+    "quill-blot-formatter": "^1.0.5",
+    "three": "^0.181.2"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",
+    "@types/three": "^0.181.0",
     "bootstrap": "^5.3.8",
     "nuxt": "^4.2.0",
     "nuxt-mongoose": "^1.0.6",

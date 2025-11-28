@@ -1,5 +1,5 @@
 <template>
-  <LayoutAuth name="Khiếu nại của bạn" :breadcrumb="breadcrumb">
+  <LayoutAuth name="Hỗ trợ khách hàng" :breadcrumb="breadcrumb">
     <template>
       <div
         class="cart-header table-fake d-none border w-100 d-lg-table-row bg-light fw-semibold"

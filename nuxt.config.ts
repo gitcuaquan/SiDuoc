@@ -41,4 +41,7 @@ export default defineNuxtConfig({
       apiBase: 'https://api-tapmed.sse.net.vn/api'
     }
   },
+   build: {
+    transpile: ['@vuepic/vue-datepicker']
+  }
 })

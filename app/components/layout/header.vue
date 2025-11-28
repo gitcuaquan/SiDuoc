@@ -369,9 +369,9 @@
     }
   }
 
-  #bottom-header {
+  /* #bottom-header {
     z-index: 1;
-  }
+  } */
 
   #category-list {
     display: flex;

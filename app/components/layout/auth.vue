@@ -13,7 +13,9 @@
         >
           <UiLoading />
         </div>
-        <div class="d-flex flex-wrap  justify-content-between align-items-center gap-3">
+        <div
+          class="d-flex flex-wrap justify-content-between align-items-center gap-3"
+        >
           <h2 class="text-capitalize mb-3">
             {{ props.name }}
           </h2>

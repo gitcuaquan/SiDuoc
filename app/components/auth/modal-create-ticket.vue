@@ -9,13 +9,31 @@
         <div class="modal-body">
           <div class="mb-3">
             <label for="ticket-id" class="form-label">Vấn đề của bạn</label>
-            <select name="ticket-id" id="ticket-id" class="form-select">
-              <option value="" disabled selected>Chọn vấn đề</option>
-              <option value="1">Sản phẩm bị lỗi</option>
-              <option value="2">Giao hàng chậm</option>
-              <option value="3">Nhận nhầm sản phẩm</option>
-              <option value="4">Khác</option>
-            </select>
+            <div class="dropdown dropdown-center">
+              <button
+                class="btn btn-outline-secondary d-flex justify-content-between align-items-center w-100 text-start"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Chọn vấn đề
+                <chevron-down />
+              </button>
+              <ul class="dropdown-menu w-100">
+                <li><a class="dropdown-item" href="#">
+                  <input type="checkbox">
+                   Sản phẩm bị lỗi</a></li>
+                <li><a class="dropdown-item" href="#">
+                  <input type="checkbox">
+                   Giao hàng chậm</a></li>
+                <li><a class="dropdown-item" href="#">
+                  <input type="checkbox">
+                   Nhận nhầm sản phẩm</a></li>
+                <li><a class="dropdown-item" href="#">
+                  <input type="checkbox">
+                   Khác</a></li>
+              </ul>
+            </div>
           </div>
           <div class="mb-3">
             <label for="issue" class="form-label">Nội dung khiếu nại</label>
@@ -40,10 +58,10 @@
           </div>
         </div>
         <div class="modal-footer" v-if="!props.detail">
-          <button type="button" class="btn btn-sm btn-outline-secondary border-0" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-outline-secondary border-0" data-bs-dismiss="modal">
             Đóng
           </button>
-          <button type="button" data-bs-dismiss="modal" class="btn btn-sm btn-success border-0 me-3">
+          <button type="button" data-bs-dismiss="modal" class="btn btn-success border-0 me-3">
             Tạo khiếu nại
           </button>
         </div>

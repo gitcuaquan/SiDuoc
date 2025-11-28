@@ -16,9 +16,16 @@
     <div class="main_content">
       <div class="d-flex flex-column align-items-center gap-3">
         <img src="/images/logo-tapmed.png" class="logo" alt="logo Sỉ Dược" />
-        <h1 class="big-title fw-bold text-center text-primary">
+        <h1 class="big-title m-0 fw-bold text-center text-primary">
           Nhà Phân Phối Thuốc, Dược Hàng Đầu Việt Nam
         </h1>
+        <p class="w-75 m-0 text-muted fst-italic text-center">
+          <small
+            >Cung cấp mô hình nhập thuốc dễ dàng giải quyết vấn đề y tế một cách
+            nhanh chóng và chất lượng. Cam kết về nguồn gốc sản phẩm và hiệu quả
+            chi phí</small
+          >
+        </p>
         <div
           class="d-flex align-items-center justify-content-lg-start justify-content-center"
         >
@@ -52,18 +59,12 @@
               />
             </div>
           </div>
+
           <div>
-            <div class="stat-number text-danger">5000+</div>
+            <div class="stat-number  text-danger">5000+</div>
             <small class="text-primary">Khách hàng hài lòng</small>
           </div>
         </div>
-        <p class="w-75 text-center">
-          <small
-            >Cung cấp mô hình nhập thuốc dễ dàng giải quyết vấn đề y tế một cách
-            nhanh chóng và chất lượng. Cam kết về nguồn gốc sản phẩm và hiệu quả
-            chi phí</small
-          >
-        </p>
       </div>
     </div>
   </div>
@@ -73,7 +74,7 @@
 
 <style scoped>
 .main-hero {
-  height: 750px;
+  height: 780px;
   position: relative;
   overflow: hidden;
   background-color: #ffffff;
@@ -82,8 +83,9 @@
   font-size: 3rem;
 }
 .logo {
-  width: 400px;
+  width: 300px;
   height: auto;
+  margin-bottom: 20px;
 }
 .main_content {
   background-image: radial-gradient(
@@ -119,12 +121,13 @@
   .logo {
     width: 150px;
     height: auto;
+    margin: 0;
   }
   .big-title {
     font-size: 1.5rem;
   }
   .main-hero {
-    height: 600px;
+    height: 630px;
   }
   .bg_custom {
     background-image: radial-gradient(
