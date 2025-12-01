@@ -8,7 +8,7 @@
           Đang tạo đơn hàng ...
         </div>
         <div class="modal-header">
-          <h5 class="mb-0">Tạo đơn hàng nhanh</h5>
+          <h5 class="mb-0">Xác nhận đơn hàng</h5>
           <button data-bs-dismiss="modal" class="btn btn-light ms-auto btn-sm rounded-circle px-1 shadow-sm">
             <X :stroke-width="1" />
           </button>
@@ -20,51 +20,50 @@
               <!-- {{ user }} -->
               <div class="row g-3">
                 <div class="col-lg-8">
-                  <h6 class="text-dark fw-bold">Thông tin khách hàng :</h6>
-                  <table class="table m-0 table-borderless table-sm">
-                    <tbody>
-                      <tr>
-                        <td class="fw-normal text-muted" style="width: 100px">
-                          Họ và tên
-                        </td>
-                        <td>: {{ user?.data?.ten_kh }}</td>
-                      </tr>
-                      <tr>
-                        <td class="fw-normal text-muted">Số điện thoại</td>
-                        <td>: {{ user?.data?.dien_thoai }}</td>
-                      </tr>
-                      <tr>
-                        <td class="fw-normal text-muted">Địa chỉ</td>
-                        <td>
-                          : {{ user?.data?.dia_chi }} - {{ user?.data?.ten_xa_phuong }} -
-                          {{ user?.data?.ten_thanh_pho }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <small class="text-muted fw-light fst-italic">
-                    Theo mặc định các thông tin trên được lấy từ hồ sơ khách hàng và
-                    đã được xác nhận, các thông tin này sẽ được làm căn cứ cho địa
-                    chỉ giao hàng .
-                  </small>
+                  <div class="mb-2  bg-white">
+                    <h6 class="text-dark fw-bold">Thông tin khách hàng :</h6>
+                    <table class="table m-0 table-borderless table-sm">
+                      <tbody>
+                        <tr>
+                          <td class="fw-normal text-muted" style="width: 100px">
+                            Họ và tên
+                          </td>
+                          <td>: {{ user?.data?.ten_kh }}</td>
+                        </tr>
+                        <tr>
+                          <td class="fw-normal text-muted">Số điện thoại</td>
+                          <td>: {{ user?.data?.dien_thoai }}</td>
+                        </tr>
+                        <tr>
+                          <td class="fw-normal text-muted">Địa chỉ</td>
+                          <td>
+                            : {{ user?.data?.dia_chi }} - {{ user?.data?.ten_xa_phuong }} -
+                            {{ user?.data?.ten_thanh_pho }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   <CartModuleList is-show />
                 </div>
                 <div class="col-lg-4">
-                  <CartModuleSummary>
-                    <div class="my-3">
-                      <label for="dien_gian"> Ghi chú đơn hàng </label><br />
-                      <small class="text-muted fw-light fst-italic">
-                        Thêm các thông tin cần chăm sóc viên chú ý.
-                      </small>
-                      <textarea id="dien_gian" v-model="order.header!.ghi_chu_giao_hang" class="form-control"
-                        rows="3"></textarea>
-                    </div>
-                    <small class="fst-italic text-muted">
-                      Chú ý: Các sản phẩn có đơn giá hiên thị <br />
-                      <b class="fst-normal fw-bold text-primary">liên hệ</b> sẽ
-                      được nhân viên của chúng tôi liên hệ để báo giá cụ thể
-                      trước khi tiến hành xử lý đơn hàng.</small>
-                  </CartModuleSummary>
+                  <div class="">
+                    <CartModuleSummary>
+                      <div class="my-3">
+                        <label for="dien_gian"> Ghi chú đơn hàng </label><br />
+                        <small class="text-muted fw-light fst-italic">
+                          Thêm các thông tin cần chăm sóc viên chú ý.
+                        </small>
+                        <textarea id="dien_gian" v-model="order.header!.ghi_chu_giao_hang" class="form-control"
+                          rows="3"></textarea>
+                      </div>
+                      <small class="fst-italic text-muted">
+                        Chú ý: Các sản phẩn có đơn giá hiên thị <br />
+                        <b class="fst-normal fw-bold text-primary">liên hệ</b> sẽ
+                        được nhân viên của chúng tôi liên hệ để báo giá cụ thể
+                        trước khi tiến hành xử lý đơn hàng.</small>
+                    </CartModuleSummary>
+                  </div>
                 </div>
                 <!-- <div class="col-lg-4">
                   <h6 class="text-dark fw-bold">Phương thức vận chuyển :</h6>
@@ -197,6 +196,7 @@
       ma_vt: item.ma_vt,
       so_luong: item.quantity || 0,
       gia_nt2: item.gia_nt2 || 0,
+      dvt: item.dvt,
     }));
     loading.value = true;
     $appServices.order.createOrder(order.value).then((res) => {

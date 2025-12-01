@@ -7,9 +7,7 @@
       </div>
       <div class="col-lg-9">
         <h2 class="text-capitalize mb-3">Sản phẩm yêu thích</h2>
-        <div
-          class="cart-header table-fake d-none border w-100 d-lg-table-row bg-light fw-semibold"
-        >
+        <div class="cart-header table-fake d-none border w-100 d-lg-table-row bg-light fw-semibold">
           <span class="d-lg-table-cell text-nowrap p-3 py-2">Mã Khiếu Nại</span>
           <span class="d-lg-table-cell text-nowrap p-3 py-2">Mã Đơn Hàng</span>
           <span class="d-lg-table-cell w-custom p-3 py-2">Vấn đề</span>
@@ -20,11 +18,9 @@
 
         <!-- Item -->
         <div
-          class="cart-item d-block border w-100 d-lg-table-row align-middle border rounded-3 p-3 mb-3 bg-white shadow-sm"
-        >
+          class="cart-item d-block border w-100 d-lg-table-row align-middle border rounded-3 p-3 mb-3 bg-white shadow-sm">
           <div
-            class="cart-product mb-lg-0 mb-3 d-flex justify-content-between align-items-start gap-3 d-lg-table-cell p-lg-3"
-          >
+            class="cart-product mb-lg-0 mb-3 d-flex justify-content-between align-items-start gap-3 d-lg-table-cell p-lg-3">
             <span class="d-lg-none fw-semibold">Mã khiếu nại:</span>
             <div class="d-flex flex-column align-items-start">
               <span class="fw-medium ms-2">#KN009212</span>
@@ -32,8 +28,7 @@
             </div>
           </div>
           <div
-            class="cart-product mb-lg-0 mb-3 d-flex justify-content-between align-items-start gap-3 d-lg-table-cell p-lg-3"
-          >
+            class="cart-product mb-lg-0 mb-3 d-flex justify-content-between align-items-start gap-3 d-lg-table-cell p-lg-3">
             <span class="d-lg-none fw-semibold">Mã Đơn Hàng:</span>
             <div class="d-flex flex-column align-items-start">
               <span class="fw-medium ms-2">#DH00123</span>
@@ -43,32 +38,25 @@
 
           <!-- Price -->
           <div
-            class="cart-price text-lg-start d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3"
-          >
+            class="cart-price text-lg-start d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3">
             <span class="d-lg-none fw-semibold">Vấn đề:</span>
             <div class="d-flex flex-column">
               <small class="text-danger">Sản phẩm bị lỗi</small>
-              <a
-                @click="showModalCreateTicket = true"
-                role="button"
-                class="text-decoration-underline link-dark"
-              >
+              <a @click="showModalCreateTicket = true" role="button" class="text-decoration-underline link-dark">
                 <small>Chi tiết</small>
               </a>
             </div>
           </div>
 
           <div
-            class="cart-total align-middle d-flex mb-2 text-lg-end mb-lg-0 justify-content-between d-lg-table-cell p-lg-3"
-          >
+            class="cart-total align-middle d-flex mb-2 text-lg-end mb-lg-0 justify-content-between d-lg-table-cell p-lg-3">
             <span class="d-lg-none fw-semibold">Trạng thái:</span>
             <div class="d-flex justify-content-end">
               <span class="text-lg-end">
                 <span
-                  class="badge bg-warning d-flex fw-normal align-items-center gap-1 bg-opacity-10 text-dark border border-warning"
-                >
-                  <FolderClock :stroke-width="2" :size="16" />Đang xử lý</span
-                >
+                  class="badge bg-warning d-flex fw-normal align-items-center gap-1 bg-opacity-10 text-dark border border-warning">
+                  <FolderClock :stroke-width="2" :size="16" />Đang xử lý
+                </span>
               </span>
             </div>
           </div>
@@ -82,25 +70,26 @@
 </template>
 
 <script lang="ts" setup>
-import type { ProjectConfig } from "~/model";
-definePageMeta({
-  middleware: "auth",
-});
-const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
-  { label: "Tài khoản", to: "/auth" },
-  { label: "Hỗ trợ khác hàng" },
-]);
-const showModalCreateTicket = ref(false);
+  import type { ProjectConfig } from "~/model";
+  definePageMeta({
+    middleware: "auth",
+  });
+  const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
+    { label: "Tài khoản", to: "/auth" },
+    { label: "Hỗ trợ khách hàng" },
+  ]);
+  const showModalCreateTicket = ref(false);
 </script>
 
 <style scoped>
-.sticky-top {
-  top: 80px;
-  z-index: 0 !important;
-}
-@media screen and (min-width: 992px) {
-  .w-custom {
-    width: 70%;
+  .sticky-top {
+    top: 80px;
+    z-index: 0 !important;
   }
-}
+
+  @media screen and (min-width: 992px) {
+    .w-custom {
+      width: 70%;
+    }
+  }
 </style>

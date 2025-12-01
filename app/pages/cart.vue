@@ -7,11 +7,8 @@
       </div>
       <div class="col-lg-4">
         <CartModuleSummary class="border rounded shadow-sm">
-          <button
-            class="btn btn-primary w-100 mt-2"
-            @click="showCheckoutModal = true"
-          >
-            Đặt hàng nhanh
+          <button class="btn btn-primary w-100 mt-2" @click="showCheckoutModal = true">
+            Xác nhận đơn hàng
           </button>
         </CartModuleSummary>
         <div class="d-flex mt-3 flex-column gap-3">
@@ -36,18 +33,15 @@
     </div>
   </div>
   <ClientOnly>
-    <CheckoutModalCheckOut
-      v-if="showCheckoutModal"
-      @close="showCheckoutModal = false"
-    />
+    <CheckoutModalCheckOut v-if="showCheckoutModal" @close="showCheckoutModal = false" />
   </ClientOnly>
 </template>
 
 <script lang="ts" setup>
-import type { ProjectConfig } from "~/model";
-const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
-  { label: "Giỏ hàng" },
-]);
-const { cart } = useCart();
-const showCheckoutModal = ref(false);
+  import type { ProjectConfig } from "~/model";
+  const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
+    { label: "Giỏ hàng" },
+  ]);
+  const { cart } = useCart();
+  const showCheckoutModal = ref(false);
 </script>
