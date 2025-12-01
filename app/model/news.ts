@@ -9,4 +9,5 @@ export interface News {
   created_at: Date;
   updated_at: Date;
   show_in_home: boolean;
+  public: boolean;
 }

@@ -9,46 +9,47 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  limit: {
-    type: Number,
-    default: 12,
-  },
-  page: {
-    type: Number,
-    default: 1,
-  },
-  category: {
-    type: String,
-    default: "news",
-  },
-});
-const listNews = ref<any>();
-const loading = ref(true);
-const queryList = ref({
-  page: props.page,
-  limit: props.limit,
-  category: props.category,
-});
+  const props = defineProps({
+    limit: {
+      type: Number,
+      default: 12,
+    },
+    page: {
+      type: Number,
+      default: 1,
+    },
+    category: {
+      type: String,
+      default: "news",
+    },
+  });
+  const listNews = ref<any>();
+  const loading = ref(true);
+  const queryList = ref({
+    page: props.page,
+    limit: props.limit,
+    category: props.category,
+    public: "true",
+  });
 
-async function fetchNewsList() {
-  loading.value = true;
-  try {
-    const rsData = await $fetch("/api/post/list", {
-      query: {
-        ...queryList.value,
-      },
-    });
-    listNews.value = rsData;
-  } catch (error) {
-    console.error("Error fetching news list:", error);
-  } finally {
-    loading.value = false;
+  async function fetchNewsList() {
+    loading.value = true;
+    try {
+      const rsData = await $fetch("/api/post/list", {
+        query: {
+          ...queryList.value,
+        },
+      });
+      listNews.value = rsData;
+    } catch (error) {
+      console.error("Error fetching news list:", error);
+    } finally {
+      loading.value = false;
+    }
   }
-}
-onBeforeMount(() => {
-  fetchNewsList();
-});
+  onBeforeMount(() => {
+    fetchNewsList();
+  });
 </script>
 
 <style></style>

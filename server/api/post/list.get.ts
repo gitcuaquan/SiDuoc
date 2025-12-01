@@ -2,6 +2,10 @@ export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event)
 
+    let is_public = query.public as string | undefined
+    if (is_public === "") {
+      is_public = undefined
+    }
     let show_in_home = query.show_in_home as string | undefined
     if (show_in_home === "") {
       show_in_home = undefined
@@ -28,6 +32,9 @@ export default defineEventHandler(async (event) => {
     }
     if (show_in_home !== undefined) {
       filter.show_in_home = show_in_home === 'true'
+    }
+    if (is_public !== undefined) {
+      filter.public = is_public === 'true'
     }
 
     const posts = await Post.find(filter, { content: 0 }).sort({ created_at: -1 }).skip(skip).limit(limit).exec()
