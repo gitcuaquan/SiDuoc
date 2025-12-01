@@ -128,7 +128,7 @@ import type { News } from "~/model/news";
 import BaseService from "~/services/BaseService";
 
 const modalInstance = ref<Modal | null>(null);
-const { $bootstrap } = useNuxtApp();
+const { $bootstrap , $appServices } = useNuxtApp();
 const baseService = new BaseService("any");
 const emit = defineEmits(["close", "created"]);
 const props = defineProps<{
@@ -206,7 +206,7 @@ async function createNews() {
 
 async function uploadImage() {
   if (!fileUpload.value) return;
-  const rsData = await baseService.uploadFile(fileUpload.value);
+  const rsData = await $appServices.file.uploadFile(fileUpload.value);
   newsObject.value.thumbnail = (rsData as any).fileUrl;
 }
 function onChangeFile(file: File | null) {

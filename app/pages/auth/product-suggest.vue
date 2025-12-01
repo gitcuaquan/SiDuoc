@@ -2,6 +2,7 @@
   <LayoutAuth
     :loading="loading"
     :breadcrumb="breadcrumb"
+    :is-empty="listProduct?.getData?.length === 0"
     name="Quản lý sản phẩm đề xuất"
   >
     <template #actions>

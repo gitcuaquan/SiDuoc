@@ -2,6 +2,7 @@
   <LayoutAuth
     :loading="loading"
     :breadcrumb="breadcrumb"
+    :is-empty="listNews?.data?.length === 0"
     name="Quản lý tin tức"
   >
     <template #actions>

@@ -12,8 +12,8 @@ export interface FetchOptions {
 export default class BaseService {
     protected baseUrl: string = '/api/proxy/';
     protected defaultHeaders: Record<string, string>
-    private NAME_TOKEN_IN_COOKIE: string = 'tapmed_token_access';
-    constructor(endpoint: string) {
+     NAME_TOKEN_IN_COOKIE: string = 'tapmed_token_access';
+    constructor(endpoint?: string) {
         this.baseUrl += endpoint;
         this.defaultHeaders = {
 
@@ -82,29 +82,6 @@ export default class BaseService {
         return this.request<T>(endpoint, { method: 'DELETE', params, auth })
     }
 
-    async uploadFile(file: File) {
-        const uuid = crypto.randomUUID();
-        const body = new FormData();
-        body.append("file", file);
-        body.append("controllerFields", "dmkh");
-        body.append("isPublicAccess", "true");
-        body.append("keyFields", uuid);
-        body.append("slug", uuid + `.` + file.type.split('/')[1]);
 
-        try {
-            const response = await $fetch('https://api-tapmed.sse.net.vn/api/FileUpload/upload', {
-                method: 'POST',
-                body: body,
-                headers: {
-                    "api-sse-code": "e0cc6288e60584582eb706fd6c2612e1",
-                    "Authorization": `Bearer ${useCookie(this.NAME_TOKEN_IN_COOKIE).value}`,
-                },
-            });
-            return response;
-        } catch (error) {
-            console.error("Upload file error:", error);
-            throw error;
-        }
-    }
 }
 

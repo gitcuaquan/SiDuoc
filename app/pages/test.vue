@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="main-hero">
     <div class="w-100 h-100 position-absolute bg_custom top-0" style=""></div>
     <HomeModuleTest
@@ -161,4 +161,24 @@
   font-weight: 700;
   font-size: 1.25rem;
 }
-</style>
+</style> -->
+<template>
+  <h1>hi</h1>
+</template>
+<script setup lang="ts">
+const { $appServices } = useNuxtApp();
+
+const url = ref<string>("https://api-tapmed.sse.net.vn/api/fileupload/52e4818c-dc2e-44b0-9919-90c0619f6854/view");
+
+async function fetchFile() {
+  try {
+    const response = await $appServices.file.getFileBlob(url.value);
+    console.log("File blob response:", response);
+  } catch (error) {
+    console.error("Error fetching file blob:", error);
+  }
+}
+onMounted(() => {
+  fetchFile();
+});
+</script>

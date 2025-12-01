@@ -1,8 +1,9 @@
 <template>
   <LayoutAuth
     :loading="loading"
-    name="Theo dõi đơn hàng"
+    :is-empty="listOrder?.getData?.length == 0"
     :breadcrumb="breadcrumb"
+    name="Theo dõi đơn hàng"
   >
     <div class="row">
       <div class="col-lg-8">

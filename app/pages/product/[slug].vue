@@ -18,7 +18,10 @@
         <div class="product-info">
           <!-- Brand -->
           <p class="text-muted mb-2">
-            Danh mục: <span class="text-primary fw-bold">{{ detailProduct?.data?.ten_nhthkd || 'Sỉ ' }}</span>
+            Danh mục:
+            <span class="text-primary fw-bold">{{
+              detailProduct?.data?.ten_nhthkd || "Sỉ "
+            }}</span>
           </p>
 
           <!-- Product Title -->
@@ -70,7 +73,11 @@
               <UiBtnGroup v-model="quantity" />
             </div>
             <div class="col-md-6">
-              <button @click="addToCartPage" id="add-to-cart" class="btn btn-primary px-5">
+              <button
+                @click="addToCartPage"
+                id="add-to-cart"
+                class="btn btn-primary px-5"
+              >
                 Thêm vào giỏ hàng <ShoppingBag />
               </button>
             </div>
@@ -97,36 +104,43 @@
                   <td class="text-muted py-2">Thành phần</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.thanh_phan }}
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.thanh_phan">Chưa có dữ liệu</small>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Công dụng</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.cong_dung }}
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.cong_dung">Chưa có dữ liệu</small>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Cách dùng</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.cach_dung }}
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.cach_dung">Chưa có dữ liệu</small>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Tác dụng phụ</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.tac_dung_phu }}
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.tac_dung_phu">Chưa có dữ liệu</small>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Bảo quản</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.bao_quan }}
+
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.bao_quan">Chưa có dữ liệu</small>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Lưu ý</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.luu_y }}
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.luu_y">Chưa có dữ liệu</small>
                   </td>
                 </tr>
               </tbody>
@@ -151,7 +165,7 @@ const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Đặt hàng nhanh", to: "/quick-order" },
   { label: "Thần kinh não" },
 ]);
-const {isAuthenticated,togglePopupLogin} = useAuth();
+const { isAuthenticated, togglePopupLogin } = useAuth();
 
 const quantity = ref(1);
 
@@ -185,7 +199,7 @@ useSeoMeta({
 
 function addToCartPage() {
   if (!detailProduct?.value?.data) return;
-  if(!isAuthenticated.value){
+  if (!isAuthenticated.value) {
     useToast().error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
     togglePopupLogin();
     return;

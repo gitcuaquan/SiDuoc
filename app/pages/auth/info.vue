@@ -212,6 +212,8 @@ $appServices.items
   .then((resp) => {
     medicineGroups.value = resp.getData;
   });
+
+
 onMounted(() => {
   getDetailUser();
 });

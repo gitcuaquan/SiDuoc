@@ -113,7 +113,9 @@
                 </div>
               </nuxt-link>
               <div class="card-body position-relative">
-                <div class="card-title">{{ item.ten_vt }}</div>
+                <nuxt-link :to="`/product/${item.ma_vt}`" class="text-decoration-none">
+                  <div class="card-title text-dark">{{ item.ten_vt }}</div>
+                </nuxt-link>
                 <button @click="fncAddToCart(item)"
                   class="btn d-flex text-nowrap justify-content-center w-100 gap-2 align-items-center flex-nowrap btn-sm btn-primary">
                   <PackagePlus :stroke-width="2" :size="20" />

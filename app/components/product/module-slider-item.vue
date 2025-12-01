@@ -21,7 +21,8 @@
           </div>
           <div class="card-body">
             <small class="text-primary fst-italic"
-              >Giá bán : {{ formatCurrency(item.gia_nt2) }}</small
+              >
+              Giá bán : {{ formatCurrency(item.gia_nt2) }}</small
             >
             <NuxtLink
               :to="`/product/${item.ma_vt}`"
@@ -42,6 +43,12 @@
       </swiper-slide>
     </swiper-container>
   </ClientOnly>
+  <template v-if="(listProduct?.getData?.length || 0) === 0">
+    <div class="text-center py-5">
+      <UiEmpty />
+      <h5 class="text-muted">Không có sản phẩm đề xuất nào.</h5>
+    </div>
+  </template>
 </template>
 
 <script lang="ts" setup>

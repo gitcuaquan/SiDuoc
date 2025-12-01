@@ -1,5 +1,5 @@
 <template>
-  <HomeModuleHero2 />
+  <HomeModuleHero />
   <section class="container mt-5 pt-5">
     <h2 class="text-center text-capitalize">Ưu đãi mới nhất</h2>
     <p class="text-muted text-center mb-3">

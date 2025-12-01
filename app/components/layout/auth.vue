@@ -23,7 +23,13 @@
             <slot name="actions"> </slot>
           </div>
         </div>
-        <slot> mặc định </slot>
+        <div v-if="!props.isEmpty">
+          <slot> mặc định </slot>
+        </div>
+        <div v-else>
+          <UiEmpty />
+          <div class="text-center">Không Thấy Dữ Liệu Phù Hợp</div>
+        </div>
       </div>
     </div>
   </div>
@@ -45,6 +51,11 @@ const props = defineProps({
     default: () => [],
   },
   loading: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  isEmpty: {
     type: Boolean,
     required: false,
     default: false,
