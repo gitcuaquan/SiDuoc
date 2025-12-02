@@ -85,18 +85,19 @@ const { data: relatedNews, pending: relatedPending } = useFetch<{
   },
 });
 
+// SEO Meta Tags - Dynamic for News Detail Page
 useSeoMeta({
-  title: data.value?.title || "Chi tiết tin tức",
-  ogTitle: data.value?.title || "Chi tiết tin tức",
-  description: data.value?.seo_content || "Xem chi tiết tin tức",
-  ogImage:
-    data.value?.thumbnail ||
-    "https://siduoc.vn/upload_editor/posts/images/Artboard%201%404x-8(1).png",
-  ogDescription: data.value?.seo_content || "Xem chi tiết tin tức",
-  keywords: data.value?.title
-    ? data.value.title.split(" ").join(", ")
-    : "tin tức, bài viết",
-  author: "Sỉ Dược",
+  title: () => `${data.value?.title || 'Bài viết'} | Sỉ Dược`,
+  ogTitle: () => data.value?.title || 'Bài viết tin tức',
+  description: () => data.value?.seo_content || 'Xem chi tiết bài viết từ Sỉ Dược',
+  ogImage: () => data.value?.thumbnail || '/images/media.jpg',
+  ogImageAlt: () => data.value?.title || 'Bài viết',
+  ogDescription: () => data.value?.seo_content || 'Xem chi tiết bài viết từ Sỉ Dược',
+  keywords: () => data.value?.title 
+    ? `${data.value.title}, tin tức, sỉ dược, dược phẩm` 
+    : 'tin tức, bài viết, sỉ dược',
+  author: 'Sỉ Dược',
+  ogType: 'article',
 });
 </script>
 

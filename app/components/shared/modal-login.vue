@@ -36,6 +36,7 @@
                 </button>
               </div>
             </div>
+            <button type="submit" class="d-none"></button>
           </form>
         </div>
         <div class="modal-footer justify-content-center border-0">

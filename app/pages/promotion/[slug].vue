@@ -86,17 +86,17 @@ const { data: relatedNews, pending: relatedPending } = useFetch<{
 });
 
 useSeoMeta({
-  title: data.value?.title || "Chi tiết tin tức",
-  ogTitle: data.value?.title || "Chi tiết tin tức",
-  description: data.value?.seo_content || "Xem chi tiết tin tức",
-  ogImage:
-    data.value?.thumbnail ||
-    "https://siduoc.vn/upload_editor/posts/images/Artboard%201%404x-8(1).png",
-  ogDescription: data.value?.seo_content || "Xem chi tiết tin tức",
-  keywords: data.value?.title
-    ? data.value.title.split(" ").join(", ")
-    : "tin tức, bài viết",
-  author: "Sỉ Dược",
+  title: () => `${data.value?.title || 'Khuyến mãi'} | Sỉ Dược`,
+  ogTitle: () => data.value?.title || 'Khuyến mãi',
+  description: () => data.value?.seo_content || 'Xem chi tiết chương trình khuyến mãi từ Sỉ Dược',
+  ogImage: () => data.value?.thumbnail || '/images/media.jpg',
+  ogImageAlt: () => data.value?.title || 'Khuyến mãi',
+  ogDescription: () => data.value?.seo_content || 'Xem chi tiết chương trình khuyến mãi từ Sỉ Dược',
+  keywords: () => data.value?.title
+    ? `${data.value.title}, khuyến mãi, ưu đãi, sỉ dược`
+    : 'khuyến mãi, ưu đãi, sỉ dược',
+  author: 'Sỉ Dược',
+  ogType: 'article',
 });
 </script>
 

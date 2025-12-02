@@ -170,21 +170,18 @@
     { watch: [slug] }
   );
 
-  // 🧠 Reactive useHead — sẽ tự update khi detailProduct.value đổi
+  // SEO Meta Tags - Dynamic for Product Detail Page
   useSeoMeta({
-    title: detailProduct?.value?.data?.ten_vt || "Tên sản phẩm",
-    ogTitle: detailProduct?.value?.data?.ten_vt || "Tên sản phẩm",
-    description:
-      detailProduct?.value?.data?.mo_ta_san_pham || "Chi tiết sản phẩm",
-    ogImage:
-      detailProduct?.value?.data?.image_urls?.[0]?.url ||
-      "/images/image-error.svg",
-    ogDescription:
-      detailProduct?.value?.data?.mo_ta_san_pham || "Chi tiết sản phẩm",
-    keywords: detailProduct?.value?.data?.ten_vt
-      ? detailProduct.value.data.ten_vt.split(" ").join(", ")
-      : "sản phẩm",
-    author: "Sỉ Dược",
+    title: () => `${detailProduct?.value?.data?.ten_vt || 'Sản phẩm'} | Sỉ Dược`,
+    ogTitle: () => detailProduct?.value?.data?.ten_vt || 'Sản phẩm',
+    description: () => detailProduct?.value?.data?.mo_ta_san_pham || 'Chi tiết sản phẩm dược phẩm từ Sỉ Dược',
+    ogImage: () => detailProduct?.value?.data?.image_urls?.[0]?.url || '/images/media.jpg',
+    ogImageAlt: () => detailProduct?.value?.data?.ten_vt || 'Sản phẩm',
+    ogDescription: () => detailProduct?.value?.data?.mo_ta_san_pham || 'Chi tiết sản phẩm dược phẩm',
+    keywords: () => detailProduct?.value?.data?.ten_vt 
+      ? `${detailProduct.value.data.ten_vt}, dược phẩm, vitamin, sỉ dược` 
+      : 'dược phẩm, vitamin, sỉ dược',
+    author: 'Sỉ Dược',
   });
 
   function addToCartPage() {

@@ -22,6 +22,17 @@
 <script lang="ts" setup>
 import type { ProjectConfig } from "~/model";
 
+// SEO Meta Tags for Promotion List Page
+useSeoMeta({
+  title: 'Khuyến mãi - Sỉ Dược',
+  description: 'Cập nhật các chương trình khuyến mãi, ưu đãi mới nhất từ Sỉ Dược. Giá sỉ hấp dẫn cho dược phẩm, vitamin, thực phẩm chức năng.',
+  ogTitle: 'Khuyến mãi - Sỉ Dược',
+  ogDescription: 'Đón chào những ưu đãi và khuyến mãi hấp dẫn từ Sỉ Dược dành cho khách hàng.',
+  ogImage: '/images/media.jpg',
+  ogImageAlt: 'Khuyến mãi Sỉ Dược',
+  keywords: 'khuyến mãi, ưu đãi, sỉ dược, dược phẩm, giá sỉ',
+})
+
 const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Khuyến mãi" },
 ]);

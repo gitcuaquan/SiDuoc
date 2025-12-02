@@ -79,6 +79,18 @@
 </template>
 
 <script lang="ts" setup>
+// SEO Meta Tags for Homepage
+useSeoMeta({
+  title: 'Sỉ Dược - Nhà cung cấp dược phẩm, vitamin uy tín tại Việt Nam',
+  description: 'Sỉ Dược là nhà cung cấp hàng đầu về dược phẩm, vitamin, thực phẩm chức năng. Hàng chính hãng, giá sỉ cạnh tranh, giao hàng toàn quốc.',
+  ogTitle: 'Sỉ Dược - Dược phẩm & Vitamin Chính Hãng',
+  ogDescription: 'Khám phá sản phẩm dược phẩm, vitamin, thực phẩm chức năng chất lượng từ Sỉ Dược. Giá sỉ ưu đãi, giao hàng nhanh.',
+  ogImage: '/images/media.jpg',
+  ogImageAlt: 'Sỉ Dược - Nhà cung cấp dược phẩm',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+})
+
 // Danh sách đối tác
 const partners = ref([
   {

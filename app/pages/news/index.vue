@@ -23,6 +23,17 @@
 <script lang="ts" setup>
 import type { ProjectConfig } from "~/model";
 
+// SEO Meta Tags for News List Page
+useSeoMeta({
+  title: 'Tin tức - Sỉ Dược',
+  description: 'Cập nhật tin tức mới nhất, bài viết hữu ích về dược phẩm, vitamin, thực phẩm chức năng từ Sỉ Dược.',
+  ogTitle: 'Tin tức - Sỉ Dược',
+  ogDescription: 'Đọc những bài viết hữu ích, tin tức mới nhất về dược phẩm, sức khỏe từ Sỉ Dược.',
+  ogImage: '/images/media.jpg',
+  ogImageAlt: 'Tin tức Sỉ Dược',
+  keywords: 'tin tức, dược phẩm, vitamin, sức khỏe, thực phẩm chức năng',
+})
+
 const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Tin tức" },
 ]);
