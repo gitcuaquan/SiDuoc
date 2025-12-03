@@ -62,6 +62,9 @@
     <div class="d-flex w-100 flex-column align-items-center justify-content-center gap-2">
       <UiEmpty />
       <h5 class="text-center text-capitalize">bạn chưa mở khiếu nại nào.</h5>
+      <div>Vui lòng liên hệ nhân viên kinh doanh hoặc hotline
+        <a href="tel:0963744567" target="_blank" class="font-semibold text-danger">0963.74.4567</a> để được hỗ trợ.
+      </div>
     </div>
   </LayoutAuth>
 

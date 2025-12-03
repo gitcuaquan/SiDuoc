@@ -147,17 +147,17 @@
     type ITemsTapmed,
     type ProjectConfig,
   } from "~/model";
-  
+
   // SEO Meta Tags for Product List Page
   useSeoMeta({
     title: 'Danh sách sản phẩm dược phẩm | Sỉ Dược',
     description: 'Duyệt qua bộ sưu tập đầy đủ sản phẩm dược phẩm, vitamin, thực phẩm chức năng. Tìm kiếm và mua sỉ với giá tốt nhất.',
     ogTitle: 'Sản phẩm dược phẩm | Sỉ Dược',
     ogDescription: 'Khám phá hàng loạt sản phẩm dược phẩm, vitamin chất lượng cao với giá sỉ cạnh tranh.',
-    ogImage: '/images/media.jpg',
+    ogImage: '/images/final-medial.png',
     ogImageAlt: 'Danh sách sản phẩm Sỉ Dược',
   })
-  
+
   const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
     { label: "Danh sách sản phẩm" },
   ]);

@@ -53,7 +53,7 @@
           <small>Chứng chỉ hành nghề dược</small>
         </label>
         <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
-          <img :src="detailUser?.data?.url_giay_to1 || '/images/image-error.svg'" alt="" />
+          <img :src="getImageUrl(detailUser?.data?.url_giay_to1)" alt="" />
         </div>
       </div>
       <div class="col-6 col-md-4">
@@ -61,7 +61,7 @@
           <small>Chứng nhận đăng ký kinh doanh</small>
         </label>
         <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
-          <img :src="detailUser?.data?.url_giay_to2 || '/images/image-error.svg'" alt="" />
+          <img :src="getImageUrl(detailUser?.data?.url_giay_to1)" alt="" />
         </div>
       </div>
       <div class="col-6 col-md-4">
@@ -69,7 +69,7 @@
           <small>Chứng nhận đủ điều kiện kinh doanh dược</small>
         </label>
         <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
-          <img :src="detailUser?.data?.url_giay_to3 || '/images/image-error.svg'" alt="" />
+          <img :src="getImageUrl(detailUser?.data?.url_giay_to1)" alt="" />
         </div>
       </div>
     </div>
@@ -142,6 +142,16 @@
   onMounted(() => {
     getDetailUser();
   });
+
+  async function getImageUrl(url?: string | null) {
+    if (!url) return `/images/image-error.svg`;
+    try {
+      const response = await $appServices.file.getFileBlob(url);
+      return URL.createObjectURL(response as any);
+    } catch (error) {
+      console.error("Error fetching file blob:", error);
+    }
+  }
 </script>
 
 <style scoped>

@@ -93,28 +93,31 @@
                   <td class="text-muted py-2">Thành phần</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.thanh_phan }}
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.thanh_phan">Chưa có dữ liệu</small>
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.thanh_phan">Chưa cập nhật dữ
+                      liệu</small>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Công dụng</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.cong_dung }}
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.cong_dung">Chưa có dữ liệu</small>
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.cong_dung">Chưa cập nhật dữ
+                      liệu</small>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Cách dùng</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.cach_dung }}
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.cach_dung">Chưa có dữ liệu</small>
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.cach_dung">Chưa cập nhật dữ
+                      liệu</small>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Tác dụng phụ</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.tac_dung_phu }}
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.tac_dung_phu">Chưa có dữ
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.tac_dung_phu">Chưa cập nhật dữ
                       liệu</small>
                   </td>
                 </tr>
@@ -123,14 +126,16 @@
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.bao_quan }}
 
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.bao_quan">Chưa có dữ liệu</small>
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.bao_quan">Chưa cập nhật dữ
+                      liệu</small>
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Lưu ý</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.luu_y }}
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.luu_y">Chưa có dữ liệu</small>
+                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.luu_y">Chưa cập nhật dữ
+                      liệu</small>
                   </td>
                 </tr>
               </tbody>
@@ -175,11 +180,11 @@
     title: () => `${detailProduct?.value?.data?.ten_vt || 'Sản phẩm'} | Sỉ Dược`,
     ogTitle: () => detailProduct?.value?.data?.ten_vt || 'Sản phẩm',
     description: () => detailProduct?.value?.data?.mo_ta_san_pham || 'Chi tiết sản phẩm dược phẩm từ Sỉ Dược',
-    ogImage: () => detailProduct?.value?.data?.image_urls?.[0]?.url || '/images/media.jpg',
+    ogImage: () => detailProduct?.value?.data?.image_urls?.[0]?.url || '/images/final-medial.png',
     ogImageAlt: () => detailProduct?.value?.data?.ten_vt || 'Sản phẩm',
     ogDescription: () => detailProduct?.value?.data?.mo_ta_san_pham || 'Chi tiết sản phẩm dược phẩm',
-    keywords: () => detailProduct?.value?.data?.ten_vt 
-      ? `${detailProduct.value.data.ten_vt}, dược phẩm, vitamin, sỉ dược` 
+    keywords: () => detailProduct?.value?.data?.ten_vt
+      ? `${detailProduct.value.data.ten_vt}, dược phẩm, vitamin, sỉ dược`
       : 'dược phẩm, vitamin, sỉ dược',
     author: 'Sỉ Dược',
   });

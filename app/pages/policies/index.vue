@@ -3,18 +3,14 @@
   <div class="container mx-autobg-white rounded-lg shadow-md">
     <div class="row pt-3 justify-content-center">
       <div class="col-lg-8 ">
-        <h2 class="text-xl font-bold mb-4 mt-6">I. CHÍNH SÁCH VẬN CHUYỂN</h2>
+        <h5 class="text-xl font-bold mb-4 mt-6">I. CHÍNH SÁCH VẬN CHUYỂN</h5>
         <ul class="list-disc pl-6 mb-6 space-y-2">
           <li>
-            <strong
-              >1.1. Đối với khách ngoại thành Hà Nội và khách tỉnh:</strong
-            >
+            <strong>1.1. Đối với khách ngoại thành Hà Nội và khách tỉnh:</strong>
             <ul class="list-decimal pl-6 mt-2 space-y-1">
               <li>
-                <strong
-                  >a. Đối với các đơn hàng gửi xe Hapu và các bến xe
-                  khác:</strong
-                >
+                <strong>a. Đối với các đơn hàng gửi xe Hapu và các bến xe
+                  khác:</strong>
                 <ul class="list-disc pl-6 mt-1 space-y-1">
                   <li>
                     Đơn hàng đặt trước 8h sáng, chuyển đơn giao trong ngày.
@@ -29,10 +25,8 @@
                 </ul>
               </li>
               <li>
-                <strong
-                  >b. Đối với các đơn hàng gửi chuyển phát nhanh: (Viettel
-                  Post)</strong
-                >
+                <strong>b. Đối với các đơn hàng gửi chuyển phát nhanh: (Viettel
+                  Post)</strong>
                 <ul class="list-disc pl-6 mt-1 space-y-1">
                   <li>Đơn hàng đặt trước 13h, chuyển đơn giao trong ngày.</li>
                 </ul>
@@ -46,10 +40,8 @@
               <li>Đơn hàng đặt sau 11h chuyển đơn giao vào ngày hôm sau.</li>
             </ul>
             <p class="text-sm text-gray-600 mt-1">
-              <em
-                >Ghi chú: Nếu khách cần yêu cầu giờ nhận hàng có thể liên hệ với
-                nhân viên kinh doanh.</em
-              >
+              <em>Ghi chú: Nếu khách cần yêu cầu giờ nhận hàng có thể liên hệ với
+                nhân viên kinh doanh.</em>
             </p>
           </li>
         </ul>
@@ -58,15 +50,15 @@
           cấp vận đơn theo đúng chức năng nhiệm vụ.
         </p>
 
-        <h2 class="text-xl font-bold mb-4 mt-6">II. CHÍNH SÁCH HỖ TRỢ SHIP</h2>
+        <h5 class="text-xl font-bold mb-4 mt-6">II. CHÍNH SÁCH HỖ TRỢ SHIP</h5>
         <p class="mb-8 text-gray-700">
           Việc hỗ trợ phí ship sẽ thực hiện theo chương trình khuyến mại theo
           từng thời điểm.
         </p>
 
-        <h2 class="text-xl font-bold mb-4 mt-6">
+        <h5 class="text-xl font-bold mb-4 mt-6">
           III. CHÍNH SÁCH GIẢI QUYẾT KHIẾU NẠI
-        </h2>
+        </h5>
         <ul class="list-disc pl-6 mb-6 space-y-2">
           <li>
             Thời gian nhận khiếu nại của khách hàng: Trong vòng 72h kể từ khi
@@ -83,15 +75,13 @@
           </li>
         </ul>
         <p class="text-sm text-gray-600 mb-8">
-          <em
-            >Lưu ý: Quý khách vui lòng liên hệ nhân viên kinh doanh phụ trách để
-            được giải quyết khiếu nại đúng thời gian quy định.</em
-          >
+          <em>Lưu ý: Quý khách vui lòng liên hệ nhân viên kinh doanh phụ trách để
+            được giải quyết khiếu nại đúng thời gian quy định.</em>
         </p>
 
-        <h2 class="text-xl font-bold mb-4 mt-6">
+        <h5 class="text-xl font-bold mb-4 mt-6">
           IV. CHÍNH SÁCH KIỂM HÀNG HOÀN TRẢ HÀNG
-        </h2>
+        </h5>
         <ul class="list-disc pl-6 mb-6 space-y-2">
           <li>
             Thời gian được đề nghị hoàn trả là 48h kể từ khi khách nhận hàng.
@@ -131,29 +121,12 @@
       </div>
       <div class="col-lg-4 border-md-left">
         <h5 class="mb-3">Các chương trình khuyến mãi</h5>
-        <ul
-          v-if="!relatedPending && relatedNews?.data?.length"
-          class="list-group-flush ps-0 m-0 list-group"
-        >
-          <li
-            v-for="value in relatedNews?.data"
-            :key="value.slug"
-            class="list-group-item ps-0"
-          >
-            <NuxtLink
-              class="text-decoration-none"
-              :to="`/promotion/${value.slug}`"
-            >
+        <ul v-if="!relatedPending && relatedNews?.data?.length" class="list-group-flush ps-0 m-0 list-group">
+          <li v-for="value in relatedNews?.data" :key="value.slug" class="list-group-item ps-0">
+            <NuxtLink class="text-decoration-none" :to="`/promotion/${value.slug}`">
               <div class="d-flex gap-2">
-                <div
-                  class="ratio flex-shrink-0 ratio-16x9 rounded overflow-hidden"
-                  style="width: 100px"
-                >
-                  <img
-                    :src="value.thumbnail || '/images/image-error.svg'"
-                    alt="thumbnail"
-                    class="object-fit-cover"
-                  />
+                <div class="ratio flex-shrink-0 ratio-16x9 rounded overflow-hidden" style="width: 100px">
+                  <img :src="value.thumbnail || '/images/image-error.svg'" alt="thumbnail" class="object-fit-cover" />
                 </div>
                 <small>{{ textTruncate(value.title, 50) }}</small>
               </div>
@@ -166,21 +139,21 @@
 </template>
 
 <script lang="ts" setup>
-import type { ProjectConfig } from "~/model";
-import type { News } from "~/model/news";
+  import type { ProjectConfig } from "~/model";
+  import type { News } from "~/model/news";
 
-const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
-  { label: "Chính sách" },
-]);
-const { data: relatedNews, pending: relatedPending } = useFetch<{
-  data: News[];
-}>(`/api/post/list`, {
-  query: {
-    category: "promotion",
-    page: 1,
-    limit: 5,
-  },
-});
+  const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
+    { label: "Chính sách" },
+  ]);
+  const { data: relatedNews, pending: relatedPending } = useFetch<{
+    data: News[];
+  }>(`/api/post/list`, {
+    query: {
+      category: "promotion",
+      page: 1,
+      limit: 5,
+    },
+  });
 </script>
 
 <style></style>

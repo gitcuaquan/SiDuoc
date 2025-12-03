@@ -25,9 +25,9 @@
               <div class="avatar overflow-hidden">
                 <img src="https://tapmed.vn/TapMedVn/images/av4.jpg" class="w-100 object-fit-cover" alt="" />
               </div>
-              <div class="avatar overflow-hidden">
-                <img src="https://tapmed.vn/TapMedVn/images/av5.jpg" class="w-100 object-fit-cover" alt="" />
-              </div>
+              <!-- <div class="avatar overflow-hidden">
+                  <img src="https://tapmed.vn/TapMedVn/images/av5.jpg" class="w-100 object-fit-cover" alt="" />
+                </div> -->
             </div>
             <div>
               <div class="stat-number text-danger">5000+</div>
@@ -88,7 +88,7 @@
     display: flex;
     align-items: center;
     background: linear-gradient(180deg,
-        rgba(var(--bs-primary-rgb), 0.3) 0%,
+        rgba(var(--bs-primary-rgb), 0.6) 0%,
         #ffffff 100%);
     /* background-image: url('/images/hero-bg.jpg'); */
   }
@@ -96,6 +96,7 @@
   .hero-title {
     font-size: 3rem;
     font-weight: 700;
+    text-shadow: 1px 2px 4px #ffffff;
   }
 
   .hero-subtitle {
@@ -136,6 +137,10 @@
     .hero-img {
       min-height: 300px;
       width: 100%;
+    }
+
+    .hero-title {
+      font-size: 1.75rem;
     }
   }
 

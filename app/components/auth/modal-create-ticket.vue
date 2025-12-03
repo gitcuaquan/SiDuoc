@@ -10,28 +10,19 @@
           <div class="mb-3">
             <label for="ticket-id" class="form-label">Vấn đề của bạn</label>
             <div class="dropdown dropdown-center">
-              <button
+              <button data-bs-auto-close="outside"
                 class="btn btn-outline-secondary d-flex justify-content-between align-items-center w-100 text-start"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+                type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Chọn vấn đề
                 <chevron-down />
               </button>
               <ul class="dropdown-menu w-100">
-                <li><a class="dropdown-item" href="#">
-                  <input type="checkbox">
-                   Sản phẩm bị lỗi</a></li>
-                <li><a class="dropdown-item" href="#">
-                  <input type="checkbox">
-                   Giao hàng chậm</a></li>
-                <li><a class="dropdown-item" href="#">
-                  <input type="checkbox">
-                   Nhận nhầm sản phẩm</a></li>
-                <li><a class="dropdown-item" href="#">
-                  <input type="checkbox">
-                   Khác</a></li>
+                <li v-for="(value, index) in issueTypes">
+                  <a class="dropdown-item" href="#">
+                    <input type="checkbox" :id="index + 'value'" class="form-check-input me-2" />
+                    <label :for="index + 'value'"> {{ value }}</label>
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -75,6 +66,13 @@
 
   const modalInstance = ref<Modal | null>(null);
   const { $bootstrap } = useNuxtApp();
+
+  const issueTypes = [
+    "Sản phẩm bị lỗi",
+    "Giao hàng chậm",
+    "Sai sản phẩm, Sai số lượng",
+    "Vấn đề khác",
+  ];
 
   const emit = defineEmits(["close"]);
   const props = defineProps({

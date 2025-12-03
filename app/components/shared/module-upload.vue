@@ -1,11 +1,8 @@
 <template>
   <div :class="['rounded-3 p-3 shared-module-upload', `ratio ratio-${props.ratio || '1x1'}`]">
     <div class="d-flex align-items-center justify-content-center w-100">
-      <label
-        v-if="!data.urlTemp"
-        :for="id"
-        class="d-flex stretched-link flex-column align-items-center justify-content-center text-center mb-0"
-      >
+      <label v-if="!data.urlTemp" :for="id"
+        class="d-flex stretched-link flex-column align-items-center justify-content-center text-center mb-0">
         <FileUp :stroke-width="1" :size="48" />
         <small class="text-muted mt-3 w-75">
           {{ placeholder || " Click để tải lên" }}
@@ -13,86 +10,77 @@
       </label>
       <div v-else>
         <img :src="data.urlTemp" class="img-fluid rounded-3" />
-        <button
-          type="button"
-          class="btn btn-link link-danger p-0 position-absolute top-0 end-0"
-          @click="removeFile"
-        >
+        <button type="button" class="btn btn-link link-danger p-0 position-absolute top-0 end-0" @click="removeFile">
           <X :stroke-width="1" />
         </button>
       </div>
     </div>
-    <input
-      :id="id"
-      ref="fileInput"
-      type="file"
-      accept=".png,.jpg,.jpeg"
-      @input="handleFileInput"
-      class="form-control d-none"
-    />
+    <input :id="id" ref="fileInput" type="file" accept=".png,.jpg,.jpeg,.pdf" @input="handleFileInput"
+      class="form-control d-none" />
   </div>
 </template>
 
 <script lang="ts" setup>
-const id = useId();
+  const id = useId();
 
-const props = defineProps<{
-  placeholder?: string;
-  imageUrl?: string;
-  ratio?: '1x1' | '4x3' | '16x9';
-}>();
+  const props = defineProps<{
+    placeholder?: string;
+    imageUrl?: string;
+    ratio?: '1x1' | '4x3' | '16x9';
+  }>();
 
-const emit = defineEmits<{
-  (e: "change", file: File | null): void;
-}>();
+  const emit = defineEmits<{
+    (e: "change", file: File | null): void;
+  }>();
 
-const data = reactive({
-  file: null as File | null,
-  urlTemp: props.imageUrl || "",
-});
-watch(
-  () => props.imageUrl,
-  (newVal) => {
-    data.urlTemp = newVal || "";
+  const data = reactive({
+    file: null as File | null,
+    urlTemp: props.imageUrl || "",
+  });
+  watch(
+    () => props.imageUrl,
+    (newVal) => {
+      data.urlTemp = newVal || "";
+    }
+  );
+
+  const fileInput = ref<HTMLInputElement | null>(null);
+
+  function handleFileInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+    if (files && files[0]) {
+      // Handle the selected files
+      data.file = files[0];
+      data.urlTemp = URL.createObjectURL(data.file);
+      emit("change", data.file);
+    }
   }
-);
 
-const fileInput = ref<HTMLInputElement | null>(null);
-
-function handleFileInput(event: Event) {
-  const input = event.target as HTMLInputElement;
-  const files = input.files;
-  if (files && files[0]) {
-    // Handle the selected files
-    data.file = files[0];
-    data.urlTemp = URL.createObjectURL(data.file);
-    emit("change", data.file);
+  function removeFile() {
+    data.file = null;
+    data.urlTemp = "";
+    if (fileInput.value) {
+      fileInput.value.value = "";
+    }
+    emit("change", null);
   }
-}
-
-function removeFile() {
-  data.file = null;
-  data.urlTemp = "";
-  if (fileInput.value) {
-    fileInput.value.value = "";
-  }
-  emit("change", null);
-}
 </script>
 
 <style scoped>
-.shared-module-upload {
-  position: relative;
-  overflow: hidden;
-  border: 1px dashed #ced4da;
-}
-.shared-module-upload input[type="file"] {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
+  .shared-module-upload {
+    position: relative;
+    overflow: hidden;
+    border: 1px dashed #ced4da;
+  }
+
+  .shared-module-upload input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
 </style>

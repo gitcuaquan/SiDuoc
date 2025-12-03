@@ -7,7 +7,7 @@
         </h2>
       </div>
       <div class="row g-2">
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-3 col-6">
           <div class="d-flex flex-column align-items-center text-center p-3">
             <div class="ratio ratio-1x1 rounded-circle bg-light d-flex align-items-center justify-content-center mb-2"
               style="width: 180px">
@@ -20,7 +20,7 @@
             </p>
           </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-3 col-6">
           <div class="d-flex flex-column align-items-center text-center p-3">
             <div class="ratio ratio-1x1 rounded-circle bg-light d-flex align-items-center justify-content-center mb-2"
               style="width: 180px">
@@ -33,7 +33,7 @@
             </p>
           </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-3 col-6">
           <div class="d-flex flex-column align-items-center text-center p-3">
             <div class="ratio ratio-1x1 rounded-circle bg-light d-flex align-items-center justify-content-center mb-2"
               style="width: 180px">
@@ -46,7 +46,7 @@
             </p>
           </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-3 col-6">
           <div class="d-flex flex-column align-items-center text-center p-3">
             <div class="ratio ratio-1x1 rounded-circle bg-light d-flex align-items-center justify-content-center mb-2"
               style="width: 180px">

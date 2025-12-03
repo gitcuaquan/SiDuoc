@@ -60,10 +60,15 @@
           <div
             class="cart-price text-lg-start d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3">
             <span class="d-lg-none fw-semibold">Trạng thái:</span>
-            <div class="d-flex flex-column text-nowrap">
-              {{
-                value.public ? "Đang hiển thị" : "Không hiển thị"
-              }}
+            <div class="d-flex flex-column ">
+              <div class="text-nowrap">
+                {{
+                  value.public ? "Đang hiển thị" : "Không hiển thị"
+                }}
+              </div>
+              <div class="text-nowrap">
+                {{ value.show_in_home ? "Hiển thị trang chủ" : "" }}
+              </div>
             </div>
           </div>
           <!-- Price -->

@@ -164,21 +164,23 @@
 </style> -->
 <template>
   <h1>hi</h1>
+  <img :src="urlBlod" v-if="urlBlod" alt="">
 </template>
 <script setup lang="ts">
-const { $appServices } = useNuxtApp();
+  const { $appServices } = useNuxtApp();
+  const urlBlod = ref<string | null>(null);
 
-const url = ref<string>("https://api-tapmed.sse.net.vn/api/fileupload/52e4818c-dc2e-44b0-9919-90c0619f6854/view");
+  const url = ref<string>("https://api-tapmed.sse.net.vn/api/fileupload/722d994e-ac23-46df-b0e3-f158e922b793/view");
 
-async function fetchFile() {
-  try {
-    const response = await $appServices.file.getFileBlob(url.value);
-    console.log("File blob response:", response);
-  } catch (error) {
-    console.error("Error fetching file blob:", error);
+  async function fetchFile() {
+    try {
+      const response = await $appServices.file.getFileBlob(url.value);
+      urlBlod.value = URL.createObjectURL(response);
+    } catch (error) {
+      console.error("Error fetching file blob:", error);
+    }
   }
-}
-onMounted(() => {
-  fetchFile();
-});
+  onMounted(() => {
+    fetchFile();
+  });
 </script>

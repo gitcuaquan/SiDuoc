@@ -67,7 +67,7 @@
     },
     {
       icon: Newspaper,
-      label: "sản phẩm nổi bật",
+      label: "Sản phẩm nổi bật",
       to: "/auth/product-suggest",
       is_manager: true,
     },

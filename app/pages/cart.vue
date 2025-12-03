@@ -39,16 +39,16 @@
 
 <script lang="ts" setup>
   import type { ProjectConfig } from "~/model";
-  
+
   // SEO Meta Tags for Cart Page
   useSeoMeta({
     title: 'Giỏ hàng | Sỉ Dược',
     description: 'Giỏ hàng của bạn - Xem chi tiết các sản phẩm dược phẩm đã thêm và tiến hành thanh toán.',
     ogTitle: 'Giỏ hàng | Sỉ Dược',
     ogDescription: 'Quản lý giỏ hàng, xem chi tiết sản phẩm và thanh toán đơn hàng của bạn tại Sỉ Dược.',
-    ogImage: '/images/media.jpg',
+    ogImage: '/images/final-medial.png',
   })
-  
+
   const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
     { label: "Giỏ hàng" },
   ]);

@@ -7,12 +7,7 @@
         <div class="col-lg-4 col-md-6">
           <div class="footer-section">
             <div class="d-flex align-items-center mb-2">
-              <img
-                src="/images/logo-tapmed.png"
-                alt="TapMed"
-                class="footer-logo me-2"
-                style="height: 40px"
-              />
+              <img src="/images/logo-tapmed.png" alt="TapMed" class="footer-logo me-2" style="height: 40px" />
             </div>
             <p class="text-muted mb-2 lh-lg">
               Đối tác tin cậy trong lĩnh vực dược phẩm, mang đến những sản phẩm
@@ -22,30 +17,19 @@
             <div class="social-links">
               <h6 class="text-success mb-2">Kết nối với chúng tôi</h6>
               <div class="d-flex gap-2">
-                <a
-                  href="#"
-                  class="btn btn-outline-success btn-sm rounded-circle social-btn"
-                >
+                <a href="https://www.facebook.com/tapmed.vn" target="_blank"
+                  class="btn btn-outline-success btn-sm rounded-circle social-btn">
                   <Facebook :size="16" />
                 </a>
-                <a
-                  href="#"
-                  class="btn btn-outline-success btn-sm rounded-circle social-btn"
-                >
+                <!-- <a href="#" class="btn btn-outline-success btn-sm rounded-circle social-btn">
                   <Instagram :size="16" />
-                </a>
-                <a
-                  href="#"
-                  class="btn btn-outline-success btn-sm rounded-circle social-btn"
-                >
+                </a> -->
+                <!-- <a href="#" class="btn btn-outline-success btn-sm rounded-circle social-btn">
                   <Youtube :size="16" />
-                </a>
-                <a
-                  href="#"
-                  class="btn btn-outline-success btn-sm rounded-circle social-btn"
-                >
+                </a> -->
+                <!-- <a href="#" class="btn btn-outline-success btn-sm rounded-circle social-btn">
                   <Linkedin :size="16" />
-                </a>
+                </a> -->
               </div>
             </div>
           </div>
@@ -86,21 +70,15 @@
               <!-- Contact Details -->
               <div class="row g-2">
                 <div class="col-sm-6">
-                  <a
-                    href="tel:0963744567"
-                    class="contact-link d-flex align-items-center text-decoration-none"
-                  >
+                  <a href="tel:0963744567" class="contact-link d-flex align-items-center text-decoration-none">
                     <Phone :size="16" class="text-success me-2" />
                     <span>0963.744.567</span>
                   </a>
                 </div>
                 <div class="col-sm-6">
-                  <a
-                    href="mailto:info@tapmed.vn"
-                    class="contact-link d-flex align-items-center text-decoration-none"
-                  >
+                  <a href="mailto:info@tapmed.vn" class="contact-link d-flex align-items-center text-decoration-none">
                     <Mail :size="16" class="text-success me-2" />
-                    <span>info@tapmed.vn</span>
+                    <span>info@tapmedgroup.vn</span>
                   </a>
                 </div>
               </div>
@@ -162,15 +140,9 @@
           </div>
           <div class="col-md-6 text-md-end mt-2 mt-md-0">
             <div class="footer-links">
-              <a href="#" class="text-muted text-decoration-none me-3 small"
-                >Chính sách bảo mật</a
-              >
-              <a href="#" class="text-muted text-decoration-none me-3 small"
-                >Điều khoản sử dụng</a
-              >
-              <a href="#" class="text-muted text-decoration-none small"
-                >Sitemap</a
-              >
+              <a href="#" class="text-muted text-decoration-none me-3 small">Chính sách bảo mật</a>
+              <a href="#" class="text-muted text-decoration-none me-3 small">Điều khoản sử dụng</a>
+              <a href="#" class="text-muted text-decoration-none small">Sitemap</a>
             </div>
           </div>
         </div>
@@ -180,14 +152,10 @@
   <!-- float button -->
   <div id="float-button">
     <div class="d-flex flex-column gap-2">
-      <a
-        href="https://zalo.me/202686777393056736"
-        target="_blank"
-        class="btn border-0 shadow-none p-0"
-      >
+      <a href="https://zalo.me/2026867773930567367" target="_blank" class="btn border-0 shadow-none p-0">
         <img src="/images/follow/zalo.png" alt="Zalo" style="width: 40px" />
       </a>
-      <a href="tel:0963744567" target="_blank" class="btn border-0 shadow-none p-0">
+      <a href="tel:0984233773" target="_blank" class="btn border-0 shadow-none p-0">
         <img src="/images/follow/phone.png" alt="Phone" style="width: 40px" />
       </a>
       <a href="https://www.messenger.com/t/2047877302189560" target="_blank" class="btn border-0 shadow-none p-0">
@@ -204,147 +172,149 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+  import { onMounted, ref } from "vue";
 
-const showButton = ref(false);
+  const showButton = ref(false);
 
-onMounted(() => {
-  checkScroll();
-  window.addEventListener("scroll", checkScroll);
-});
+  onMounted(() => {
+    checkScroll();
+    window.addEventListener("scroll", checkScroll);
+  });
 
-function checkScroll() {
-  if (window.scrollY > 100) {
-    showButton.value = true;
-  } else {
-    showButton.value = false;
+  function checkScroll() {
+    if (window.scrollY > 100) {
+      showButton.value = true;
+    } else {
+      showButton.value = false;
+    }
   }
-}
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 </script>
 
 <style scoped>
-#scroll-to-top {
-  background: rgba(var(--bs-primary-rgb), 0.2);
-  width: 40px;
-  height: 40px;
-  position: fixed;
-  bottom: 5%;
-  right: 10px;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  border-radius: 50%;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-#float-button {
-  position: fixed;
-  bottom: 15%;
-  right: 10px;
-  z-index: 1000;
-}
-@media screen and (max-width: 768px) {
+  #scroll-to-top {
+    background: rgba(var(--bs-primary-rgb), 0.2);
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    bottom: 5%;
+    right: 10px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
   #float-button {
-    bottom: 50%;
-    transform: translateY(50%);
-  }
-  
-}
-
-.footer-section {
-  height: 100%;
-}
-
-.footer-logo {
-  transition: transform 0.3s ease;
-}
-
-.footer-logo:hover {
-  transform: scale(1.1);
-}
-
-.social-btn {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  border: 1px solid var(--bs-success);
-}
-
-.social-btn:hover {
-  background-color: var(--bs-success);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
-}
-
-.contact-link {
-  transition: all 0.3s ease;
-  padding: 8px;
-  border-radius: 4px;
-}
-
-.contact-link:hover {
-  background-color: rgba(25, 135, 84, 0.1);
-  transform: translateX(4px);
-}
-
-.footer-links a {
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.footer-links a:hover {
-  color: var(--bs-success) !important;
-}
-
-.footer-links a::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 1px;
-  bottom: -2px;
-  left: 0;
-  background-color: var(--bs-success);
-  transition: width 0.3s ease;
-}
-
-.footer-links a:hover::after {
-  width: 100%;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .footer {
-    padding: 2rem 0 !important;
+    position: fixed;
+    bottom: 15%;
+    right: 10px;
+    z-index: 1000;
   }
 
-  .contact-item,
-  .legal-item {
-    margin-bottom: 1rem !important;
+  @media screen and (max-width: 768px) {
+    #float-button {
+      bottom: 50%;
+      transform: translateY(50%);
+    }
+
+  }
+
+  .footer-section {
+    height: 100%;
+  }
+
+  .footer-logo {
+    transition: transform 0.3s ease;
+  }
+
+  .footer-logo:hover {
+    transform: scale(1.1);
   }
 
   .social-btn {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 1px solid var(--bs-success);
   }
-}
 
-@media (max-width: 576px) {
-  .footer-section h5 {
-    font-size: 1.1rem;
-  }
-
-  .contact-info .row {
-    flex-direction: column;
+  .social-btn:hover {
+    background-color: var(--bs-success);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
   }
 
   .contact-link {
-    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+    padding: 8px;
+    border-radius: 4px;
   }
-}
+
+  .contact-link:hover {
+    background-color: rgba(25, 135, 84, 0.1);
+    transform: translateX(4px);
+  }
+
+  .footer-links a {
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .footer-links a:hover {
+    color: var(--bs-success) !important;
+  }
+
+  .footer-links a::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--bs-success);
+    transition: width 0.3s ease;
+  }
+
+  .footer-links a:hover::after {
+    width: 100%;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .footer {
+      padding: 2rem 0 !important;
+    }
+
+    .contact-item,
+    .legal-item {
+      margin-bottom: 1rem !important;
+    }
+
+    .social-btn {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .footer-section h5 {
+      font-size: 1.1rem;
+    }
+
+    .contact-info .row {
+      flex-direction: column;
+    }
+
+    .contact-link {
+      margin-bottom: 0.5rem;
+    }
+  }
 </style>
