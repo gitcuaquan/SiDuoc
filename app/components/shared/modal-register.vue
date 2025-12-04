@@ -187,7 +187,7 @@
   // ========================== STATE ==========================
 
 
-  const isSuccess = ref(true);
+  const isSuccess = ref(false);
 
   const checkValid = ref(false);
   const errors = ref<Record<string, string>>({});
@@ -310,6 +310,7 @@
       // Submit form logic here
       const formData = convertDataToFormData(custumerInfo.value);
       try {
+        isSuccess.value = false;
         loading.value = true;
         const response = await $appServices.auth.register(formData);
         if (response && response.isSucceeded) {
