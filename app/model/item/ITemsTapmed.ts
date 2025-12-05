@@ -1,3 +1,5 @@
+import type { DiscountItem } from "../discount";
+
 export type ITemsTapmed = {
     ma_vt: string;
     ten_vt: string;
@@ -16,6 +18,8 @@ export type ITemsTapmed = {
     thanh_phan?: string;
     cong_dung?: string;
     cach_dung?: string;
+    han_sd_web?: string;
+    trang_thai_hang_hoa?: 1 | 2 ; // 1: Còn hàng, 2: Hết hàng, 3: Ngừng kinh doanh
     // Số lượng tạm thêm vào giỏ hàng [ chỉ ở client ]
     quantity?: number;
 }
@@ -126,6 +130,7 @@ export class TapmedOrder {
     userId?: number;
     maDvcs?: string;
     lang?: string;
+    selectedDiscounts?: DiscountItem[];
     constructor(value: Partial<TapmedOrder>) {
         Object.assign(this, value);
         if (!value.header) {

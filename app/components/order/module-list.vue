@@ -28,6 +28,7 @@
             >
               {{ product.ten_vt }}
             </NuxtLink>
+
             <div class="d-flex flex-wrap mt-1 gap-2">
               <small>
                 Giá:
@@ -44,9 +45,21 @@
               <small>
                 HSD :
                 <strong class="text-danger text-opacity-75 fw-normal">
-                  03/12/2026
+                  {{
+                    product.han_sd_web
+                      ? formatDate(product.han_sd_web)
+                      : "Đang cập nhật"
+                  }}
                 </strong>
               </small>
+              <template v-if="product.trang_thai_hang_hoa == 2">
+                <div class="vr d-none d-md-block"></div>
+                <small>
+                  <strong class="text-danger text-opacity-75 fw-normal">
+                    Hết hàng
+                  </strong>
+                </small>
+              </template>
             </div>
             <div class="d-lg-none mt-2">
               <UiBtnGroup
@@ -81,7 +94,7 @@
 <script lang="ts" setup>
 import type { ITemsTapmed } from "~/model";
 
-const { addToCart, getQtyById,cart } = useCart();
+const { addToCart, getQtyById, cart } = useCart();
 const { isAuthenticated, togglePopupLogin } = useAuth();
 
 const props = defineProps<{
@@ -94,10 +107,11 @@ const listProduct = ref<ITemsTapmed[]>(props.list || []);
 watch(
   () => props.list,
   (newList) => {
-    listProduct.value = newList?.map((item) => ({
-      ...item,
-      quantity: getQtyById(item.ma_vt),
-    })) || [];
+    listProduct.value =
+      newList?.map((item) => ({
+        ...item,
+        quantity: getQtyById(item.ma_vt),
+      })) || [];
   }
 );
 watch(

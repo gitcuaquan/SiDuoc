@@ -20,26 +20,6 @@
             <small class="fw-medium ms-2">
               {{ item.ten_vt }}
             </small>
-            <!-- <div>
-              <div
-                class="badge fw-normal bg-info border border-info text-dark bg-opacity-10 rounded-pill d-inline-block mt-2">
-                <Gift :size="16" />
-                <UiPopover>
-                  <template #trigger>
-                    <span class="ms-1 lh-sm">Quà tặng 1 bộ dụng cụ nhà bếp</span>
-                  </template>
-<template #content>
-                    <div class="p-2" style="max-width: 200px">
-                      <strong>Quà tặng:</strong>
-                      <p class="mb-0">
-                        Bộ dụng cụ nhà bếp bao gồm: 1 dao, 1 thớt, 1 muỗng canh,
-                        1 nĩa.
-                      </p>
-                    </div>
-                  </template>
-</UiPopover>
-</div>
-</div> -->
           </div>
         </div>
       </div>

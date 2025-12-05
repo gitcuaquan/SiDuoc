@@ -14,7 +14,8 @@
     <input
       type="number"
       min="0"
-      v-model="localValue"
+      v-model.number="localValue"
+      @input="onInput"
       :class="[
         'form-control input-number border-0 border-start border-end shadow-none text-center rounded-0',
         size === 'sm' ? 'form-control-sm input-number-sm' : '',
@@ -48,15 +49,18 @@ const localValue = ref(props.modelValue);
 
 // Khi prop thay đổi từ cha, cập nhật localValue
 watch(() => props.modelValue, (val) => {
-  localValue.value = val;
+  // Keep localValue in sync with parent but ensure it's a number
+  const num = Number(val);
+  localValue.value = Number.isFinite(num) ? num : 0;
 });
 
-// Khi localValue thay đổi do nhập input, emit lên cha
-watch(localValue, (val) => {
-  if (val !== props.modelValue) {
-    emit("update:modelValue", val);
-  }
-});
+const onInput = () => {
+  // Parse the typed value; if it's not a valid number, don't emit (prevents accidental resets)
+  const numeric = Number(localValue.value);
+  if (Number.isNaN(numeric)) return;
+  emit("update:modelValue", numeric);
+  emit("change", numeric);
+};
 
 const increase = () => {
   if(!isAuthenticated.value){
@@ -66,7 +70,8 @@ const increase = () => {
   }
   if(localValue.value < 100){
     localValue.value++;
-    emit("change", localValue.value);
+    emit("update:modelValue", Number(localValue.value));
+    emit("change", Number(localValue.value));
   }
 };
 const decrease = () => {
@@ -77,7 +82,8 @@ const decrease = () => {
   }
   if (localValue.value > 1) {
     localValue.value--;
-    emit("change", localValue.value);
+    emit("update:modelValue", Number(localValue.value));
+    emit("change", Number(localValue.value));
   }
 };
 </script>

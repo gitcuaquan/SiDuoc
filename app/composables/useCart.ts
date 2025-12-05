@@ -1,10 +1,13 @@
 import type { ITemsTapmed } from "~/model"
 
+interface ITemsTapmedNew extends ITemsTapmed {
+  gia_cu?: number;
+}
 export const useCart = () => {
   // const { isAuthenticated } = useAuth()
   // const { error } = useToast()
 
-  const cart = useState<ITemsTapmed[]>('cart', () => [])
+  const cart = useState<ITemsTapmedNew[]>('cart', () => [])
 
   const addToCart = (product: ITemsTapmed, auto?: boolean) => {
     const existingProduct = cart.value.find((item) => item.ma_vt === product.ma_vt)

@@ -1,9 +1,20 @@
 <template>
-  <div class="d-flex w-100 align-self-stretch gap-1">
+  <div
+    v-if="coupon"
+    role="button"
+    :class="[
+      'd-flex w-100 align-self-stretch gap-1',
+      {
+        'coupon-grayscale': coupon && !coupon.isValid,
+        'coupon-active': coupon && coupon.isValid,
+      },
+    ]"
+    @click="coupon.isValid = !coupon.isValid"
+  >
     <div
       class="bg-primary d-flex align-items-center rounded-1 px-1 bg-opacity-10"
     >
-      <div class="ratio ratio-1x1" style="width: 80px">
+      <div class="ratio ratio-1x1" style="width: 70px">
         <img src="/images/coupon.svg" alt="coupon" />
       </div>
     </div>
@@ -11,18 +22,45 @@
       class="bg-primary flex-grow-1 p-2 rounded-1 bg-opacity-10 position-relative"
     >
       <div class="position-absolute top-0 end-0 me-1 mt-1">
-        <NuxtLink to="#">
-          <Info :size="18" :stroke-width="1.5" />
-        </NuxtLink>
+        <input
+          type="checkbox"
+          class="form-check-input"
+          v-model="coupon.isValid"
+        />
       </div>
-      <h6 class="text-uppercase fw-bold">{{ coupon.ten_ck }}</h6>
-      <div class="d-flex justify-content-between align-items-center mt-2">
-        <div style="font-size: 10px" class="text-secondary mt-2">
-         HSD: {{ coupon.gio_bd }} {{formatDate(coupon.ngay_bd) }} - {{ coupon.gio_kt }} {{ formatDate(coupon.ngay_kt) }}
-        </div>
-        <button class="btn-sm py-0 lh-sm pb-1 btn btn-primary">
-          <small>Sử dụng</small>
-        </button>
+      <h6 class="m-0 fw-bold pe-2">{{ coupon.discountName }}</h6>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <template v-if="coupon?.discountType?.toUpperCase() === 'M'">
+          <div style="font-size: 11px" class="text-secondary">
+            Giảm {{ coupon.discountAmount || 0 }}% cho tổng giá trị đơn hàng
+          </div>
+        </template>
+        <template v-if="coupon?.discountType?.toUpperCase() === 'D'">
+          <div style="font-size: 11px" class="text-secondary">
+            Giảm
+            <span v-if="coupon.discountRate">
+              {{ coupon.discountRate }} %
+            </span>
+            <span v-if="coupon.moneyVoucher">
+              {{ formatCurrency(coupon.moneyVoucher || 0) }}
+            </span>
+            cho mỗi mặt hàng
+          </div>
+        </template>
+        <template v-if="coupon?.discountType?.toUpperCase() === 'H'">
+          <div
+            v-if="!coupon.quantityGift && coupon.itemNameGift"
+            style="font-size: 11px"
+            class="text-secondary"
+          >
+            Tặng thêm mã voucher <b>{{ coupon.itemNameGift || 0 }}</b>
+          </div>
+          <div v-else style="font-size: 11px" class="text-secondary">
+            Tặng thêm <b> {{ coupon.quantityGift || 0 }} </b>
+            {{ coupon.itemNameGift || "Vật tư " }}
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -30,12 +68,12 @@
 
 <script lang="ts" setup>
 import { type PropType } from "vue";
-import type { TapmedDiscount } from "~/model";
+import { type DiscountItem } from "~/model/discount";
 
 const props = defineProps({
   coupon: {
-    type: Object as PropType<TapmedDiscount>,
-    required: true,
+    type: Object as PropType<DiscountItem>,
+    required: false,
   },
 });
 </script>
@@ -50,5 +88,31 @@ const props = defineProps({
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 !important;
+}
+
+/* Desaturate when coupon is not valid */
+.coupon-grayscale {
+  -webkit-filter: grayscale(100%) saturate(0%);
+  filter: grayscale(100%) saturate(0%);
+  opacity: 0.9;
+  transition: filter 160ms ease, opacity 160ms ease, box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+/* Active (valid) coupon: stronger color, subtle border and shadow to emphasize */
+.coupon-active {
+  filter: none;
+  opacity: 1;
+  transition: filter 160ms ease, opacity 160ms ease, box-shadow 200ms ease,
+    border-color 200ms ease;
+  /* border: 1px solid rgba(11,92,215,0.16); */
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(11, 92, 215, 0.06);
+}
+
+.coupon-active .bg-primary {
+  -webkit-filter: saturate(140%);
+  filter: saturate(140%);
+  /* background-color: rgba(13,110,253,0.14) !important; */
 }
 </style>

@@ -1,49 +1,95 @@
 <template>
-  <LayoutAuth :name="'Hồ sơ của tôi'" :loading="loading" :breadcrumb="breadcrumb">
+  <LayoutAuth
+    :name="'Hồ sơ của tôi'"
+    :loading="loading"
+    :breadcrumb="breadcrumb"
+  >
     <form class="row gy-1 gx-3">
       <div class="col-12 col-md-6">
         <label for="name" class="form-label">
           <small>Họ và tên</small>
         </label>
-        <input type="text" class="form-control" required readonly :value="detailUser?.data?.ten_kh" id="name"
-          placeholder="Nhập họ và tên đầy đủ của bạn" />
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.data?.ten_kh"
+          id="name"
+          placeholder="Nhập họ và tên đầy đủ của bạn"
+        />
       </div>
 
       <div class="col-12 col-md-6">
         <label for="businessName" class="form-label">
           <small>Tên cơ sở</small>
         </label>
-        <input type="text" class="form-control" required readonly :value="detailUser?.data?.co_so" id="businessName"
-          placeholder="Nhập tên cơ sở đang kinh doanh" />
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.data?.co_so"
+          id="businessName"
+          placeholder="Nhập tên cơ sở đang kinh doanh"
+        />
       </div>
 
       <div class="col-12 col-md-6">
         <label for="phone" class="form-label">
           <small>Số điện thoại</small>
         </label>
-        <input type="phone" class="form-control" required :value="detailUser?.data?.dien_thoai" readonly id="phone"
-          placeholder="Nhập số điện thoại" />
+        <input
+          type="phone"
+          class="form-control"
+          required
+          :value="detailUser?.data?.dien_thoai"
+          readonly
+          id="phone"
+          placeholder="Nhập số điện thoại"
+        />
       </div>
       <div class="col-12 col-md-6">
         <label for="ten_thanh_pho" class="form-label">
           <small>Thành phố</small>
         </label>
-        <input type="text" class="form-control" required readonly :value="detailUser?.data?.ten_thanh_pho"
-          id="ten_thanh_pho" placeholder="Nhập địa chỉ" />
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.data?.ten_thanh_pho"
+          id="ten_thanh_pho"
+          placeholder="Nhập địa chỉ"
+        />
       </div>
       <div class="col-12 col-md-6">
         <label for="ten_xa_phuong" class="form-label">
           <small>Xã phường</small>
         </label>
-        <input type="text" class="form-control" required readonly :value="detailUser?.data?.ten_xa_phuong"
-          id="ten_xa_phuong" placeholder="Nhập địa chỉ" />
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.data?.ten_xa_phuong"
+          id="ten_xa_phuong"
+          placeholder="Nhập địa chỉ"
+        />
       </div>
       <div class="col-12 col-md-6">
         <label for="address" class="form-label">
           <small>Địa chỉ</small>
         </label>
-        <input type="text" class="form-control" required readonly :value="detailUser?.data?.dia_chi" id="address"
-          placeholder="Nhập địa chỉ" />
+        <input
+          type="text"
+          class="form-control"
+          required
+          readonly
+          :value="detailUser?.data?.dia_chi"
+          id="address"
+          placeholder="Nhập địa chỉ"
+        />
       </div>
     </form>
     <!-- Giấy tờ liên quan -->
@@ -53,7 +99,7 @@
           <small>Chứng chỉ hành nghề dược</small>
         </label>
         <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
-          <img :src="getImageUrl(detailUser?.data?.url_giay_to1)" alt="" />
+          <img :src="urlGiayTo['url_giay_to1']" alt="" />
         </div>
       </div>
       <div class="col-6 col-md-4">
@@ -61,7 +107,7 @@
           <small>Chứng nhận đăng ký kinh doanh</small>
         </label>
         <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
-          <img :src="getImageUrl(detailUser?.data?.url_giay_to1)" alt="" />
+          <img :src="urlGiayTo['url_giay_to2']" alt="" />
         </div>
       </div>
       <div class="col-6 col-md-4">
@@ -69,7 +115,7 @@
           <small>Chứng nhận đủ điều kiện kinh doanh dược</small>
         </label>
         <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
-          <img :src="getImageUrl(detailUser?.data?.url_giay_to1)" alt="" />
+          <img :src="urlGiayTo['url_giay_to3']" alt="" />
         </div>
       </div>
     </div>
@@ -77,9 +123,16 @@
       Nhóm Thuốc Được phép Kinh Doanh
     </h6>
     <div class="row gy-2 gx-3">
-      <div v-for="(item, colIndex) in medicineGroups" :key="colIndex" class="col-12 col-md-4">
+      <div
+        v-for="(item, colIndex) in medicineGroups"
+        :key="colIndex"
+        class="col-12 col-md-4"
+      >
         <div class="d-flex gap-2">
-          <SquareCheck v-if="item?.checked" class="flex-shrink-0 text-white bg-primary" />
+          <SquareCheck
+            v-if="item?.checked"
+            class="flex-shrink-0 text-white bg-primary"
+          />
           <Square class="flex-shrink-0 text-muted" v-else />
           <small class="form-check-label" :for="item?.ma_nh">
             {{ item?.ten_nh }}
@@ -91,72 +144,92 @@
 </template>
 
 <script lang="ts" setup>
-  interface NhomThuocKinhDoanh {
-    ma_nh: string;
-    ten_nh: string;
-    checked?: boolean;
-  }
-  import type { ProjectConfig } from "~/model";
-  import type {
-    CustomerDetail,
-    CustomerResponse,
-  } from "~/model/customer/Customer";
-  definePageMeta({
-    middleware: "auth",
-  });
+interface NhomThuocKinhDoanh {
+  ma_nh: string;
+  ten_nh: string;
+  checked?: boolean;
+}
+import type { ProjectConfig } from "~/model";
+import type {
+  CustomerDetail,
+  CustomerResponse,
+} from "~/model/customer/Customer";
+definePageMeta({
+  middleware: "auth",
+});
 
-  const { $appServices } = useNuxtApp();
+const { $appServices } = useNuxtApp();
 
-  const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
-    { label: "Tài khoản", to: "/auth" },
-    { label: "Hồ sơ khách hàng" },
-  ]);
-  const loading = ref(false);
-  const detailUser = ref<CustomerResponse | null>(null);
+const urlGiayTo = ref<Record<string, string>>({
+  url_giay_to1: "",
+  url_giay_to2: "",
+  url_giay_to3: "",
+});
 
-  // Danh sách nhóm thuốc kinh doanh được tổ chức thành 3 cột
-  const medicineGroups = ref<Array<NhomThuocKinhDoanh>>();
+const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
+  { label: "Tài khoản", to: "/auth" },
+  { label: "Hồ sơ khách hàng" },
+]);
+const loading = ref(false);
+const detailUser = ref<CustomerResponse | null>(null);
 
-  async function getDetailUser() {
-    loading.value = true;
-    try {
-      const response = await $appServices.customer.detail();
-      detailUser.value = response.data as CustomerResponse;
-      const nhom_thuoc_kinh_doanh = response.data.nhoms || [];
-      medicineGroups.value?.forEach((group) => {
-        group.checked = nhom_thuoc_kinh_doanh.map((item: NhomThuocKinhDoanh) => item.ma_nh).includes(group.ma_nh);
-      });
-    } catch (error) {
-    } finally {
-      loading.value = false;
-    }
-  }
+// Danh sách nhóm thuốc kinh doanh được tổ chức thành 3 cột
+const medicineGroups = ref<Array<NhomThuocKinhDoanh>>();
 
-  $appServices.items
-    .getNhomThuocKinhDoanh<NhomThuocKinhDoanh>()
-    .then((resp) => {
-      medicineGroups.value = resp.getData;
+async function getDetailUser() {
+  loading.value = true;
+  try {
+    const response = await $appServices.customer.detail();
+    detailUser.value = response.data as CustomerResponse;
+    const nhom_thuoc_kinh_doanh = response.data.nhoms || [];
+     getGiayToData("url_giay_to1", response.data.data.url_giay_to1);
+     getGiayToData("url_giay_to2", response.data.data.url_giay_to2);
+     getGiayToData("url_giay_to3", response.data.data.url_giay_to3);
+    medicineGroups.value?.forEach((group) => {
+      group.checked = nhom_thuoc_kinh_doanh
+        .map((item: NhomThuocKinhDoanh) => item.ma_nh)
+        .includes(group.ma_nh);
     });
-
-
-  onMounted(() => {
-    getDetailUser();
-  });
-
-  async function getImageUrl(url?: string | null) {
-    if (!url) return `/images/image-error.svg`;
-    try {
-      const response = await $appServices.file.getFileBlob(url);
-      return URL.createObjectURL(response as any);
-    } catch (error) {
-      console.error("Error fetching file blob:", error);
-    }
+  } catch (error) {
+  } finally {
+    loading.value = false;
   }
+}
+
+$appServices.items.getNhomThuocKinhDoanh<NhomThuocKinhDoanh>().then((resp) => {
+  medicineGroups.value = resp.getData;
+});
+
+onMounted(() => {
+  getDetailUser();
+});
+onUpdated(() => {
+  if (urlGiayTo.value["url_giay_to1"]) {
+    URL.revokeObjectURL(urlGiayTo.value["url_giay_to1"]);
+  }
+  if (urlGiayTo.value["url_giay_to2"]) {
+    URL.revokeObjectURL(urlGiayTo.value["url_giay_to2"]);
+  }
+  if (urlGiayTo.value["url_giay_to3"]) {
+    URL.revokeObjectURL(urlGiayTo.value["url_giay_to3"]);
+  }
+});
+
+async function getGiayToData(key: string, url?: string) {
+  if (!url) return;
+  try {
+    const response = await $appServices.file.getFileBlob(url);
+    const urlBlob = URL.createObjectURL(response as Blob);
+    urlGiayTo.value[key] = urlBlob;
+  } catch (error) {
+    console.error("Error fetching file blob:", error);
+  }
+}
 </script>
 
 <style scoped>
-  .sticky-top {
-    top: 80px;
-    z-index: 0 !important;
-  }
+.sticky-top {
+  top: 80px;
+  z-index: 0 !important;
+}
 </style>

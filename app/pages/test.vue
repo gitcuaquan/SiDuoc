@@ -170,12 +170,12 @@
   const { $appServices } = useNuxtApp();
   const urlBlod = ref<string | null>(null);
 
-  const url = ref<string>("https://api-tapmed.sse.net.vn/api/fileupload/722d994e-ac23-46df-b0e3-f158e922b793/view");
+  const url = ref<string>("https://api-tapmed.sse.net.vn/api/fileupload/33443ba6-ff0b-44b0-a1c9-43f9c4105bc3/view");
 
   async function fetchFile() {
     try {
       const response = await $appServices.file.getFileBlob(url.value);
-      urlBlod.value = URL.createObjectURL(response);
+      urlBlod.value = URL.createObjectURL(response as Blob);
     } catch (error) {
       console.error("Error fetching file blob:", error);
     }
