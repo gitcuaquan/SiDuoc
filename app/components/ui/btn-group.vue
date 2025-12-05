@@ -54,6 +54,10 @@ watch(() => props.modelValue, (val) => {
   localValue.value = Number.isFinite(num) ? num : 0;
 });
 
+watch(localValue, (newVal) => {
+
+
+});
 const onInput = () => {
   // Parse the typed value; if it's not a valid number, don't emit (prevents accidental resets)
   const numeric = Number(localValue.value);

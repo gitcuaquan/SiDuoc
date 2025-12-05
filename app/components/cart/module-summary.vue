@@ -5,7 +5,6 @@
       <span>Tổng tiền hàng</span>
       <span>{{ formatCurrency(totalPrice) }}</span>
     </div>
-
     <ui-popover v-if="listVoucher?.getData.length">
       <template #trigger>
         <span class="text-primary" style="cursor: pointer">
@@ -116,7 +115,7 @@ import type { TapmedOrder } from "~/model/item/ITemsTapmed";
 import { VoucherItem } from "../../model/discount";
 const { $appServices } = useNuxtApp();
 const { cart } = useCart();
-const { globalOrder } = useOrder();
+const { globalOrder, prevOrder } = useOrder();
 
 const discountSelected = computed<DiscountItem[]>(() => {
   //@ts-ignore
@@ -216,14 +215,7 @@ async function applyVoucher(code?: string) {
 }
 
 function tranformToCart(data: TapmedOrder) {
-  const details = data.details || [];
-  console.log("🚀 ~ tranformToCart ~ details=>", details)
-  details.forEach((detail) => {
-    const cartItem = cart.value.find((item) => item.ma_vt === detail.ma_vt);
-    if (cartItem) {
-      
-    }
-  });
+  prevOrder.value = data;
 }
 onMounted(() => {
   getDiscount();

@@ -18,6 +18,8 @@ export const useOrder = () => {
     selectedDiscounts: [],
   }));
 
+  const prevOrder = useState<TapmedOrder | null>("prevOrder", () => null);
+
   function resetOrder() {
     globalOrder.value = new TapmedOrder({
       details: [],
@@ -36,5 +38,5 @@ export const useOrder = () => {
     });
   }
 
-  return { globalOrder, resetOrder };
+  return { globalOrder, resetOrder , prevOrder };
 }

@@ -1,7 +1,7 @@
 import type { ITemsTapmed } from "~/model"
 
 interface ITemsTapmedNew extends ITemsTapmed {
-  gia_cu?: number;
+  gia_moi?: number;
 }
 export const useCart = () => {
   // const { isAuthenticated } = useAuth()
@@ -10,19 +10,20 @@ export const useCart = () => {
   const cart = useState<ITemsTapmedNew[]>('cart', () => [])
 
   const addToCart = (product: ITemsTapmed, auto?: boolean) => {
-    const existingProduct = cart.value.find((item) => item.ma_vt === product.ma_vt)
+
+    const existingProduct = cart.value.find((item) => Number(item.ma_vt) === Number(product.ma_vt))
     if (product.quantity! <= 0) {
       removeFromCart(product.ma_vt)
       return
     }
     if (existingProduct) {
       if (!auto) {
-        existingProduct.quantity = product.quantity
+        existingProduct.quantity = (product.quantity || 1) + (existingProduct.quantity || 0)
       } else {
         existingProduct.quantity = (existingProduct.quantity || 0) + 1
       }
     } else {
-      cart.value.push({ ...product, quantity: 1 })
+      cart.value.push({ ...product, quantity: product.quantity || 1 } as ITemsTapmedNew)
     }
   }
 
