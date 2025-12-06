@@ -10,22 +10,42 @@ export const useCart = () => {
   const cart = useState<ITemsTapmedNew[]>('cart', () => [])
 
   const addToCart = (product: ITemsTapmed, auto?: boolean) => {
+    const productId = product.ma_vt.trim()
+    const existingProduct = cart.value.find(item => item.ma_vt.trim() === productId)
 
-    const existingProduct = cart.value.find((item) => Number(item.ma_vt) === Number(product.ma_vt))
-    if (product.quantity! <= 0) {
-      removeFromCart(product.ma_vt)
+    // Lấy quantity từ product, đảm bảo luôn là số hợp lệ
+    const inputQty = Number(product.quantity) || 0
+
+    // Nếu quantity <= 0 => xóa khỏi giỏ
+    if (inputQty <= 0 && !auto) {
+      removeFromCart(productId)
       return
     }
+
     if (existingProduct) {
-      if (!auto) {
-        existingProduct.quantity = (product.quantity || 1) + (existingProduct.quantity || 0)
-      } else {
+      if (auto) {
+        // tăng +1
         existingProduct.quantity = (existingProduct.quantity || 0) + 1
+      } else {
+        // cập nhật số lượng mới
+        existingProduct.quantity = inputQty
+      }
+
+      // Nếu sau cập nhật mà <= 0 thì xóa khỏi giỏ
+      if (existingProduct.quantity <= 0) {
+        removeFromCart(productId)
       }
     } else {
-      cart.value.push({ ...product, quantity: product.quantity || 1 } as ITemsTapmedNew)
+      // Nếu chưa có và auto = true → mặc định quantity = 1
+      const qtyToSet = auto ? 1 : Math.max(inputQty, 1)
+
+      cart.value.push({
+        ...product,
+        quantity: qtyToSet
+      } as ITemsTapmedNew)
     }
   }
+
 
   const getQtyById = (productId: string) => {
     const product = cart.value.find((item) => item.ma_vt === productId)
@@ -53,11 +73,11 @@ export const useCart = () => {
   watch(() => cart.value, (newCart) => {
     localStorage.setItem('cart_siduoc', JSON.stringify(newCart))
   }, { deep: true })
- 
+
   const initCartFromStorage = () => {
     const cartInStorage = localStorage.getItem('cart_siduoc');
     if (cartInStorage) {
-        cart.value = JSON.parse(cartInStorage);
+      cart.value = JSON.parse(cartInStorage);
     }
   }
   const isCartEmpty = computed(() => cart.value.length === 0);

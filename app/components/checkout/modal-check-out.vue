@@ -149,6 +149,7 @@
   }>();
 
   const { user } = useAuth();
+  const { prevOrder } = useOrder();
   const { $appServices } = useNuxtApp();
   const idOrder = ref("");
   const loading = ref(false);
@@ -192,14 +193,9 @@
   });
 
   function createOrder() {
-    order.value.details = useCart().cart.value.map((item) => ({
-      ma_vt: item.ma_vt,
-      so_luong: item.quantity || 0,
-      gia_nt2: item.gia_nt2 || 0,
-      dvt: item.dvt,
-    }));
     loading.value = true;
-    $appServices.order.createOrder(order.value).then((res) => {
+    //@ts-ignore
+    $appServices.order.createOrder(prevOrder.value).then((res) => {
       loading.value = false;
       idOrder.value = res.data.stt_rec;
     });

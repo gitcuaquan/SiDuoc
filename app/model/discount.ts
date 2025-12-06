@@ -13,6 +13,10 @@ export class DiscountItem {
     keyCodeDiscount?: string;
     moneyVoucher?: number;
     quantityGift?: number;
+    itemNameBuy?: string;
+    totalDiscount?: number;
+    maxDiscount?: number;
+    nameTypeDiscount?: string;
     constructor(data: Partial<DiscountItem> = {}) {
         Object.assign(this, data);
     }

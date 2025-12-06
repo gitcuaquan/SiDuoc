@@ -19,7 +19,7 @@ export type ITemsTapmed = {
     cong_dung?: string;
     cach_dung?: string;
     han_sd_web?: string;
-    trang_thai_hang_hoa?: 1 | 2 ; // 1: Còn hàng, 2: Hết hàng, 3: Ngừng kinh doanh
+    trang_thai_hang_hoa?: 1 | 2; // 1: Còn hàng, 2: Hết hàng, 3: Ngừng kinh doanh
     // Số lượng tạm thêm vào giỏ hàng [ chỉ ở client ]
     quantity?: number;
 }
@@ -36,6 +36,7 @@ export type TapmedDiscount = {
 }
 
 export class TapmedOrderHeader {
+    t_tien_nt2: number = 0; // Tổng tiền hàng chưa thuế
     stt_rec?: string;
     so_ct?: string;
     tien_hang_nt: number = 0;
@@ -48,7 +49,7 @@ export class TapmedOrderHeader {
     email?: string;
     ngay_ct?: string | Date;
     ma_gd?: string;
-    status: number|string = '0';
+    status: number | string = '0';
     ma_nt?: string;
     ty_gia?: number;
     ten?: string;
@@ -56,9 +57,14 @@ export class TapmedOrderHeader {
     kho_ban?: string;
     bang_gia?: string;
     ghi_chu_giao_hang?: string;
-    mahtvc?: string ; // phương thức vận chuyển
-    fnote3?: string ; // phươ thức thanh toán
+    mahtvc?: string; // phương thức vận chuyển
+    fnote3?: string; // phươ thức thanh toán
     voucher_code?: string;
+    t_tt_nt?: number; // Tổng tiền hàng sau khi áp dụng voucher
+    t_ck_nt?: number; // Tổng tiền chiết khấu từ voucher
+    tong_ck_don?: number; // Tổng tiền chiết khấu đơn hàng
+    voucher_rate?: number; // Tỷ lệ chiết khấu từ voucher
+    voucher_discount?: number; // Số tiền chiết khấu từ voucher
     constructor(value: Partial<TapmedOrderHeader>) {
         Object.assign(this, value);
         if (!this.status) {
@@ -122,6 +128,10 @@ export class TapmedOrderDetail {
     ck_nt?: number;
     ghi_chu?: string;
     gc_td1?: string;
+    image_urls?: { originalName: string, url: string }[];
+    constructor(value: Partial<TapmedOrderDetail>) {
+        Object.assign(this, value);
+    }
 }
 
 export class TapmedOrder {
