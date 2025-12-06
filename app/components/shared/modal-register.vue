@@ -186,6 +186,7 @@
 
   // ========================== STATE ==========================
 
+  const saleId = useCookie('referral_siduoc');
 
   const isSuccess = ref(false);
 
@@ -307,6 +308,10 @@
     if (validateForm()) {
       checkValid.value = false;
 
+      if (saleId.value) {
+        custumerInfo.value.SaleID = saleId.value
+      }
+
       // Submit form logic here
       const formData = convertDataToFormData(custumerInfo.value);
       try {
@@ -314,7 +319,7 @@
         loading.value = true;
         const response = await $appServices.auth.register(formData);
         if (response && response.isSucceeded) {
-          modalInstance.value?.hide();
+          // modalInstance.value?.hide();
           useToast().success("Đăng ký thành công! Vui lòng đăng nhập.");
           isSuccess.value = true;
           // togglePopupLogin();

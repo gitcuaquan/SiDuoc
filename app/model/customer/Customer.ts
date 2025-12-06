@@ -15,6 +15,7 @@ export class Customer {
     NameDistrict: string;
     Address: string;
     Certificates: string[];
+    SaleID?: string
     constructor(init: Partial<Customer>) {
         this.FullName = init.FullName || '';
         this.Cccd = init.Cccd || '';
