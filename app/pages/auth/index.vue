@@ -118,7 +118,7 @@
               <Eye :size="16" />
             </button>
             <button
-              @click="showModalCreateTicket = true"
+              @click="showModalCreateTicket = order.stt_rec"
               class="btn-sm text-nowrap me-lg-2 btn btn-danger"
             >
               <MessageCircleWarning :size="16" />
@@ -152,13 +152,14 @@
       @close="showModalDetail = undefined"
       :order_id="showModalDetail"
       @ticket="
-        showModalCreateTicket = true;
+        showModalCreateTicket = undefined;
         showModalDetail = undefined;
       "
     />
     <AuthModalCreateTicket
       v-if="showModalCreateTicket"
-      @close="showModalCreateTicket = false"
+      :id="showModalCreateTicket"
+      @close="showModalCreateTicket = undefined"
     />
   </ClientOnly>
 </template>
@@ -198,7 +199,7 @@ const keywordSearch = useDebouncedRef("", 500);
 const dates = ref([addDays(new Date(), 30), new Date()]);
 const loading = ref(false);
 const showModalDetail = ref<string | undefined>(undefined);
-const showModalCreateTicket = ref(false);
+const showModalCreateTicket = ref<string | undefined>(undefined);
 const filterListOrder = ref(
   new BodyFilter<TapmedOrderItem>({
     pageIndex: 1,

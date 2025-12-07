@@ -24,4 +24,8 @@ export class OrderService extends BaseService {
         const res = await this.post(`/htvc`, JSON.stringify(filter || {}), undefined, true);
         return res;
     }
+    async createTicket(body:any){
+        const res = await this.post(`/dxa/update-flags`, JSON.stringify(body), undefined, true);
+        return res;
+    }
 }

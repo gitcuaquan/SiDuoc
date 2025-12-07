@@ -17,6 +17,7 @@
           <div class="modal-body" style="min-height: 30vh">
             <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
               <div v-for="value in props.listDiscount?.data" class="col">
+                <!-- {{ value }} -->
                 <SharedModuleCoupon :coupon="(value as DiscountItem)" />
               </div>
             </div>
