@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            {{ props.detail ? "Chi tiết" : "Tạo" }} khiếu nại
+            {{ props.detailData ? "Chi tiết" : "Tạo" }} khiếu nại
           </h5>
           <button
             type="button"
@@ -14,7 +14,7 @@
           ></button>
         </div>
         <div class="modal-body">
-          <div class="mb-3">
+          <div class="mb-3" v-if="!props.detailData">
             <label for="ticket-id" class="form-label">Vấn đề của bạn</label>
             <div class="dropdown dropdown-center">
               <button
@@ -51,17 +51,52 @@
               </div>
             </div>
           </div>
+          <div v-if="props.detailData">
+            <div class="mb-3">
+              <label class="form-label">Các khiếu nại đã ghi nhận</label>
+              <ul class="list-group list-group-flush">
+                <template v-for="type in issueTypes" :key="type.key">
+                  <li
+                    class="list-group-item ps-0 text-danger"
+                    v-if="props.detailData[type.key] == true"
+                  >
+                    <x-circle /> {{ type.label }}
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </div>
           <div class="mb-3">
             <label for="issue" class="form-label">Nội dung khiếu nại</label>
             <textarea
+              v-if="!props.detailData"
               class="form-control"
               id="issue"
               v-model="bodyPost.yk_kh"
               rows="3"
               placeholder="Mô tả chi tiết vấn đề bạn gặp phải..."
             ></textarea>
+            <div v-else class="alert alert-warning">
+              <small>
+                {{
+                  props.detailData?.yk_kh ||
+                  "Khách hàng không cung cấp nội dung khiếu nại."
+                }}</small
+              >
+            </div>
           </div>
-          <div class="mb-3" v-if="!props.detail">
+          <div class="mb-3" v-if="props.detailData">
+            <label class="form-label">Phản hồi về khếu nại</label>
+            <div class="alert alert-success">
+              <small>
+                {{
+                  props.detailData?.ph_kn ||
+                  "Chưa có phản hồi nào"
+                }}
+              </small>
+            </div>
+          </div>
+          <div class="mb-3" v-if="!props.detailData">
             <label for="attachment" class="form-label">
               Tệp đính kèm (nếu có)
             </label>
@@ -69,6 +104,7 @@
               class="form-control"
               type="file"
               accept=".png,.jpg,.jpeg"
+              @input="fileChange"
               id="attachment"
               multiple
             />
@@ -88,7 +124,7 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer" v-if="!props.detail">
+        <div class="modal-footer" v-if="!props.detailData">
           <button
             type="button"
             class="btn btn-outline-secondary border-0"
@@ -111,6 +147,7 @@
 
 <script lang="ts" setup>
 import { Modal } from "bootstrap";
+import type { PropType } from "vue";
 
 const modalInstance = ref<Modal | null>(null);
 const { $bootstrap, $appServices } = useNuxtApp();
@@ -130,18 +167,26 @@ const issueTypes = ref([
 const issueTypeSelected = computed(() => {
   return issueTypes.value.filter((type) => type.checked);
 });
+const fileInput = ref<FileList | null>(null);
 const emit = defineEmits(["close"]);
 const props = defineProps({
   id: {
     type: String,
     required: true,
   },
-  detail: {
-    type: Boolean,
+  detailData: {
+    type: Object as PropType<Record<string, any> | null>,
     required: false,
-    default: false,
+    default: null,
   },
 });
+function fileChange(event: Event) {
+  const target = event.target as HTMLInputElement;
+  const files = target.files;
+  if (files && files.length > 0) {
+    fileInput.value = files;
+  }
+}
 
 const bodyPost = ref({
   stt_rec: props.id,
@@ -160,24 +205,52 @@ function initModal() {
   });
 }
 
-async function createTicket() {
-try {
-  const payload: Record<string, any> = {
-    ...bodyPost.value,
-    ph_kn: null,
-    ngay_ct: new Date().toISOString(),
-  };
-  
-  issueTypes.value.forEach(type => {
-    payload[type.key] = type.checked;
+function uploadFiles(): Promise<string[]> {
+  return new Promise(async (resolve, reject) => {
+    if (!fileInput.value || fileInput.value.length === 0) {
+      resolve([]);
+      return;
+    }
+    try {
+      const uploadPromises: Promise<any>[] = [];
+      for (let i = 0; i < fileInput.value.length; i++) {
+        const file = fileInput.value.item(i);
+        if (file) {
+          uploadPromises.push(
+            $appServices.file.uploadFile(file, {
+              controllerFields: "Complaints",
+              keyFields: props.id,
+            }) as Promise<any>
+          );
+        }
+      }
+      const uploadedUrls = await Promise.all(uploadPromises);
+      resolve(uploadedUrls);
+    } catch (error) {
+      reject(error);
+    }
   });
-  
-  const response = await $appServices.order.createTicket(payload);
-  useToast().success("Tạo khiếu nại thành công");
-  modalInstance.value?.hide();
-} catch (error) {
-  console.error("Error creating ticket:", error);
 }
+
+async function createTicket() {
+  try {
+    const payload: Record<string, any> = {
+      ...bodyPost.value,
+      ph_kn: null,
+      ngay_ct: new Date().toISOString(),
+    };
+    await uploadFiles();
+
+    issueTypes.value.forEach((type) => {
+      payload[type.key] = type.checked;
+    });
+
+    await $appServices.order.createTicket(payload);
+    useToast().success("Tạo khiếu nại thành công");
+    modalInstance.value?.hide();
+  } catch (error) {
+    console.error("Error creating ticket:", error);
+  }
 }
 </script>
 

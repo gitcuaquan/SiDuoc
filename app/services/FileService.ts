@@ -1,14 +1,26 @@
 import BaseService from "./BaseService";
 
 export class FileService extends BaseService {
-    async uploadFile(file: File) {
+    async uploadFile(file: File, data?: {
+        controllerFields?: string;
+        keyFields?: string;
+    }) {
         const uuid = crypto.randomUUID();
         const body = new FormData();
         body.append("file", file);
-        body.append("controllerFields", "dmkh");
+        if (data?.controllerFields) {
+            body.append("controllerFields", data.controllerFields);
+        } else {
+            body.append("controllerFields", "dmkh");
+        }
+
         body.append("isPublicAccess", "true");
-        body.append("keyFields", uuid);
-        body.append("slug", uuid + `.` + file.type.split('/')[1]);
+        if (data?.keyFields) {
+            body.append("keyFields", data.keyFields);
+        } else {
+            body.append("keyFields", uuid);
+        }
+        body.append("slug", data?.keyFields || uuid + `.` + file.type.split('/')[1]);
 
         try {
             const response = await $fetch('https://api-tapmed.sse.net.vn/api/FileUpload/upload', {
