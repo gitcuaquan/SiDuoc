@@ -11,6 +11,7 @@
     ]"
     @click="coupon.isValid = !coupon.isValid"
   >
+  <!-- {{ coupon }} -->
     <div
       class="bg-primary d-flex align-items-center rounded-1 px-1 bg-opacity-10"
     >
@@ -51,12 +52,12 @@
               Giảm {{ coupon.discountRate }} %
             </span>
             <span v-if="coupon.totalDiscount">
-              Giảm {{ formatCurrency(coupon.totalDiscount || 0) }}
+              Giảm tổng {{ formatCurrency(coupon.totalDiscount || 0) }} 
             </span>
             <span v-if="coupon.moneyVoucher">
-              Đồng giá {{ formatCurrency(coupon.moneyVoucher || 0) }}
+              Đồng giá {{ formatCurrency(coupon.moneyVoucher || 0) }}  cho mỗi mặt hàng
             </span>
-            cho mỗi mặt hàng
+           
           </div>
         </template>
         <template v-if="coupon?.discountType?.toUpperCase() === 'H'">

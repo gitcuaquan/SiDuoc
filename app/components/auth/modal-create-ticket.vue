@@ -54,16 +54,28 @@
           <div v-if="props.detailData">
             <div class="mb-3">
               <label class="form-label">Các khiếu nại đã ghi nhận</label>
-              <ul class="list-group list-group-flush">
-                <template v-for="type in issueTypes" :key="type.key">
-                  <li
-                    class="list-group-item ps-0 text-danger"
-                    v-if="props.detailData[type.key] == true"
-                  >
-                    <x-circle /> {{ type.label }}
-                  </li>
-                </template>
-              </ul>
+                <div>
+                  <template v-if="props.detailData">
+                    <template v-if="issueTypes.some(type => props.detailData && props.detailData[type.key] === true)">
+                     <template v-for="type in issueTypes">
+                       <span
+                       
+                         :key="type.key"
+                         v-if="props.detailData && props.detailData[type.key] === true"
+                         class="badge fw-normal bg-danger me-1 mb-1"
+                       >
+                         {{ type.label }}
+                       </span>
+                     </template>
+                    </template>
+                    <span
+                      v-else
+                      class="text-muted"
+                    >
+                      Không có khiếu nại nào được ghi nhận
+                    </span>
+                  </template>
+                </div>
             </div>
           </div>
           <div class="mb-3">

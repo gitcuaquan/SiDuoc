@@ -36,6 +36,10 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  max: {
+    type: Number,
+    default: 9999999,
+  },
   size: {
     type: String as PropType<SizeType>,
     default: 'md', // sm, md, lg
@@ -72,7 +76,7 @@ const increase = () => {
     togglePopupLogin();
     return;
   }
-  if(localValue.value < 100){
+  if (localValue.value < props.max) {
     localValue.value++;
     emit("update:modelValue", Number(localValue.value));
     emit("change", Number(localValue.value));
@@ -106,11 +110,11 @@ const decrease = () => {
   -moz-appearance: textfield;
 }
 .input-number {
-  width: 45px;
+  width: 50px;
 }
 
 .input-number-sm {
-  width: 30px;
+  width: 40px;
   font-size: 0.75rem;
   height: 24px;
   padding: 2px 4px;

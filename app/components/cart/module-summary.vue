@@ -6,7 +6,7 @@
     <h5 class="fw-semibold mb-3">Tổng quan</h5>
     <div class="d-flex justify-content-between mb-2">
       <span>Tổng tiền hàng</span>
-      <span>{{ formatCurrency(prevOrder?.header?.t_tien_nt2 || 0) }}</span>
+      <span>{{ formatCurrency(prevOrder?.header?.t_tien_nt2 || totalPrice) }}</span>
     </div>
     <ui-popover v-if="listVoucher?.getData.length">
       <template #trigger>
@@ -100,7 +100,7 @@
     <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
       <span>Tổng</span>
       <span class="text-success">{{
-        formatCurrency(prevOrder?.header?.t_tt_nt || 0)
+        formatCurrency(prevOrder?.header?.t_tt_nt || totalPrice)
       }}</span>
     </div>
     <slot>

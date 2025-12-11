@@ -52,13 +52,16 @@
           <div
             :class="{
               'text-muted fw-normal text-decoration-line-through':
+                isKhuyenMai &&
                 (findItem(item.ma_vt)?.gia_nt2 || 0) < item.gia_nt2,
             }"
           >
             {{ formatCurrency(item.gia_nt2) }}
           </div>
           <div
-            v-if="(findItem(item.ma_vt)?.gia_nt2 || 0) < item.gia_nt2"
+            v-if="
+              isKhuyenMai && (findItem(item.ma_vt)?.gia_nt2 || 0) < item.gia_nt2
+            "
             class="fw-bold d-flex flex-nowrap"
           >
             {{ formatCurrency(findItem(item.ma_vt)?.gia_nt2 || 0) }}
@@ -88,34 +91,37 @@
           <div
             :class="{
               'text-muted fw-normal text-decoration-line-through':
+                isKhuyenMai &&
                 (findItem(item.ma_vt)?.gia_nt2 || 0) < item.gia_nt2,
             }"
           >
             {{ formatCurrency(item.gia_nt2 * (item.quantity || 0)) }}
           </div>
-          <div
-            v-if="
-              (findItem(item.ma_vt)?.gia_nt2 || 0) < item.gia_nt2 &&
-              !findItem(item.ma_vt)?.tl_ck
-            "
-            class="fw-bold"
-          >
-            {{
-              formatCurrency(
-                (findItem(item.ma_vt)?.gia_nt2 || 0) * (item.quantity || 0)
-              )
-            }}
-          </div>
-          <div
-            v-if="(findItem(item.ma_vt)?.tl_ck || 0) > 0"
-            class="d-flex gap-1 fw-bold"
-          >
-            {{
-              formatCurrency(
-                (findItem(item.ma_vt)?.gia_nt2 || 0) * (item.quantity || 0) 
-              )
-            }}
-          </div>
+          <template v-if="isKhuyenMai">
+            <div
+              v-if="
+                (findItem(item.ma_vt)?.gia_nt2 || 0) < item.gia_nt2 &&
+                !findItem(item.ma_vt)?.tl_ck
+              "
+              class="fw-bold"
+            >
+              {{
+                formatCurrency(
+                  (findItem(item.ma_vt)?.gia_nt2 || 0) * (item.quantity || 0)
+                )
+              }}
+            </div>
+            <div
+              v-if="(findItem(item.ma_vt)?.tl_ck || 0) > 0"
+              class="d-flex gap-1 fw-bold"
+            >
+              {{
+                formatCurrency(
+                  (findItem(item.ma_vt)?.gia_nt2 || 0) * (item.quantity || 0)
+                )
+              }}
+            </div>
+          </template>
         </div>
       </div>
       <div
@@ -191,6 +197,14 @@ const props = defineProps<{
   isShow?: boolean;
 }>();
 
+const isKhuyenMai = computed(() => {
+  return (
+    !!prevOrder.value &&
+    !!prevOrder.value.details &&
+    prevOrder.value.details.length > 0
+  );
+});
+
 function findItem(ma_vt: string) {
   if (!prevOrder.value) return null;
   return (
@@ -202,14 +216,6 @@ const hangTang = computed(() => {
   return (
     prevOrder.value?.details?.filter(
       (detail) => detail.km_yn == 1 && (detail.so_luong || 0) > 0
-    ) || []
-  );
-});
-
-const hangVoucher = computed(() => {
-  return (
-    prevOrder.value?.details?.filter(
-      (detail) => detail.km_yn == 1 && (detail.so_luong || 0) == 0
     ) || []
   );
 });
