@@ -66,8 +66,9 @@
                 </small>
               </div>
             </td>
-            <td class="border-0" data-label="Số lượng">
-              <UiBtnGroup size="sm" v-model="item.quantity" />
+            <td class="border-0 text-center" data-label="Số lượng">
+              <UiBtnGroup size="sm" v-model="item.quantity" v-if="!isShow" />
+              <small v-else class="text-center fw-bold">{{ item.quantity }}</small>
             </td>
             <td class="border-0" data-label="Thành tiền">
               <div class="d-flex flex-column gap-1">
@@ -95,7 +96,7 @@
                 </small>
               </div>
             </td>
-            <td class="border-0" data-label="Hành động">
+            <td class="border-0" v-if="!isShow" data-label="Hành động">
               <button
                 class="btn btn-sm btn-outline-danger border-0 d-none d-md-inline-flex"
                 @click="removeFromCart(item.ma_vt)"
@@ -113,9 +114,9 @@
           </tr>
 
           <tr v-for="data in findDiscountByMaVT(item.ma_vt)" class="p-md-2 p-0">
-            <td colspan="5" class="border-0">
+            <td colspan="5" class="border-0 px-0 px-md-2">
               <div
-                class="d-flex text-primary fw-normal bg-primary bg-opacity-10 flex-column p-2 rounded"
+                class="d-flex text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded"
               >
                 <template v-if="data.itemNameGift?.trim()">
                   <small
@@ -140,8 +141,10 @@
                     class="text-small d-flex align-items-center gap-1 d-block"
                     v-if="data.discountAmount"
                   >
+               
                     <Gift :size="13" class="flex-shrink-0" /> Giảm tiền trên
-                    từng mặt hàng
+                    từng mặt hàng tổng cộng
+                    {{ formatCurrency(data.discountAmount) }}
                   </small>
                   <small
                     class="text-small d-flex align-items-center gap-1 d-block"
@@ -175,6 +178,9 @@
 const { cart, removeFromCart } = useCart();
 const { prevOrder, globalOrder } = useOrder();
 
+const props = defineProps<{
+  isShow?: boolean;
+}>();
 function findDiscountByMaVT(mavt: string) {
   const data = globalOrder.value.selectedDiscounts?.filter((discount: any) => {
     return discount.itemCodeBuy.trim() === mavt.trim();

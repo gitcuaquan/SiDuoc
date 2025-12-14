@@ -1,5 +1,8 @@
 <template>
-  <div class="cart-summary position-relative bg-white p-4" v-bind="$attrs">
+  <div
+    class="cart-summary position-relative bg-white p-2 p-md-3"
+    v-bind="$attrs"
+  >
     <div
       v-if="loading"
       class="position-absolute w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75"
@@ -13,12 +16,13 @@
         formatCurrency(prevOrder?.header?.t_tien_nt2 || totalPrice)
       }}</span>
     </div>
-    <ui-popover v-if="listVoucher?.getData.length">
+    <ui-popover v-if="listVoucher?.getData.length && !isShow" trigger="click">
       <template #trigger>
-        <span class="text-primary" style="cursor: pointer">
+        <span style="cursor: pointer">
           <Gift :size="16" :stroke-width="1.75" />
           <small>
             Đang có {{ listVoucher?.getData.length }} mã giảm giá có thể áp dụng
+            <span class="text-primary fw-bold"> Click để xem </span>
           </small>
         </span>
       </template>
@@ -32,7 +36,7 @@
           >
             <div class="">
               <!-- {{ voucher.tl_ck }} -->
-              <div class="fw-semibold">{{ voucher.ten_the }}</div>
+              <small class="fw-semibold">{{ voucher.ten_the }}</small>
               <div class="text-secondary" style="font-size: 12px">
                 Mã: {{ voucher.ma_the }}
               </div>
@@ -41,14 +45,16 @@
                 {{ formatDate(voucher.ngay_hh) }}
               </div>
             </div>
-            <div class="d-flex flex-column">
-              <button
-                @click="applyVoucher(voucher)"
-                class="btn-sm btn btn-primary mb-1"
-                style="font-size: 12px"
-              >
-                Áp dụng
-              </button>
+            <div class="d-flex flex-grow-0 flex-column">
+              <div class="text-end">
+                <button
+                  @click="applyVoucher(voucher)"
+                  class="btn-sm btn btn-primary mb-1"
+                  style="font-size: 12px"
+                >
+                  Áp dụng
+                </button>
+              </div>
               <div v-if="voucher.tien_ck" class="text-danger fw-bold">
                 - {{ formatCurrency(voucher.tien_ck || 0) }}
               </div>
@@ -62,8 +68,11 @@
     </ui-popover>
     <template v-if="globalOrder.header?.voucher_code">
       <div class="mt-2">Mã giảm giá đã áp dụng :</div>
-      <div class="d-flex badge bg-success bg-opacity-10 text-success gap-1 ps-2 py-2 w-fit-content align-items-center rounded">
-        Đã áp dụng mã {{ globalOrder.header?.voucher_code }} được giảm {{ 
+      <div
+        class="d-flex mt-1 badge bg-success bg-opacity-10 text-success gap-1 ps-2 py-2 w-fit-content align-items-center rounded"
+      >
+        Đã áp dụng mã {{ globalOrder.header?.voucher_code }} được giảm
+        {{
           globalOrder.header?.voucher_discount
             ? formatCurrency(globalOrder.header?.voucher_discount)
             : ""
@@ -73,27 +82,34 @@
             ? globalOrder.header?.voucher_rate + " %"
             : ""
         }}
-        <X :size="14" @click="removeVoucher" class="ms-auto" style="cursor: pointer" />
+        <X
+          v-if="!isShow"
+          :size="14"
+          @click="removeVoucher"
+          class="ms-auto"
+          style="cursor: pointer"
+        />
       </div>
     </template>
     <hr />
-    <div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="d-flex justify-content-between align-items-start mb-2">
       <div>
         <span>Khuyến mãi </span>
         <span
           class="badge gap-1 ps-0 fw-normal bg-transparent text-muted d-flex align-items-center"
         >
-          Bạn có
+          Đang áp dụng {{ discountSelected.length || 0 }} /
           <b>{{ listDiscount?.getData?.length || 0 }}</b>
-          chương trình có thể áp dụng
+          khuyến mãi
         </span>
       </div>
       <a
         role="button"
+        v-if="!isShow"
         @click="isShowListDiscount = true"
         class="btn-link text-decoration-none"
       >
-        <small>Chọn khuyến mãi</small>
+        <small>Chọn chương trình</small>
       </a>
     </div>
 
@@ -101,7 +117,7 @@
       <div
         role="button"
         class="badge ps-0 text-primary"
-        v-for="value in  discountSelected.filter(d => !d.itemCodeBuy)"
+        v-for="value in discountSelected.filter((d) => !d.itemCodeBuy)"
       >
         <TicketPercent :size="16" :stroke-width="2" /> {{ value.discountName }}
       </div>
@@ -144,6 +160,10 @@ import { VoucherItem } from "../../model/discount";
 const { $appServices } = useNuxtApp();
 const { cart } = useCart();
 const { globalOrder, prevOrder } = useOrder();
+
+const props = defineProps<{
+  isShow?: boolean;
+}>();
 
 const discountSelected = computed<DiscountItem[]>(() => {
   //@ts-ignore

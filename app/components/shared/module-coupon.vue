@@ -11,7 +11,7 @@
     ]"
     @click="coupon.isValid = !coupon.isValid"
   >
-  <!-- {{ coupon }} -->
+    <!-- {{ coupon.itemNameBuy }} -->
     <div
       class="bg-primary d-flex align-items-center rounded-1 px-1 bg-opacity-10"
     >
@@ -29,57 +29,57 @@
           v-model="coupon.isValid"
         />
       </div>
-      <div style="font-size: 14px" class="m-0 fw-bold pe-2">
+      <div style="font-size: 13px" class="m-0 fw-bold pe-2">
         {{ coupon.discountName }}
       </div>
-      <span class="line-clamp" style="font-size: 11px">
-        Sản phẩm: {{ coupon.itemNameBuy || "tất cả sản phẩm" }}
+      <span class="line-clamp mt-1" v-if="coupon.itemNameBuy" style="font-size: 11px">
+        Mua {{ coupon.itemNameBuy }}
       </span>
-      <div class="d-flex justify-content-between align-items-center">
-        <template v-if="coupon?.discountType?.toUpperCase() === 'M'">
-          <div
-            v-if="coupon.totalDiscount"
-            style="font-size: 11px"
-            class="text-secondary"
-          >
+      <span class="line-clamp mt-1" v-else style="font-size: 11px">
+        Đơn hàng đủ điều kiện
+      </span>
+      <div class="d-flex flex-column gap-1">
+        <!-- Gift / Voucher -->
+        <template v-if="coupon.itemNameGift?.trim()">
+          <small class="text-small text-muted">
+            Tặng thêm <b>{{ coupon.quantityGift || 0 }}</b> sản phẩm
+            {{ coupon.itemNameGift }}
+          </small>
+        </template>
+
+        <!-- Discount type D (percent / per-item / total / fixed-price) -->
+        <template v-if="coupon?.discountType?.trim()?.toUpperCase() === 'D'">
+          <small v-if="coupon.discountRate" class="text-small text-muted">
+            Giảm {{ coupon.discountRate }} % trên mỗi mặt hàng
+          </small>
+
+          <small v-if="coupon.discountAmount" class="text-small text-muted">
+            Giảm tiền trên từng mặt hàng tổng cộng
+            {{ formatCurrency(coupon.discountAmount) }}
+          </small>
+
+          <small v-if="coupon.moneyVoucher" class="text-small text-muted">
+            Tất cả sản phẩm được đồng giá
+            {{ formatCurrency(coupon.moneyVoucher) }}
+          </small>
+
+          <small v-if="coupon.totalDiscount" class="text-small text-muted">
+            Đã được giảm {{ formatCurrency(coupon.totalDiscount) }}
+          </small>
+        </template>
+
+        <!-- Discount type M (money off total order) -->
+        <template v-if="coupon?.discountType?.trim()?.toUpperCase() === 'M'">
+          <small v-if="coupon.totalDiscount" class="text-small text-muted">
             Giảm {{ formatCurrency(coupon.totalDiscount || 0) }} cho tổng giá
             trị đơn hàng
-          </div>
+          </small>
         </template>
-        <template v-if="coupon?.discountType?.toUpperCase() === 'D'">
-          <div style="font-size: 11px" class="text-secondary">
-            <span v-if="coupon.discountRate">
-              Giảm {{ coupon.discountRate }} %
-            </span>
-            <span v-if="coupon.totalDiscount">
-              Giảm tổng {{ formatCurrency(coupon.totalDiscount || 0) }} 
-            </span>
-            <span v-if="coupon.moneyVoucher">
-              Đồng giá {{ formatCurrency(coupon.moneyVoucher || 0) }}  cho mỗi mặt hàng
-            </span>
-           
-          </div>
-        </template>
-        <template v-if="coupon?.discountType?.toUpperCase() === 'H'">
-          <div
-            v-if="!coupon.quantityGift && coupon.itemNameGift"
-            style="font-size: 11px"
-            class="text-secondary"
-          >
-            Tặng thêm mã voucher <b>{{ coupon.itemNameGift || 0 }}</b>
-          </div>
-          <div v-else style="font-size: 11px" class="text-secondary">
-            Tặng thêm <b> {{ coupon.quantityGift || 0 }} </b>
-            {{ coupon.itemNameGift || "Vật tư " }}
-          </div>
-        </template>
-        <div
-          v-if="coupon.maxDiscount"
-          style="font-size: 11px"
-          class="text-secondary"
-        >
-          (  tối đa {{ formatCurrency(coupon.maxDiscount || 0) }})
-        </div>
+
+        <!-- Max discount info -->
+        <small v-if="coupon.maxDiscount" class="text-small text-secondary">
+          (tối đa {{ formatCurrency(coupon.maxDiscount || 0) }})
+        </small>
       </div>
     </div>
   </div>
@@ -98,9 +98,12 @@ const props = defineProps({
 </script>
 
 <style scoped>
+.text-small {
+  font-size: 11px;
+}
 .line-clamp {
   display: -webkit-box;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp:1;
   -webkit-box-orient: vertical;
   position: relative;
   line-height: 1.4 !important;

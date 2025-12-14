@@ -44,11 +44,11 @@
                       </tbody>
                     </table>
                   </div>
-                  <CartModuleList is-show />
+                  <CartModuleList2 is-show />
                 </div>
                 <div class="col-lg-4">
                   <div class="">
-                    <CartModuleSummary>
+                    <CartModuleSummary is-show>
                       <div class="my-3">
                         <label for="dien_gian"> Ghi chú đơn hàng </label><br />
                         <small class="text-muted fw-light fst-italic">
