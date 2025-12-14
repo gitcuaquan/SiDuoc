@@ -54,28 +54,35 @@
           <div v-if="props.detailData">
             <div class="mb-3">
               <label class="form-label">Các khiếu nại đã ghi nhận</label>
-                <div>
-                  <template v-if="props.detailData">
-                    <template v-if="issueTypes.some(type => props.detailData && props.detailData[type.key] === true)">
-                     <template v-for="type in issueTypes">
-                       <span
-                       
-                         :key="type.key"
-                         v-if="props.detailData && props.detailData[type.key] === true"
-                         class="badge fw-normal bg-danger me-1 mb-1"
-                       >
-                         {{ type.label }}
-                       </span>
-                     </template>
+              <div>
+                <template v-if="props.detailData">
+                  <template
+                    v-if="
+                      issueTypes.some(
+                        (type) =>
+                          props.detailData &&
+                          props.detailData[type.key] === true
+                      )
+                    "
+                  >
+                    <template v-for="type in issueTypes">
+                      <span
+                        :key="type.key"
+                        v-if="
+                          props.detailData &&
+                          props.detailData[type.key] === true
+                        "
+                        class="badge fw-normal bg-danger me-1 mb-1"
+                      >
+                        {{ type.label }}
+                      </span>
                     </template>
-                    <span
-                      v-else
-                      class="text-muted"
-                    >
-                      Không có khiếu nại nào được ghi nhận
-                    </span>
                   </template>
-                </div>
+                  <span v-else class="text-muted">
+                    Không có khiếu nại nào được ghi nhận
+                  </span>
+                </template>
+              </div>
             </div>
           </div>
           <div class="mb-3">
@@ -101,10 +108,7 @@
             <label class="form-label">Phản hồi về khếu nại</label>
             <div class="alert alert-success">
               <small>
-                {{
-                  props.detailData?.ph_kn ||
-                  "Chưa có phản hồi nào"
-                }}
+                {{ props.detailData?.ph_kn || "Chưa có phản hồi nào" }}
               </small>
             </div>
           </div>
@@ -124,14 +128,20 @@
           <div class="mb-3" v-else>
             <label for="attachment" class="form-label"> Tệp đính kèm </label>
             <div class="row g-2">
-              <div class="col-lg-3 col-6 mb-3" v-for="n in 4" :key="n">
-                <div class="border rounded-3 p-2 mb-2">
-                  <img
-                    src="https://placehold.co/800x800/000000/5682B1.png"
-                    alt="Attachment"
-                    class="img-fluid"
-                  />
-                </div>
+              <div
+                class="col-lg-3 col-6 mb-3"
+                v-for="n in props.detailData.image_urls"
+                :key="n"
+              >
+                <a target="_blank" :href="n.url">
+                  <div class="border ratio ratio-1x1 rounded-3 p-2 mb-2">
+                    <img
+                      :src="n.url"
+                      alt="Attachment"
+                      class="object-fit-contain w-100"
+                    />
+                  </div>
+                </a>
               </div>
             </div>
           </div>

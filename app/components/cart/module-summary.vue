@@ -1,12 +1,17 @@
 <template>
   <div class="cart-summary position-relative bg-white p-4" v-bind="$attrs">
-    <div v-if="loading" class="position-absolute w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75" >
+    <div
+      v-if="loading"
+      class="position-absolute w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75"
+    >
       <UiLoading />
     </div>
     <h5 class="fw-semibold mb-3">Tổng quan</h5>
     <div class="d-flex justify-content-between mb-2">
       <span>Tổng tiền hàng</span>
-      <span>{{ formatCurrency(prevOrder?.header?.t_tien_nt2 || totalPrice) }}</span>
+      <span>{{
+        formatCurrency(prevOrder?.header?.t_tien_nt2 || totalPrice)
+      }}</span>
     </div>
     <ui-popover v-if="listVoucher?.getData.length">
       <template #trigger>
@@ -55,36 +60,48 @@
         </div>
       </template>
     </ui-popover>
-    <div class="mt-2">Mã giảm giá đã áp dụng :</div>
-    <div class="d-flex" v-if="globalOrder.header?.voucher_code">
-      <div class="badge bg-primary fw-normal d-flex align-items-center gap-1">
-        <TicketCheck :size="16" :stroke-width="2" />
-        {{ globalOrder.header?.voucher_code || "Chưa áp dụng mã giảm giá" }}
+    <template v-if="globalOrder.header?.voucher_code">
+      <div class="mt-2">Mã giảm giá đã áp dụng :</div>
+      <div class="d-flex badge bg-success bg-opacity-10 text-success gap-1 ps-2 py-2 w-fit-content align-items-center rounded">
+        Đã áp dụng mã {{ globalOrder.header?.voucher_code }} được giảm {{ 
+          globalOrder.header?.voucher_discount
+            ? formatCurrency(globalOrder.header?.voucher_discount)
+            : ""
+        }}
+        {{
+          globalOrder.header?.voucher_rate
+            ? globalOrder.header?.voucher_rate + " %"
+            : ""
+        }}
+        <X :size="14" @click="removeVoucher" class="ms-auto" style="cursor: pointer" />
       </div>
-    </div>
+    </template>
     <hr />
     <div class="d-flex justify-content-between align-items-center mb-2">
       <div>
         <span>Khuyến mãi </span>
         <span
-          class="badge gap-1 ps-0 fw-normal bg-transparent text-primary d-flex align-items-center"
+          class="badge gap-1 ps-0 fw-normal bg-transparent text-muted d-flex align-items-center"
         >
+          Bạn có
           <b>{{ listDiscount?.getData?.length || 0 }}</b>
           chương trình có thể áp dụng
         </span>
       </div>
-      <button
+      <a
+        role="button"
         @click="isShowListDiscount = true"
-        class="btn btn-sm btn-light shadow-sm"
+        class="btn-link text-decoration-none"
       >
-        Xem Thêm
-      </button>
+        <small>Chọn khuyến mãi</small>
+      </a>
     </div>
+
     <div class="d-flex flex-wrap gap-2">
       <div
         role="button"
         class="badge ps-0 text-primary"
-        v-for="value in discountSelected"
+        v-for="value in  discountSelected.filter(d => !d.itemCodeBuy)"
       >
         <TicketPercent :size="16" :stroke-width="2" /> {{ value.discountName }}
       </div>
@@ -159,10 +176,10 @@ watch(
 watch(
   () => cart.value,
   () => {
-     if (timeOut.value) clearTimeout(timeOut.value);
-     timeOut.value = setTimeout(() => {
-       getDiscount();
-     }, 300);
+    if (timeOut.value) clearTimeout(timeOut.value);
+    timeOut.value = setTimeout(() => {
+      getDiscount();
+    }, 300);
   },
   { deep: true }
 );
@@ -175,6 +192,13 @@ function buildOrderDetails() {
     gia_nt2: item.gia_nt2 || 0,
     dvt: item.dvt,
   }));
+}
+
+function removeVoucher() {
+  globalOrder.value.header!.voucher_code = "";
+  globalOrder.value.header!.voucher_rate = 0;
+  globalOrder.value.header!.voucher_discount = 0;
+  applyDiscount();
 }
 
 async function getDiscount() {
