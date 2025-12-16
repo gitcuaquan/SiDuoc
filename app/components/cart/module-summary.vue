@@ -72,16 +72,20 @@
         class="d-flex mt-1 badge bg-success bg-opacity-10 text-success gap-1 ps-2 py-2 w-fit-content align-items-center rounded"
       >
         Đã áp dụng mã {{ globalOrder.header?.voucher_code }} được giảm
-        {{
-          globalOrder.header?.voucher_discount
-            ? formatCurrency(globalOrder.header?.voucher_discount)
-            : ""
-        }}
+        <span v-if="!globalOrder.header?.voucher_rate">
+          {{
+            globalOrder.header?.voucher_discount
+              ? formatCurrency(globalOrder.header?.voucher_discount)
+              : ""
+          }}
+        </span>
+        <span v-else>
         {{
           globalOrder.header?.voucher_rate
             ? globalOrder.header?.voucher_rate + " %"
             : ""
         }}
+        </span>
         <X
           v-if="!isShow"
           :size="14"
@@ -105,7 +109,7 @@
       </div>
       <a
         role="button"
-        v-if="!isShow"
+        v-if="!isShow && (listDiscount?.getData?.length || 0) > 0"
         @click="isShowListDiscount = true"
         class="btn-link text-decoration-none"
       >

@@ -23,21 +23,16 @@
           </h1>
           <!-- Rating and Reviews -->
           <div class="d-flex align-items-center gap-2 mb-3">
-            <span class="text-muted me-2">Mã sản phẩm:
-              <b>{{ detailProduct?.data?.ma_vt || "00000000" }}</b></span>
-            <!-- <div class="me-3 d-flex gap-1 align-items-center">
-              <Star :size="16" class="text-warning" :stroke-width="1" />
-              <span class="fw-bold">5</span>
-            </div> -->
-            <!-- <span class="text-muted me-3">5 đánh giá</span>
-            <span class="text-muted">21 bình luận</span> -->
+            <span class="text-muted me-2"
+              >Mã sản phẩm:
+              <b>{{ detailProduct?.data?.ma_vt || "00000000" }}</b></span
+            >
           </div>
           <p class="text-muted mb-2">
             Nhóm thuốc:
             <span class="text-primary fw-bold">
-              {{
-                detailProduct?.data?.ten_nhthkd || "Chưa xác định"
-              }}</span>
+              {{ detailProduct?.data?.ten_nhthkd || "Chưa xác định" }}</span
+            >
           </p>
           <!-- Price -->
           <div class="price-section mb-4">
@@ -49,11 +44,17 @@
                     : "Liên hệ"
                 }}
               </h2>
-              <span v-if="(detailProduct?.data?.gia_nt2 || 0) > 0" class="text-muted">/ {{ detailProduct?.data?.dvt ||
-                "đơn vị" }}
+              <span
+                v-if="(detailProduct?.data?.gia_nt2 || 0) > 0"
+                class="text-muted"
+                >/
+                {{ detailProduct?.data?.dvt || "đơn vị" }}
               </span>
             </div>
-            <p v-if="detailProduct?.data?.gia2" class="text-muted text-decoration-line-through mb-3">
+            <p
+              v-if="detailProduct?.data?.gia2"
+              class="text-muted text-decoration-line-through mb-3"
+            >
               {{ formatCurrency(detailProduct?.data?.gia2 || 0) }}
             </p>
           </div>
@@ -65,7 +66,11 @@
               <UiBtnGroup v-model="quantity" />
             </div>
             <div class="col-md-6">
-              <button @click="addToCartPage" id="add-to-cart" class="btn btn-primary px-5">
+              <button
+                @click="addToCartPage"
+                id="add-to-cart"
+                class="btn btn-primary px-5"
+              >
                 Thêm vào giỏ hàng
                 <ShoppingBag />
               </button>
@@ -93,32 +98,44 @@
                   <td class="text-muted py-2">Thành phần</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.thanh_phan }}
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.thanh_phan">Chưa cập nhật dữ
-                      liệu</small>
+                    <small
+                      class="text-muted fst-italic"
+                      v-if="!detailProduct?.data?.thanh_phan"
+                      >Chưa cập nhật dữ liệu</small
+                    >
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Công dụng</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.cong_dung }}
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.cong_dung">Chưa cập nhật dữ
-                      liệu</small>
+                    <small
+                      class="text-muted fst-italic"
+                      v-if="!detailProduct?.data?.cong_dung"
+                      >Chưa cập nhật dữ liệu</small
+                    >
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Cách dùng</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.cach_dung }}
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.cach_dung">Chưa cập nhật dữ
-                      liệu</small>
+                    <small
+                      class="text-muted fst-italic"
+                      v-if="!detailProduct?.data?.cach_dung"
+                      >Chưa cập nhật dữ liệu</small
+                    >
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Tác dụng phụ</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.tac_dung_phu }}
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.tac_dung_phu">Chưa cập nhật dữ
-                      liệu</small>
+                    <small
+                      class="text-muted fst-italic"
+                      v-if="!detailProduct?.data?.tac_dung_phu"
+                      >Chưa cập nhật dữ liệu</small
+                    >
                   </td>
                 </tr>
                 <tr>
@@ -126,16 +143,22 @@
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.bao_quan }}
 
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.bao_quan">Chưa cập nhật dữ
-                      liệu</small>
+                    <small
+                      class="text-muted fst-italic"
+                      v-if="!detailProduct?.data?.bao_quan"
+                      >Chưa cập nhật dữ liệu</small
+                    >
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Lưu ý</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.luu_y }}
-                    <small class="text-muted fst-italic" v-if="!detailProduct?.data?.luu_y">Chưa cập nhật dữ
-                      liệu</small>
+                    <small
+                      class="text-muted fst-italic"
+                      v-if="!detailProduct?.data?.luu_y"
+                      >Chưa cập nhật dữ liệu</small
+                    >
                   </td>
                 </tr>
               </tbody>
@@ -151,117 +174,125 @@
 </template>
 
 <script setup lang="ts">
-  import { computed } from "vue";
-  import type { ProjectConfig } from "~/model";
-  const { $appServices } = useNuxtApp();
-  const { addToCart } = useCart();
-  const route = useRoute();
-  const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
-    { label: "Đặt hàng nhanh", to: "/quick-order" },
-    { label: "Thần kinh não" },
-  ]);
-  const { isAuthenticated, togglePopupLogin } = useAuth();
+import { computed } from "vue";
+import type { ProjectConfig } from "~/model";
+const { $appServices } = useNuxtApp();
+const { addToCart,getQtyById } = useCart();
+const route = useRoute();
+const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
+  { label: "Đặt hàng nhanh", to: "/quick-order" },
+  { label: "Thần kinh não" },
+]);
+const { isAuthenticated, togglePopupLogin } = useAuth();
 
-  const quantity = ref(1);
+const quantity = ref(1);
 
-  // reactive slug and data fetch: ensure refetch when route param changes
-  const slug = computed(() => route.params.slug as string);
+// reactive slug and data fetch: ensure refetch when route param changes
+const slug = computed(() => route.params.slug as string);
 
-  const { data: detailProduct, error } = await useAsyncData(
-    () => `product-details-${slug.value}`,
-    async () => {
-      return await $appServices.items.getItemById(slug.value);
-    },
-    { watch: [slug] }
-  );
+const { data: detailProduct, error } = await useAsyncData(
+  () => `product-details-${slug.value}`,
+  async () => {
+    return await $appServices.items.getItemById(slug.value);
+  },
+  { watch: [slug] }
+);
 
-  // SEO Meta Tags - Dynamic for Product Detail Page
-  useSeoMeta({
-    title: () => `${detailProduct?.value?.data?.ten_vt || 'Sản phẩm'} | Sỉ Dược`,
-    ogTitle: () => detailProduct?.value?.data?.ten_vt || 'Sản phẩm',
-    description: () => detailProduct?.value?.data?.mo_ta_san_pham || 'Chi tiết sản phẩm dược phẩm từ Sỉ Dược',
-    ogImage: () => detailProduct?.value?.data?.image_urls?.[0]?.url || '/images/final-medial.png',
-    ogImageAlt: () => detailProduct?.value?.data?.ten_vt || 'Sản phẩm',
-    ogDescription: () => detailProduct?.value?.data?.mo_ta_san_pham || 'Chi tiết sản phẩm dược phẩm',
-    keywords: () => detailProduct?.value?.data?.ten_vt
+// SEO Meta Tags - Dynamic for Product Detail Page
+useSeoMeta({
+  title: () => `${detailProduct?.value?.data?.ten_vt || "Sản phẩm"} | Sỉ Dược`,
+  ogTitle: () => detailProduct?.value?.data?.ten_vt || "Sản phẩm",
+  description: () =>
+    detailProduct?.value?.data?.mo_ta_san_pham ||
+    "Chi tiết sản phẩm dược phẩm từ Sỉ Dược",
+  ogImage: () =>
+    detailProduct?.value?.data?.image_urls?.[0]?.url ||
+    "/images/final-medial.png",
+  ogImageAlt: () => detailProduct?.value?.data?.ten_vt || "Sản phẩm",
+  ogDescription: () =>
+    detailProduct?.value?.data?.mo_ta_san_pham || "Chi tiết sản phẩm dược phẩm",
+  keywords: () =>
+    detailProduct?.value?.data?.ten_vt
       ? `${detailProduct.value.data.ten_vt}, dược phẩm, vitamin, sỉ dược`
-      : 'dược phẩm, vitamin, sỉ dược',
-    author: 'Sỉ Dược',
-  });
+      : "dược phẩm, vitamin, sỉ dược",
+  author: "Sỉ Dược",
+});
 
-  function addToCartPage() {
-    if (!detailProduct?.value?.data) return;
-    if (!isAuthenticated.value) {
-      useToast().error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
-      togglePopupLogin();
-      return;
-    }
-    detailProduct.value.data.quantity = quantity.value;
-    addToCart(detailProduct.value.data);
-    useToast().success("Đã thêm vào giỏ hàng");
+function addToCartPage() {
+  if (!detailProduct?.value?.data) return;
+  if (!isAuthenticated.value) {
+    useToast().error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+    togglePopupLogin();
+    return;
   }
+  const existingQty = getQtyById(detailProduct.value.data.ma_vt);
+  detailProduct.value.data.quantity = 0;
+  detailProduct.value.data.quantity = quantity.value + (existingQty || 0);
+  addToCart(detailProduct.value.data);
+  useToast().success("Đã thêm vào giỏ hàng");
+}
 </script>
 
 <style scoped>
+.price-section .h2 {
+  font-size: 2.5rem;
+}
+
+.badge.bg-danger {
+  background: linear-gradient(45deg, #dc3545, #ff6b7a) !important;
+}
+
+.table td {
+  border: none;
+  padding: 0.75rem 0.5rem;
+}
+
+.table tr:not(:last-child) {
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.ingredients-section {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--bs-primary);
+}
+
+@media (max-width: 768px) {
   .price-section .h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
-  .badge.bg-danger {
-    background: linear-gradient(45deg, #dc3545, #ff6b7a) !important;
+  .table-responsive {
+    font-size: 0.9rem;
   }
 
-  .table td {
-    border: none;
-    padding: 0.75rem 0.5rem;
+  #add-to-cart {
+    width: 100%;
   }
+}
 
-  .table tr:not(:last-child) {
-    border-bottom: 1px solid #f8f9fa;
-  }
+/* Hide number input arrows for Chrome, Safari, Edge, Opera */
+.input-number::-webkit-outer-spin-button,
+.input-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
-  .ingredients-section {
-    background: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    border-left: 4px solid var(--bs-primary);
-  }
+/* Hide number input arrows for Firefox */
+.input-number[type="number"] {
+  -moz-appearance: textfield;
+}
 
-  @media (max-width: 768px) {
-    .price-section .h2 {
-      font-size: 2rem;
-    }
+.input-number {
+  width: 45px;
+}
 
-    .table-responsive {
-      font-size: 0.9rem;
-    }
+.small {
+  font-size: 0.875rem;
+}
 
-    #add-to-cart {
-      width: 100%;
-    }
-  }
-
-  /* Hide number input arrows for Chrome, Safari, Edge, Opera */
-  .input-number::-webkit-outer-spin-button,
-  .input-number::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Hide number input arrows for Firefox */
-  .input-number[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  .input-number {
-    width: 45px;
-  }
-
-  .small {
-    font-size: 0.875rem;
-  }
-
-  .line-break-container {
-    white-space: pre-line;
-  }
+.line-break-container {
+  white-space: pre-line;
+}
 </style>

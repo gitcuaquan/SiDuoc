@@ -104,7 +104,7 @@
             <div
               class="cart-qty align-middle d-flex text-lg-center mb-2 mb-lg-0 justify-content-between align-items-center d-lg-table-cell p-lg-3">
               <span class="d-lg-none fw-semibold">Số lượng:</span>
-              {{ detail.so_luong }} ({{ detail.dvt }} )
+             <b class="me-2"> {{ detail.so_luong }} </b>{{ detail.dvt }}
             </div>
 
             <!-- Total -->

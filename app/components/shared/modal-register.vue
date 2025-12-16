@@ -299,16 +299,12 @@
   }
 
   async function submitForm(e: Event) {
-    // const formData = new FormData();
-    // for (const key in custumerInfo.value) {
-    //   formData.append(key, (custumerInfo.value as any)[key]);
-    // }
     e.preventDefault();
     checkValid.value = true;
     if (validateForm()) {
       checkValid.value = false;
 
-      if (saleId.value) {
+      if (saleId.value != null && saleId.value != '' && saleId.value != undefined) {
         custumerInfo.value.SaleID = saleId.value
       }
 

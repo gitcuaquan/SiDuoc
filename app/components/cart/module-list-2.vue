@@ -46,16 +46,18 @@
                 <small
                   :class="{
                     'text-decoration-line-through fw-normal text-muted':
+                      findItemInPrevOrder(item.ma_vt) &&
                       (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                      item.gia_nt2,
+                        item.gia_nt2,
                   }"
                   >{{ formatCurrency(item.gia_nt2) }}
                 </small>
                 <small
                   class="fw-bold"
                   v-if="
+                    findItemInPrevOrder(item.ma_vt) &&
                     (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                    item.gia_nt2
+                      item.gia_nt2
                   "
                 >
                   {{
@@ -68,14 +70,15 @@
             </td>
             <td class="border-0 text-center" data-label="Số lượng">
               <UiBtnGroup size="sm" v-model="item.quantity" v-if="!isShow" />
-              <small v-else class="text-center fw-bold">{{ item.quantity }}</small>
+              <small v-else class="text-center fw-bold">{{
+                item.quantity
+              }}</small>
             </td>
             <td class="border-0" data-label="Thành tiền">
               <div class="d-flex flex-column gap-1">
                 <small
                   :class="{
-                    'text-decoration-line-through fw-normal text-muted':
-                      (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
+                    'text-decoration-line-through fw-normal text-muted':findItemInPrevOrder(item.ma_vt) && (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
                       item.gia_nt2,
                   }"
                   >{{ formatCurrency(item.gia_nt2 * (item.quantity ?? 1)) }}
@@ -83,8 +86,8 @@
                 <small
                   class="fw-bold"
                   v-if="
-                    (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                    item.gia_nt2
+                   findItemInPrevOrder(item.ma_vt) && (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
+                      item.gia_nt2
                   "
                 >
                   {{
@@ -141,7 +144,6 @@
                     class="text-small d-flex align-items-center gap-1 d-block"
                     v-if="data.discountAmount"
                   >
-               
                     <Gift :size="13" class="flex-shrink-0" /> Giảm tiền trên
                     từng mặt hàng tổng cộng
                     {{ formatCurrency(data.discountAmount) }}

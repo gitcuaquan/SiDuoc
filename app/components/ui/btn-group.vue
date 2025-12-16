@@ -14,6 +14,7 @@
     <input
       type="number"
       min="0"
+      :disabled="!isAuthenticated"
       v-model.number="localValue"
       @input="onInput"
       :class="[
