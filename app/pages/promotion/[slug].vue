@@ -109,7 +109,7 @@ useSeoMeta({
   author: "Sỉ Dược",
   ogType: "article",
 });
-// Schema.org Product Structured Data
+
 useSchemaOrg({
   type: "Article",
   name: data.value?.title || "Bài viết",

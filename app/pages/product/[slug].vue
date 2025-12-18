@@ -237,11 +237,24 @@ useSchemaOrg({
   name: detailProduct?.value?.data?.ten_vt || "Sản phẩm",
   description:
     detailProduct?.value?.data?.cong_dung || "Chi tiết sản phẩm dược phẩm",
-  image: detailProduct?.value?.data?.image_urls?.[0]?.url ||  "/images/final-medial.png",
+  image:
+    detailProduct?.value?.data?.image_urls?.[0]?.url ||
+    "/images/final-medial.png",
   sku: detailProduct?.value?.data?.ma_vt || "00000000",
   brand: {
     "@type": "Brand",
     name: "Sỉ Dược",
+  },
+  category: "Dược phẩm",
+  manufacturer: {
+    "@type": "Organization",
+    name: "Sỉ Dược",
+  },
+  offers: {
+    "@type": "Offer",
+    price: detailProduct?.value?.data?.gia_nt2 || 0,
+    priceCurrency: "VND",
+    availability: "https://schema.org/OutOfStock",
   },
 });
 </script>
