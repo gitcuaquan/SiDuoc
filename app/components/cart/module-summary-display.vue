@@ -36,7 +36,7 @@
     <hr />
     <div class="d-flex justify-content-between mb-3">
       <span>Tổng tiền chiết khấu</span>
-      <span class="text-danger">- {{ formatCurrency(totalDiscount) }}</span>
+      <span class="text-danger"> - {{ formatCurrency(totalDiscount) }}</span>
     </div>
 
     <hr />

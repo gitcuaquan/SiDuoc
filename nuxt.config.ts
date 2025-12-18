@@ -8,9 +8,17 @@ export default defineNuxtConfig({
     },
   },
   css: ['~/assets/css/main.scss'],
-  modules: ['nuxt-lucide-icons', 'nuxt-swiper', 'nuxt-mongoose'],
+  modules: [
+    'nuxt-lucide-icons',
+    'nuxt-swiper',
+    'nuxt-mongoose',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
+    'nuxt-schema-org'
+  ],
   app: {
     head: {
+      htmlAttrs: { lang: 'vi' },
       title: 'Sỉ Dược',
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1,maximum-scale=1' },
@@ -45,5 +53,19 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ['@vuepic/vue-datepicker']
+  },
+  // SEO modules configuration
+  site: {
+    url: 'https://siduoc.com',
+    name: 'Sỉ Dược',
+    description: 'Sỉ Dược - nhà cung cấp dược phẩm uy tín',
+  },
+  sitemap: {
+    sources: [
+      '/api/__sitemap__/urls',
+    ]
+  },
+  robots: {
+    disallow: ['/auth/*'],
   }
 })

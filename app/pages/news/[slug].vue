@@ -84,6 +84,20 @@
     author: 'Sỉ Dược',
     ogType: 'article',
   });
+  // Schema.org Product Structured Data
+useSchemaOrg({
+  type: "Article",
+  name: data.value?.title || "Bài viết",
+  description: data.value?.seo_content || "Chi tiết bài viết từ Sỉ Dược",
+  image: data.value?.thumbnail || "/images/final-medial.png",
+  author: {
+    "@type": "Organization",
+    name: "Sỉ Dược",
+  },
+  headline: data.value?.title || "Bài viết",
+  datePublished: data.value?.created_at || "",
+  dateModified: data.value?.updated_at || "",
+});
 </script>
 
 <style></style>

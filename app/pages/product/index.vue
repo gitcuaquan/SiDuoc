@@ -35,7 +35,7 @@
                 'collapse',
                 nhIndex === 0 ? 'show' : '',
               ]" :aria-labelledby="`heading-mobile-${nhIndex}`" data-bs-parent="#nhomAccordionMobile">
-                <div class="accordion-body py-0 pt-1 px-2">
+                <div class="accordion-body py-0 pt-1 px-2 overflow-auto" style="max-height: 700px;">
                   <template v-if="value && value.length">
                     <div v-for="nhom in value" :key="`mobile-${nhom.ma_nh}`" class="form-check w-100">
                       <input class="form-check-input" type="checkbox" :name="`nhom-vat-tu`" @input="toggleNhomVt(nhom)"

@@ -177,7 +177,7 @@
 import { computed } from "vue";
 import type { ProjectConfig } from "~/model";
 const { $appServices } = useNuxtApp();
-const { addToCart,getQtyById } = useCart();
+const { addToCart, getQtyById } = useCart();
 const route = useRoute();
 const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Đặt hàng nhanh", to: "/quick-order" },
@@ -198,6 +198,20 @@ const { data: detailProduct, error } = await useAsyncData(
   { watch: [slug] }
 );
 
+function addToCartPage() {
+  if (!detailProduct?.value?.data) return;
+  if (!isAuthenticated.value) {
+    useToast().error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+    togglePopupLogin();
+    return;
+  }
+  const existingQty = getQtyById(detailProduct.value.data.ma_vt);
+  detailProduct.value.data.quantity = 0;
+  detailProduct.value.data.quantity = quantity.value + (existingQty || 0);
+  addToCart(detailProduct.value.data);
+  useToast().success("Đã thêm vào giỏ hàng");
+}
+
 // SEO Meta Tags - Dynamic for Product Detail Page
 useSeoMeta({
   title: () => `${detailProduct?.value?.data?.ten_vt || "Sản phẩm"} | Sỉ Dược`,
@@ -217,20 +231,19 @@ useSeoMeta({
       : "dược phẩm, vitamin, sỉ dược",
   author: "Sỉ Dược",
 });
-
-function addToCartPage() {
-  if (!detailProduct?.value?.data) return;
-  if (!isAuthenticated.value) {
-    useToast().error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
-    togglePopupLogin();
-    return;
-  }
-  const existingQty = getQtyById(detailProduct.value.data.ma_vt);
-  detailProduct.value.data.quantity = 0;
-  detailProduct.value.data.quantity = quantity.value + (existingQty || 0);
-  addToCart(detailProduct.value.data);
-  useToast().success("Đã thêm vào giỏ hàng");
-}
+// Schema.org Product Structured Data
+useSchemaOrg({
+  type: "Product",
+  name: detailProduct?.value?.data?.ten_vt || "Sản phẩm",
+  description:
+    detailProduct?.value?.data?.cong_dung || "Chi tiết sản phẩm dược phẩm",
+  image: detailProduct?.value?.data?.image_urls?.[0]?.url ||  "/images/final-medial.png",
+  sku: detailProduct?.value?.data?.ma_vt || "00000000",
+  brand: {
+    "@type": "Brand",
+    name: "Sỉ Dược",
+  },
+});
 </script>
 
 <style scoped>
