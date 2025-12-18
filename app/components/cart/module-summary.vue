@@ -80,11 +80,11 @@
           }}
         </span>
         <span v-else>
-        {{
-          globalOrder.header?.voucher_rate
-            ? globalOrder.header?.voucher_rate + " %"
-            : ""
-        }}
+          {{
+            globalOrder.header?.voucher_rate
+              ? globalOrder.header?.voucher_rate + " %"
+              : ""
+          }}
         </span>
         <X
           v-if="!isShow"
@@ -120,8 +120,8 @@
     <div class="d-flex flex-wrap gap-2">
       <div
         role="button"
-        class="badge ps-0 text-primary"
-        v-for="value in discountSelected.filter((d) => !d.itemCodeBuy)"
+        class="badge ps-0 m-0 py-0 text-primary"
+        v-for="value in discountSelected"
       >
         <TicketPercent :size="16" :stroke-width="2" /> {{ value.discountName }}
       </div>
@@ -129,9 +129,9 @@
     <hr />
     <div class="d-flex justify-content-between mb-3">
       <span>Tổng tiền chiết khấu</span>
-      <span class="text-danger"
-        >- {{ formatCurrency(prevOrder?.header?.tong_ck_don || 0) }}</span
-      >
+      <span class="text-danger">
+        - {{ formatCurrency(prevOrder?.header?.tong_ck_don || 0) }}
+      </span>
     </div>
     <hr />
     <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
@@ -186,7 +186,9 @@ const totalPrice = computed(() => {
     return total + price * qty;
   }, 0);
 });
+
 const timeOut = ref<any>(null);
+
 watch(
   discountSelected,
   () => {
@@ -197,6 +199,7 @@ watch(
   },
   { deep: true }
 );
+
 watch(
   () => cart.value,
   () => {
@@ -294,10 +297,9 @@ async function applyVoucher(data?: VoucherItem) {
 function tranformToCart(data: TapmedOrder) {
   prevOrder.value = data;
 }
+
 onMounted(() => {
   getDiscount();
   getVoucher();
 });
 </script>
-
-<style></style>

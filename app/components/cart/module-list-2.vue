@@ -16,7 +16,7 @@
         <template v-for="item in cart" :key="item.ma_vt">
           <tr class="card-product">
             <td class="border-0">
-              <div class="d-flex align-items-start gap-3">
+              <div class="d-flex align-items-center gap-3">
                 <img
                   :src="item.image_urls?.[0]?.url || '/images/image-error.svg'"
                   width="50"
@@ -78,15 +78,18 @@
               <div class="d-flex flex-column gap-1">
                 <small
                   :class="{
-                    'text-decoration-line-through fw-normal text-muted':findItemInPrevOrder(item.ma_vt) && (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                      item.gia_nt2,
+                    'text-decoration-line-through fw-normal text-muted':
+                      findItemInPrevOrder(item.ma_vt) &&
+                      (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
+                        item.gia_nt2,
                   }"
                   >{{ formatCurrency(item.gia_nt2 * (item.quantity ?? 1)) }}
                 </small>
                 <small
                   class="fw-bold"
                   v-if="
-                   findItemInPrevOrder(item.ma_vt) && (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
+                    findItemInPrevOrder(item.ma_vt) &&
+                    (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
                       item.gia_nt2
                   "
                 >
@@ -125,7 +128,7 @@
                   <small
                     class="text-small d-flex align-items-center gap-1 d-block"
                   >
-                    <Gift :size="13" class="flex-shrink-0" /> Tặng thêm
+                    <Gift :size="13" class="flex-shrink-0" /> Tặng kèm
                     {{ data.quantityGift }} sản phẩm
                     {{ data.itemNameGift }}
                   </small>
@@ -172,6 +175,21 @@
           </tr>
         </template>
       </tbody>
+      <tbody>
+        <tr v-for="value in findItemTang()">
+          <td colspan="5" class="border-0">
+            <div
+              class="d-flex text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded"
+            >
+              <small class="text-small d-flex align-items-center gap-1 d-block">
+                <Gift :size="13" class="flex-shrink-0" /> Tặng thêm
+                {{ value.quantityGift }} sản phẩm
+                {{ value.itemNameGift }}
+              </small>
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -183,9 +201,16 @@ const { prevOrder, globalOrder } = useOrder();
 const props = defineProps<{
   isShow?: boolean;
 }>();
+
 function findDiscountByMaVT(mavt: string) {
   const data = globalOrder.value.selectedDiscounts?.filter((discount: any) => {
     return discount.itemCodeBuy.trim() === mavt.trim();
+  });
+  return data || [];
+}
+function findItemTang() {
+  const data = globalOrder.value.selectedDiscounts?.filter((discount: any) => {
+    return discount.itemCodeGift?.trim() !== "";
   });
   return data || [];
 }
