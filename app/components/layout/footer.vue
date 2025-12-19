@@ -140,9 +140,9 @@
           </div>
           <div class="col-md-6 text-md-end mt-2 mt-md-0">
             <div class="footer-links">
-              <a href="#" class="text-muted text-decoration-none me-3 small">Chính sách bảo mật</a>
-              <a href="#" class="text-muted text-decoration-none me-3 small">Điều khoản sử dụng</a>
-              <a href="#" class="text-muted text-decoration-none small">Sitemap</a>
+              <!-- <a href="#" class="text-muted text-decoration-none me-3 small">Chính sách bảo mật</a>
+              <a href="#" class="text-muted text-decoration-none me-3 small">Điều khoản sử dụng</a> -->
+              <a href="/sitemap.xml" target="_blank" class="text-muted text-decoration-none small">Sitemap</a>
             </div>
           </div>
         </div>

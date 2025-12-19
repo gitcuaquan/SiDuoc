@@ -182,7 +182,7 @@
               class="d-flex text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded"
             >
               <small class="text-small d-flex align-items-center gap-1 d-block">
-                <Gift :size="13" class="flex-shrink-0" /> Tặng thêm
+                Tặng thêm
                 {{ value.quantityGift }} sản phẩm
                 {{ value.itemNameGift }}
               </small>
