@@ -1,46 +1,49 @@
 <template>
-  <div
-    v-if="coupon"
-    role="button"
-    :class="[
-      'd-flex h-100 w-100 align-self-stretch gap-1',
-      {
-        'coupon-grayscale': coupon && !coupon.isValid,
-        'coupon-active': coupon && coupon.isValid,
-      },
-    ]"
-    @click="coupon.isValid = !coupon.isValid"
-  >
-  <!-- {{ coupon }} -->
-    <div
-      class="bg-primary d-flex align-items-center rounded-1 px-1 bg-opacity-10"
-    >
-      <div class="ratio ratio-1x1" style="width: 70px">
-        <img src="/images/coupon.svg" alt="coupon" />
+  <UiPopover v-if="coupon" class="w-100">
+    <template #trigger>
+      <div
+        role="button"
+        :class="[
+          'd-flex h-100 w-100 align-self-stretch gap-1',
+          {
+            'coupon-grayscale': coupon && !coupon.isValid,
+            'coupon-active': coupon && coupon.isValid,
+          },
+        ]"
+
+      >
+        <!-- {{ coupon }} -->
+        <div
+          class="bg-primary d-flex align-items-center rounded-1 px-1 bg-opacity-10"
+        >
+          <div class="ratio ratio-1x1" style="width: 50px">
+            <img src="/images/coupon.svg" alt="coupon" />
+          </div>
+        </div>
+        <div
+          class="bg-primary flex-grow-1 p-1 rounded-1 bg-opacity-10 position-relative"
+        >
+        <div class="d-flex align-items-start  gap-2 justify-content-between">
+          <div style="font-size: 12px" class="m-0 fw-bold pe-2">
+            {{ coupon.discountName }}
+          </div>
+          <input
+            type="checkbox"
+            class="form-check-input"
+            v-model="coupon.isValid"
+          />
+        </div>
+          <span class="line-clamp mt-1" style="font-size: 11px">
+            <span v-if="coupon.itemNameBuy?.trim()">
+              Mua: {{ coupon.itemNameBuy }}
+            </span>
+            <span v-else> Áp dụng cho đơn hàng </span>
+          </span>
+        </div>
       </div>
-    </div>
-    <div
-      class="bg-primary flex-grow-1 p-2 rounded-1 bg-opacity-10 position-relative"
-    >
-      <div class="position-absolute top-0 end-0 me-1 mt-1">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          v-model="coupon.isValid"
-        />
-      </div>
-      <div style="font-size: 12px" class="m-0 fw-bold pe-2">
-        {{ coupon.discountName }}
-      </div>
-      <span class="line-clamp mt-1" style="font-size: 11px">
-        <span v-if="coupon.itemNameBuy?.trim()">
-          Mua: {{ coupon.itemNameBuy }}
-        </span>
-        <span v-else>
-          Áp dụng cho tất cả sản phẩm
-        </span>
-      </span>
-      <div class="d-flex justify-content-between align-items-center">
+    </template>
+    <template #content>
+      <div class="d-flex justify-content-between bg-white text-dark align-items-center" style="max-width: 300px;">
         <template v-if="coupon?.discountType?.toUpperCase() === 'M'">
           <div
             v-if="coupon.totalDiscount"
@@ -52,42 +55,42 @@
           </div>
         </template>
         <template v-if="coupon?.discountType?.toUpperCase() === 'D'">
-          <div style="font-size: 11px" class="text-secondary">
+          <div style="font-size: 12px" class="text-secondary">
             <span v-if="coupon.discountRate">
               Giảm {{ coupon.discountRate }} %
             </span>
             <span v-if="coupon.totalDiscount">
-              Giảm tổng {{ formatCurrency(coupon.totalDiscount || 0) }} 
+              Giảm tổng {{ formatCurrency(coupon.totalDiscount || 0) }}
             </span>
             <span v-if="coupon.moneyVoucher">
-              Đồng giá {{ formatCurrency(coupon.moneyVoucher || 0) }}  cho mỗi mặt hàng
+              Đồng giá {{ formatCurrency(coupon.moneyVoucher || 0) }} cho mỗi
+              mặt hàng
             </span>
-           
           </div>
         </template>
         <template v-if="coupon?.discountType?.toUpperCase() === 'H'">
           <div
             v-if="!coupon.quantityGift && coupon.itemNameGift"
-            style="font-size: 11px"
+            style="font-size: 12px"
             class="text-secondary"
           >
             Tặng thêm mã voucher <b>{{ coupon.itemNameGift || 0 }}</b>
           </div>
-          <div v-else style="font-size: 11px" class="text-secondary">
+          <div v-else style="font-size: 12px" class="text-secondary">
             Tặng thêm <b> {{ coupon.quantityGift || 0 }} </b>
             {{ coupon.itemNameGift || "Vật tư " }}
           </div>
         </template>
         <div
           v-if="coupon.maxDiscount"
-          style="font-size: 11px"
+          style="font-size: 12px"
           class="text-secondary"
         >
-          (  tối đa {{ formatCurrency(coupon.maxDiscount || 0) }})
+          ( tối đa {{ formatCurrency(coupon.maxDiscount || 0) }})
         </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </UiPopover>
 </template>
 
 <script lang="ts" setup>

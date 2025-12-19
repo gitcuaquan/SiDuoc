@@ -14,7 +14,7 @@
           </button>
         </div>
         <template v-if="!idOrder">
-          <div class="modal-body" style="min-height: 70vh;font-size: 0.875rem;">
+          <div class="modal-body" style="min-height: 70vh;">
             <section class="mb-3">
               <!-- {{ user }} -->
               <div class="row g-3">

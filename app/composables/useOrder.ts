@@ -3,6 +3,8 @@ import { TapmedOrder, TapmedOrderHeader } from "~/model/item/ITemsTapmed";
 export const useOrder = () => {
   const { user } = useAuth();
 
+  const discountManager = useState<any>("discountManager", () => []);
+
   const globalOrder = useState<TapmedOrder>("globalOrder", () => new TapmedOrder({
     details: [],
     header: new TapmedOrderHeader({
@@ -38,5 +40,5 @@ export const useOrder = () => {
     });
   }
 
-  return { globalOrder, resetOrder , prevOrder };
+  return { globalOrder, resetOrder, prevOrder, discountManager };
 }

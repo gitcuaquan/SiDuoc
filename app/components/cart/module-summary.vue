@@ -5,6 +5,7 @@
   >
     <div
       v-if="loading"
+      style="z-index: 9999999;backdrop-filter: blur(2px);"
       class="position-absolute w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75"
     >
       <UiLoading />
@@ -96,35 +97,30 @@
       </div>
     </template>
     <hr />
-    <div class="d-flex justify-content-between align-items-start mb-2">
-      <div>
-        <span>Khuyến mãi </span>
-        <span
-          class="badge gap-1 ps-0 fw-normal bg-transparent text-muted d-flex align-items-center"
-        >
-          Đang áp dụng {{ discountSelected.length || 0 }} /
-          <b>{{ listDiscount?.getData?.length || 0 }}</b>
-          khuyến mãi
-        </span>
-      </div>
-      <a
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <span>Khuyến mãi </span>
+      <span
+        class="badge gap-1 ps-0 fw-normal bg-transparent text-muted d-flex align-items-center"
+      >
+        Đang áp dụng {{ discountSelected.length || 0 }} /
+        <b>{{ listDiscount?.getData?.length || 0 }}</b>
+        khuyến mãi
+      </span>
+
+      <!-- <a
         role="button"
         v-if="!isShow && (listDiscount?.getData?.length || 0) > 0"
         @click="isShowListDiscount = true"
         class="btn-link text-decoration-none"
       >
         <small>Chọn chương trình</small>
-      </a>
+      </a> -->
     </div>
 
-    <div class="d-flex flex-wrap gap-2">
-      <div
-        role="button"
-        class="badge ps-0 m-0 py-0 text-primary"
-        v-for="value in discountSelected"
-      >
-        <TicketPercent :size="16" :stroke-width="2" /> {{ value.discountName }}
-      </div>
+    <div class="d-flex flex-wrap gap-1 cupon-list">
+      <template v-for="value in listDiscount?.getData">
+        <SharedModuleCoupon :coupon="(value as DiscountItem)" />
+      </template>
     </div>
     <hr />
     <div class="d-flex justify-content-between mb-3">
@@ -163,15 +159,17 @@ import type { TapmedOrder } from "~/model/item/ITemsTapmed";
 import { VoucherItem } from "../../model/discount";
 const { $appServices } = useNuxtApp();
 const { cart } = useCart();
-const { globalOrder, prevOrder } = useOrder();
+const { globalOrder, prevOrder, discountManager } = useOrder();
 
 const props = defineProps<{
   isShow?: boolean;
 }>();
 
 const discountSelected = computed<DiscountItem[]>(() => {
-  //@ts-ignore
-  return listDiscount.value?.data?.filter((discount) => discount.isValid) || [];
+  const data =
+    //@ts-ignore
+    listDiscount.value?.data?.filter((discount) => discount.isValid) || [];
+  return data;
 });
 
 const isShowListDiscount = ref(false);
@@ -188,6 +186,16 @@ const totalPrice = computed(() => {
 });
 
 const timeOut = ref<any>(null);
+
+watch(
+  () => listDiscount.value,
+  () => {
+    if (!props.isShow) {
+      discountManager.value = listDiscount.value?.data || [];
+    }
+  },
+  { deep: true }
+);
 
 watch(
   discountSelected,
@@ -235,12 +243,16 @@ async function getDiscount() {
     const response = await $appServices.discount.caculateDiscount(
       globalOrder.value
     );
-    listDiscount.value = response;
     if (response) {
-      //@ts-ignore
-      listDiscount.value.data?.forEach((discount) => {
-        discount.isValid = true;
+      console.log("Discount response:", discountManager.value);
+      response.getData.forEach((discount: DiscountItem) => {
+        const existing = discountManager.value.find(
+          (d: DiscountItem) =>
+            d.codeDiscount?.trim() === discount.codeDiscount?.trim()
+        );
+        discount.isValid = existing ? existing.isValid : true;
       });
+      listDiscount.value = response;
     }
   } catch (error) {
     console.error("Error calculating discount:", error);
@@ -250,7 +262,6 @@ async function getDiscount() {
 }
 
 async function applyDiscount() {
-  loading.value = true;
   globalOrder.value.details = buildOrderDetails();
   globalOrder.value.selectedDiscounts = discountSelected.value;
   try {
@@ -260,8 +271,7 @@ async function applyDiscount() {
     tranformToCart(response.data as TapmedOrder);
   } catch (error) {
     console.error("Error applying discount:", error);
-  } finally {
-    loading.value = false;
+    useToast().error("Lỗi áp dụng khuyến mãi");
   }
 }
 
@@ -303,3 +313,52 @@ onMounted(() => {
   getVoucher();
 });
 </script>
+
+<style scoped>
+.cupon-list {
+  padding: 15px 2px;
+  max-height: 210px;
+  overflow-y: auto;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+/* Chrome, Edge, Safari */
+.cupon-list::-webkit-scrollbar {
+  width: 6px; /* thu nhỏ scrollbar */
+}
+
+.cupon-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cupon-list::-webkit-scrollbar-thumb {
+  background-color: #d1d5db; /* màu nhạt */
+  border-radius: 6px;
+}
+
+.cupon-list::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
+
+/* BỎ mũi tên scrollbar */
+.cupon-list::-webkit-scrollbar-button {
+  display: none;
+}
+</style>

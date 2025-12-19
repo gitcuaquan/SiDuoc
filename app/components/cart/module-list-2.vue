@@ -120,16 +120,18 @@
           </tr>
 
           <tr v-for="data in findDiscountByMaVT(item.ma_vt)" class="p-md-2 p-0">
-            <td colspan="5" class="border-0 px-0 px-md-2">
+            <td colspan="5" class="border-0 px-0 px-md-1">
               <div
                 class="d-flex text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded"
               >
                 <template v-if="data.itemNameGift?.trim()">
                   <small
-                    class="text-small d-flex align-items-center gap-1 d-block"
+                    class="text-small d-flex align-items-start gap-1 d-block"
                   >
-                    <Gift :size="13" class="flex-shrink-0" /> Tặng kèm
-                    {{ data.quantityGift }} sản phẩm
+                    Tặng kèm
+                    <template v-if="(data.quantityGift || 0) > 0">
+                      {{ data.quantityGift }}
+                    </template>
                     {{ data.itemNameGift }}
                   </small>
                 </template>
@@ -140,30 +142,28 @@
                     class="text-small d-flex align-items-md-center align-items-sta gap-1 d-block"
                     v-if="data.discountRate"
                   >
-                    <Gift :size="13" class="flex-shrink-0" /> Giảm
+                    Giảm
                     {{ data.discountRate }} % trên mỗi mặt hàng</small
                   >
                   <small
                     class="text-small d-flex align-items-center gap-1 d-block"
                     v-if="data.discountAmount"
                   >
-                    <Gift :size="13" class="flex-shrink-0" /> Giảm tiền trên
-                    từng mặt hàng tổng cộng
+                    Giảm tiền trên từng mặt hàng tổng cộng
                     {{ formatCurrency(data.discountAmount) }}
                   </small>
                   <small
                     class="text-small d-flex align-items-center gap-1 d-block"
                     v-if="data.moneyVoucher"
                   >
-                    <Gift :size="13" class="flex-shrink-0" />Tất cả sản phẩm
-                    được đồng giá
+                    Tất cả sản phẩm được đồng giá
                     {{ formatCurrency(data.moneyVoucher) }}
                   </small>
                   <small
                     class="text-small d-flex align-items-center gap-1 d-block"
                     v-if="data.totalDiscount"
                   >
-                    <Gift :size="13" class="flex-shrink-0" /> Đã được giảm
+                    Đã được giảm
                     {{ formatCurrency(data.totalDiscount) }}
                   </small>
                 </template>
@@ -176,14 +176,14 @@
         </template>
       </tbody>
       <tbody>
-        <tr v-for="value in findItemTang()">
-          <td colspan="5" class="border-0">
+        <tr v-for="value in findItemTang()" class="p-0">
+          <td colspan="5" class="border-0 p-0 p-md-1">
             <div
               class="d-flex text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded"
             >
               <small class="text-small d-flex align-items-center gap-1 d-block">
                 Tặng thêm
-                {{ value.quantityGift }} sản phẩm
+                {{ value.quantityGift }}
                 {{ value.itemNameGift }}
               </small>
             </div>
@@ -210,7 +210,10 @@ function findDiscountByMaVT(mavt: string) {
 }
 function findItemTang() {
   const data = globalOrder.value.selectedDiscounts?.filter((discount: any) => {
-    return discount.itemCodeGift?.trim() !== "";
+    return (
+      discount.itemCodeBuy?.trim() === "" &&
+      discount.itemNameGift?.trim() !== ""
+    );
   });
   return data || [];
 }
