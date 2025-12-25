@@ -1,8 +1,7 @@
-export function imageError(event: Event) {
-    console.log("🚀 ~ imageError ~ event=>", event)
-    const target = event.target as HTMLImageElement;
-}
-export  function formatCurrency(value: number): string {
+
+export function formatCurrency(value: number): string {
+    const { isAuthenticated } = useAuth();
+    if (!isAuthenticated.value) return 'Đăng nhập để xem giá';
     if (value === null || value === undefined) return 'Liên hệ';
     return new Intl.NumberFormat('vi-VN', {
         style: 'currency',

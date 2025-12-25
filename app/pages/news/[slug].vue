@@ -72,22 +72,20 @@
 
   // SEO Meta Tags - Dynamic for News Detail Page
   useSeoMeta({
-    title: () => `${data.value?.title || 'Bài viết'} | Sỉ Dược`,
-    ogTitle: () => data.value?.title || 'Bài viết tin tức',
+    title: () => `${data.value?.seo_title || data.value?.title || 'Bài viết'} | Sỉ Dược`,
+    ogTitle: () => data.value?.seo_title || data.value?.title || 'Bài viết tin tức',
     description: () => data.value?.seo_content || 'Xem chi tiết bài viết từ Sỉ Dược',
     ogImage: () => data.value?.thumbnail || '/images/final-medial.png',
-    ogImageAlt: () => data.value?.title || 'Bài viết',
+    ogImageAlt: () => data.value?.seo_title || data.value?.title || 'Bài viết',
     ogDescription: () => data.value?.seo_content || 'Xem chi tiết bài viết từ Sỉ Dược',
-    keywords: () => data.value?.title
-      ? `${data.value.title}, tin tức, sỉ dược, dược phẩm`
-      : 'tin tức, bài viết, sỉ dược',
+    keywords: () => data.value?.seo_keywords || '',
     author: 'Sỉ Dược',
     ogType: 'article',
   });
   // Schema.org Product Structured Data
 useSchemaOrg({
   type: "Article",
-  name: data.value?.title || "Bài viết",
+  name:data.value?.seo_title || data.value?.title || "Bài viết",
   description: data.value?.seo_content || "Chi tiết bài viết từ Sỉ Dược",
   image: data.value?.thumbnail || "/images/final-medial.png",
   author: {
@@ -97,6 +95,7 @@ useSchemaOrg({
   headline: data.value?.title || "Bài viết",
   datePublished: data.value?.created_at || "",
   dateModified: data.value?.updated_at || "",
+  keywords: data.value?.seo_keywords || "",
 });
 </script>
 

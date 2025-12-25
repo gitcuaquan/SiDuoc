@@ -4,6 +4,8 @@ export interface News {
   content: string;
   slug: string;
   seo_content: string;
+  seo_title: string;
+  seo_keywords: string;
   thumbnail: string;
   category: string;
   created_at: Date;

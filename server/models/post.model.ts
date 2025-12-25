@@ -24,6 +24,14 @@ export const Post = defineMongooseModel({
             type: 'string',
             required: false,
         },
+        seo_title: {
+            type: 'string',
+            required: false,
+        },
+        seo_keywords: {
+            type: 'string',
+            required: false,
+        },
         seo_content: {
             type: 'string',
             required: false,

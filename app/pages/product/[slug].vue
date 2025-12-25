@@ -98,44 +98,44 @@
                   <td class="text-muted py-2">Thành phần</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.thanh_phan }}
-                    <small
+                    <!-- <small
                       class="text-muted fst-italic"
                       v-if="!detailProduct?.data?.thanh_phan"
                       >Chưa cập nhật dữ liệu</small
-                    >
+                    > -->
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Công dụng</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.cong_dung }}
-                    <small
+                    <!-- <small
                       class="text-muted fst-italic"
                       v-if="!detailProduct?.data?.cong_dung"
                       >Chưa cập nhật dữ liệu</small
-                    >
+                    > -->
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Cách dùng</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.cach_dung }}
-                    <small
+                    <!-- <small
                       class="text-muted fst-italic"
                       v-if="!detailProduct?.data?.cach_dung"
                       >Chưa cập nhật dữ liệu</small
-                    >
+                    > -->
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Tác dụng phụ</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.tac_dung_phu }}
-                    <small
+                    <!-- <small
                       class="text-muted fst-italic"
                       v-if="!detailProduct?.data?.tac_dung_phu"
                       >Chưa cập nhật dữ liệu</small
-                    >
+                    > -->
                   </td>
                 </tr>
                 <tr>
@@ -143,22 +143,22 @@
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.bao_quan }}
 
-                    <small
+                    <!-- <small
                       class="text-muted fst-italic"
                       v-if="!detailProduct?.data?.bao_quan"
                       >Chưa cập nhật dữ liệu</small
-                    >
+                    > -->
                   </td>
                 </tr>
                 <tr>
                   <td class="text-muted py-2">Lưu ý</td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.luu_y }}
-                    <small
+                    <!-- <small
                       class="text-muted fst-italic"
                       v-if="!detailProduct?.data?.luu_y"
                       >Chưa cập nhật dữ liệu</small
-                    >
+                    > -->
                   </td>
                 </tr>
               </tbody>
