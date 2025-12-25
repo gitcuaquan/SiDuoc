@@ -67,7 +67,6 @@
   };
 
   const { setToken, setUser, togglePopupRegister } = useAuth();
-  const { initCartFromStorage } = useCart();
   const emit = defineEmits(["close"]);
 
   const loading = ref(false);
@@ -120,7 +119,6 @@
 
       const user = await $appServices.customer.detail();
       setUser(user.data);
-      initCartFromStorage();
       useToast().success("Đăng nhập thành công");
       useRouter().push("/auth");
       modalInstance.value?.hide();

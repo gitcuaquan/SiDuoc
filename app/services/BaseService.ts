@@ -12,7 +12,7 @@ export interface FetchOptions {
 export default class BaseService {
     protected baseUrl: string = '/api/proxy/';
     protected defaultHeaders: Record<string, string>
-     NAME_TOKEN_IN_COOKIE: string = 'tapmed_token_access';
+    NAME_TOKEN_IN_COOKIE: string = 'tapmed_token_access';
     constructor(endpoint?: string) {
         this.baseUrl += endpoint;
         this.defaultHeaders = {
@@ -33,6 +33,7 @@ export default class BaseService {
         options: FetchOptions = {}
     ): Promise<T> {
         try {
+
             const { method = 'GET', params, body, headers, auth } = options
             const requestHeaders = { ...this.defaultHeaders, ...headers }
 
@@ -49,6 +50,8 @@ export default class BaseService {
                     requestHeaders['Content-Type'] = 'application/json'
                 }
             }
+            // const { csrf } = useCsrf();
+            // requestHeaders['csrf-token'] = csrf || '';
 
             return await $fetch<T>(`${this.baseUrl}${endpoint}`, {
                 method,

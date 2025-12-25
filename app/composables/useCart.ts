@@ -4,9 +4,10 @@ interface ITemsTapmedNew extends ITemsTapmed {
   gia_moi?: number;
 }
 export const useCart = () => {
-  // const { isAuthenticated } = useAuth()
-  // const { error } = useToast()
-
+  // const { csrf } = useCsrf();
+  const { user } = useAuth()
+  // giới hạn debounce
+  let timeOut = ref<any>("")
   const cart = useState<ITemsTapmedNew[]>('cart', () => [])
 
   const addToCart = (product: ITemsTapmed, auto?: boolean) => {
@@ -44,6 +45,7 @@ export const useCart = () => {
         quantity: qtyToSet
       } as ITemsTapmedNew)
     }
+    asyncCartUpdateToServer();
   }
 
 
@@ -54,6 +56,7 @@ export const useCart = () => {
 
   const removeFromCart = (productId: string) => {
     cart.value = cart.value.filter((item) => item.ma_vt !== productId)
+    asyncCartUpdateToServer();
   }
 
   const clearCart = () => {
@@ -74,6 +77,38 @@ export const useCart = () => {
     localStorage.setItem('cart_siduoc', JSON.stringify(newCart))
   }, { deep: true })
 
+  function asyncCartUpdateToServer() {
+    if (timeOut.value) clearTimeout(timeOut.value)
+    timeOut.value = window.setTimeout(async () => {
+      if (user.value) {
+        await useFetch(`/api/cart/${user.value?.data.ma_kh}`, {
+          method: 'POST',
+          body: JSON.stringify(cart.value),
+          // headers: {
+          //   'csrf-token': csrf || ''
+          // }
+        })
+      }
+    }, 1000)
+  }
+  watch(() => user.value?.data.ma_kh, (newToken) => {
+    if (newToken) {
+      // đồng bộ giỏ hàng từ server
+      useFetch<{
+        data: any[];
+      }>(`/api/cart/${user.value?.data.ma_kh}`, {
+        method: 'GET',
+        // headers: {
+        //   'csrf-token': csrf || ''
+        // }
+      }).then(({ data }) => {
+        if (data.value && Array.isArray(data.value.data)) {
+          cart.value = data.value.data;
+        }
+      })
+    }
+  });
+
   const initCartFromStorage = () => {
     const cartInStorage = localStorage.getItem('cart_siduoc');
     if (cartInStorage) {
@@ -91,6 +126,6 @@ export const useCart = () => {
     getQtyById,
     initCartFromStorage,
     totalProducts,
-    isCartEmpty
+    isCartEmpty,
   }
 }

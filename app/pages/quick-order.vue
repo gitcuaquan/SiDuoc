@@ -170,7 +170,7 @@ import {
 const { $appServices } = useNuxtApp();
 
 const { listFilter } = useFilter();
-const { isCartEmpty } = useCart();
+const { isCartEmpty  } = useCart();
 const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Đặt hàng nhanh" },
 ]);

@@ -175,8 +175,8 @@
 
   function addToCartPage() {
     if (!orderDetails.value?.data?.details) return;
-    const { addToCart, clearCart } = useCart();
-    clearCart();
+    const { addToCart } = useCart();
+
     orderDetails.value.data.details.forEach((item: any) => {
       item.quantity = item.so_luong as number;
       addToCart(item);

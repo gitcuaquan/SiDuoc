@@ -91,28 +91,22 @@ const { data: relatedNews, pending: relatedPending } = useFetch<{
   },
 });
 
-useSeoMeta({
-  title: () => `${data.value?.title || "Khuyến mãi"} | Sỉ Dược`,
-  ogTitle: () => data.value?.title || "Khuyến mãi",
-  description: () =>
-    data.value?.seo_content ||
-    "Xem chi tiết chương trình khuyến mãi từ Sỉ Dược",
-  ogImage: () => data.value?.thumbnail || "/images/final-medial.png",
-  ogImageAlt: () => data.value?.title || "Khuyến mãi",
-  ogDescription: () =>
-    data.value?.seo_content ||
-    "Xem chi tiết chương trình khuyến mãi từ Sỉ Dược",
-  keywords: () =>
-    data.value?.title
-      ? `${data.value.title}, khuyến mãi, ưu đãi, sỉ dược`
-      : "khuyến mãi, ưu đãi, sỉ dược",
-  author: "Sỉ Dược",
-  ogType: "article",
-});
-
+  // SEO Meta Tags - Dynamic for News Detail Page
+  useSeoMeta({
+    title: () => `${data.value?.seo_title || data.value?.title || 'Bài viết'} | Sỉ Dược`,
+    ogTitle: () => data.value?.seo_title || data.value?.title || 'Bài viết tin tức',
+    description: () => data.value?.seo_content || 'Xem chi tiết bài viết từ Sỉ Dược',
+    ogImage: () => data.value?.thumbnail || '/images/final-medial.png',
+    ogImageAlt: () => data.value?.seo_title || data.value?.title || 'Bài viết',
+    ogDescription: () => data.value?.seo_content || 'Xem chi tiết bài viết từ Sỉ Dược',
+    keywords: () => data.value?.seo_keywords || '',
+    author: 'Sỉ Dược',
+    ogType: 'article',
+  });
+  // Schema.org Product Structured Data
 useSchemaOrg({
   type: "Article",
-  name: data.value?.title || "Bài viết",
+  name:data.value?.seo_title || data.value?.title || "Bài viết",
   description: data.value?.seo_content || "Chi tiết bài viết từ Sỉ Dược",
   image: data.value?.thumbnail || "/images/final-medial.png",
   author: {
@@ -122,6 +116,7 @@ useSchemaOrg({
   headline: data.value?.title || "Bài viết",
   datePublished: data.value?.created_at || "",
   dateModified: data.value?.updated_at || "",
+  keywords: data.value?.seo_keywords || "",
 });
 </script>
 

@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     'nuxt-mongoose',
     '@nuxtjs/sitemap',
     '@nuxtjs/robots',
-    'nuxt-schema-org'
+    'nuxt-schema-org',
+    'nuxt-security',
   ],
   app: {
     head: {
@@ -48,7 +49,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBase: 'https://api-tapmed.sse.net.vn/api',
-      ADMIN_ID: process.env.ADMIN_ID
+      ADMIN_ID: process.env.ADMIN_ID,
+      API_KEY: process.env.API_KEY,
     }
   },
   build: {
@@ -67,5 +69,11 @@ export default defineNuxtConfig({
   },
   robots: {
     disallow: ['/auth/*'],
+  },
+  security: {
+   headers: {
+      contentSecurityPolicy: false,
+   },
+   csrf: false
   }
 })

@@ -18,7 +18,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
                 'Authorization': `Bearer ${token.value}`
             },
         });
-        console.log("🚀 ~ data=>", data.value?.data)
         if (error.value) {
             if (error.value.statusCode === 401 || error.value.statusCode === 403) {
                 clearToken();

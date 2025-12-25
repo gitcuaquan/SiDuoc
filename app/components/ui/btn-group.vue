@@ -8,8 +8,16 @@
     role="group"
     aria-label="Basic outlined example"
   >
-    <button @click="decrease" :disabled="localValue <= 0" type="button" class="btn rounded-end-0 rounded-1 d-flex align-items-center btn-outline-dark border-0">
-      <Minus :stroke-width="2" :size="size === 'sm' ? 14 : size === 'lg' ? 24 : 18" />
+    <button
+      @click="decrease"
+      :disabled="localValue <= 0"
+      type="button"
+      class="btn rounded-end-0 rounded-1 d-flex align-items-center btn-outline-dark border-0"
+    >
+      <Minus
+        :stroke-width="2"
+        :size="size === 'sm' ? 14 : size === 'lg' ? 24 : 18"
+      />
     </button>
     <input
       type="number"
@@ -23,15 +31,21 @@
         size === 'lg' ? 'form-control-lg input-number-lg' : '',
       ]"
     />
-    <button @click="increase" type="button" class="btn rounded-start-0 d-flex rounded-1 align-items-center btn-outline-dark border-0">
-      <Plus :stroke-width="2" :size="size === 'sm' ? 14 : size === 'lg' ? 24 : 18" />
+    <button
+      @click="increase"
+      type="button"
+      class="btn rounded-start-0 d-flex rounded-1 align-items-center btn-outline-dark border-0"
+    >
+      <Plus
+        :stroke-width="2"
+        :size="size === 'sm' ? 14 : size === 'lg' ? 24 : 18"
+      />
     </button>
   </div>
 </template>
 
 <script lang="ts" setup>
-
-type SizeType = 'sm' | 'md' | 'lg';
+type SizeType = "sm" | "md" | "lg";
 const props = defineProps({
   modelValue: {
     type: Number,
@@ -43,26 +57,28 @@ const props = defineProps({
   },
   size: {
     type: String as PropType<SizeType>,
-    default: 'md', // sm, md, lg
+    default: "md", // sm, md, lg
   },
 });
 
-const { isAuthenticated,togglePopupLogin } = useAuth();
+const { isAuthenticated, togglePopupLogin } = useAuth();
 const emit = defineEmits(["update:modelValue", "change"]);
 
 const localValue = ref(props.modelValue);
 
 // Khi prop thay đổi từ cha, cập nhật localValue
-watch(() => props.modelValue, (val) => {
-  // Keep localValue in sync with parent but ensure it's a number
-  const num = Number(val);
-  localValue.value = Number.isFinite(num) ? num : 0;
-});
+watch(
+  () => props.modelValue,
+  (val) => {
+    // Keep localValue in sync with parent but ensure it's a number
+    const num = Number(val);
+    localValue.value = Number.isFinite(num) ? num : 0;
+  }
+);
 
-watch(localValue, (newVal) => {
-
-
-});
+// watch(localValue, (newVal) => {
+//   asyncCartUpdateToServer();
+// });
 const onInput = () => {
   // Parse the typed value; if it's not a valid number, don't emit (prevents accidental resets)
   const numeric = Number(localValue.value);
@@ -72,7 +88,7 @@ const onInput = () => {
 };
 
 const increase = () => {
-  if(!isAuthenticated.value){
+  if (!isAuthenticated.value) {
     useToast().error("Vui lòng đăng nhập để đặt hàng");
     togglePopupLogin();
     return;
@@ -84,7 +100,7 @@ const increase = () => {
   }
 };
 const decrease = () => {
-  if(!isAuthenticated.value){
+  if (!isAuthenticated.value) {
     useToast().error("Vui lòng đăng nhập để đặt hàng");
     togglePopupLogin();
     return;

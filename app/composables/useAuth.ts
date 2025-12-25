@@ -2,6 +2,7 @@
 import type { CustomerDetail, CustomerResponse } from "~/model/customer/Customer";
 
 export const useAuth = () => {
+
   const NAME_TOKEN_IN_COOKIE = 'tapmed_token_access';
 
   const token = useCookie<string | null>(NAME_TOKEN_IN_COOKIE);
@@ -38,6 +39,12 @@ export const useAuth = () => {
   const togglePopupRegister = () => {
     showRegister.value = !showRegister.value;
   };
+
+  watch(() => user.value?.data.ma_kh, (newToken) => {
+    if (!newToken) {
+      clearUser();
+    }
+  });
 
   return {
     isAuthenticated,

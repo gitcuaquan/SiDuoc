@@ -27,6 +27,7 @@
     "nuxt": "^4.2.0",
     "nuxt-mongoose": "^1.0.6",
     "nuxt-schema-org": "^5.0.10",
+    "nuxt-security": "^2.5.0",
     "nuxt-swiper": "^2.0.1",
     "sass": "^1.91.0",
     "sass-embedded": "^1.91.0",
