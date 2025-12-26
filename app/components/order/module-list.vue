@@ -42,7 +42,7 @@
               </small>
 
               <div class="vr d-none d-md-block"></div>
-              <small>
+              <small v-if="product.han_sd_web">
                 HSD :
                 <strong class="text-danger text-opacity-75 fw-normal">
                   {{
