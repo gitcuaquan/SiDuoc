@@ -79,7 +79,7 @@ const sidebarItems = [
   // { icon: PackageSearch, label: "Sản phẩm yêu thích", to: "/auth/product-top" },
   {
     icon: Newspaper,
-    label: "Quản lý tin tức",
+    label: "Quản lý bài viết",
     to: "/auth/news",
     is_manager: true,
   },

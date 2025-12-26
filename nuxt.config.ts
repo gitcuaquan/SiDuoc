@@ -71,9 +71,10 @@ export default defineNuxtConfig({
     disallow: ['/auth/*'],
   },
   security: {
-   headers: {
+    headers: {
       contentSecurityPolicy: false,
-   },
-   csrf: false
+    },
+    xssValidator: false
+
   }
 })

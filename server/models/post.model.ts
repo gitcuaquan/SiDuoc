@@ -14,7 +14,7 @@ export const Post = defineMongooseModel({
         category: {
             type: 'string',
             required: true,
-            enum: ['news', 'promotion'],
+            enum: ['news', 'promotion','policy'],
         },
         content: {
             type: 'string',

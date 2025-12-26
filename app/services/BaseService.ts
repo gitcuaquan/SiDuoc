@@ -45,13 +45,12 @@ export default class BaseService {
             }
 
             // Tự động set Content-Type nếu có body
-            if (body) {
-                if (!requestHeaders['Content-Type']) {
-                    requestHeaders['Content-Type'] = 'application/json'
-                }
-            }
-            // const { csrf } = useCsrf();
-            // requestHeaders['csrf-token'] = csrf || '';
+            // if (body) {
+            //     if (!requestHeaders['Content-Type']) {
+            //         requestHeaders['Content-Type'] = 'application/json'
+            //     }
+            // }
+
 
             return await $fetch<T>(`${this.baseUrl}${endpoint}`, {
                 method,

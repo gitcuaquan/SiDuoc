@@ -20,6 +20,7 @@ export const useCart = () => {
     // Nếu quantity <= 0 => xóa khỏi giỏ
     if (inputQty <= 0 && !auto) {
       removeFromCart(productId)
+
       return
     }
 
@@ -27,11 +28,12 @@ export const useCart = () => {
       if (auto) {
         // tăng +1
         existingProduct.quantity = (existingProduct.quantity || 0) + 1
+        asyncCartUpdateToServer();
       } else {
         // cập nhật số lượng mới
         existingProduct.quantity = inputQty
+        asyncCartUpdateToServer();
       }
-
       // Nếu sau cập nhật mà <= 0 thì xóa khỏi giỏ
       if (existingProduct.quantity <= 0) {
         removeFromCart(productId)
@@ -44,8 +46,8 @@ export const useCart = () => {
         ...product,
         quantity: qtyToSet
       } as ITemsTapmedNew)
+      asyncCartUpdateToServer();
     }
-    asyncCartUpdateToServer();
   }
 
 

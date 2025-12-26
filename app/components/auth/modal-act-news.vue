@@ -41,7 +41,7 @@
                 </label>
                 <shared-editor v-model="newsObject.content" />
               </div>
-              <div class="mb-3">
+              <div class="mb-3" v-if="newsObject.category != 'policy'">
                 <label for="seoContent" class="form-label">Tiêu đề SEO</label>
                 <input
                   type="text"
@@ -51,7 +51,7 @@
                   placeholder="Nhập tiêu đề SEO bài viết"
                 />
               </div>
-              <div>
+              <div v-if="newsObject.category != 'policy'">
                 <label for="seoContent" class="form-label">Nội dung SEO</label>
                 <textarea
                   name="seoContent"
@@ -78,7 +78,7 @@
                   </label>
                 </div>
               </div>
-              <div class="mb-3">
+              <div class="mb-3" v-if="newsObject.category != 'policy'">
                 <label class="form-label"> Hiển thị lên trang chủ </label>
                 <div class="form-check form-switch">
                   <input
@@ -105,9 +105,10 @@
                 >
                   <option value="news">Tin tức</option>
                   <option value="promotion">Khuyến mãi</option>
+                  <option value="policy">Chính sách</option>
                 </select>
               </div>
-              <div class="mb-3">
+              <div class="mb-3" v-if="newsObject.category != 'policy'">
                 <label class="form-label"> Ảnh đại diện bài viết </label>
                 <shared-module-upload
                   :ratio="'16x9'"
@@ -116,7 +117,7 @@
                   :placeholder="'Tải ảnh đại diện bài viết (.jpg, .png) tỷ lệ 16x9'"
                 />
               </div>
-              <div>
+              <div v-if="newsObject.category != 'policy'">
                 <label for="seoKeywords" class="form-label">
                   Từ khóa SEO (ngăn cách bởi dấu ,)
                 </label>
