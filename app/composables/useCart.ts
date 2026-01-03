@@ -13,10 +13,10 @@ export const useCart = () => {
   const addToCart = (product: ITemsTapmed, auto?: boolean) => {
   
     const slToiDa = product.sl_toi_da || 0;
-    console.log("🚀 ~ addToCart ~ slToiDa:", slToiDa)
+
     // Kiểm tra nếu có sl_toi_da và số lượng hiện tại đã đạt giới hạn
     const currentQty = cart.value.find(item => item.ma_vt.trim() === product.ma_vt.trim())?.quantity || 0;
-    console.log("🚀 ~ addToCart ~ currentQty:", currentQty)
+
     if (slToiDa > 0 && currentQty >= slToiDa) {
       // Có thể hiển thị thông báo cho người dùng biết đã đạt giới hạn
       useToast().error(`Số lượng tối đa cho sản phẩm này là ${slToiDa}.`);
