@@ -11,6 +11,17 @@ export const useCart = () => {
   const cart = useState<ITemsTapmedNew[]>('cart', () => [])
 
   const addToCart = (product: ITemsTapmed, auto?: boolean) => {
+  
+    const slToiDa = product.sl_toi_da || 0;
+    console.log("🚀 ~ addToCart ~ slToiDa:", slToiDa)
+    // Kiểm tra nếu có sl_toi_da và số lượng hiện tại đã đạt giới hạn
+    const currentQty = cart.value.find(item => item.ma_vt.trim() === product.ma_vt.trim())?.quantity || 0;
+    console.log("🚀 ~ addToCart ~ currentQty:", currentQty)
+    if (slToiDa > 0 && currentQty >= slToiDa) {
+      // Có thể hiển thị thông báo cho người dùng biết đã đạt giới hạn
+      useToast().error(`Số lượng tối đa cho sản phẩm này là ${slToiDa}.`);
+      return; // Không thêm vào giỏ hàng nữa
+    }
     const productId = product.ma_vt.trim()
     const existingProduct = cart.value.find(item => item.ma_vt.trim() === productId)
 
@@ -20,7 +31,6 @@ export const useCart = () => {
     // Nếu quantity <= 0 => xóa khỏi giỏ
     if (inputQty <= 0 && !auto) {
       removeFromCart(productId)
-
       return
     }
 
@@ -63,6 +73,7 @@ export const useCart = () => {
 
   const clearCart = () => {
     cart.value = []
+    asyncCartUpdateToServer();
   }
 
   const totalProducts = computed(() => cart.value.length)
