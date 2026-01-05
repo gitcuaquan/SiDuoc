@@ -233,9 +233,8 @@ function addToCartPage() {
   } else {
     useToast().success("Đã thêm vào giỏ hàng");
   }
-
   detailProduct.value.data.quantity = finalQty;
-  addToCart(detailProduct.value.data);
+  const status =  addToCart(detailProduct.value.data);
 }
 
 // SEO Meta Tags - Dynamic for Product Detail Page

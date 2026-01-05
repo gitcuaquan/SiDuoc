@@ -60,7 +60,12 @@ export default class ItemService extends BaseService {
         const resp = await this.post('/nhtkd', JSON.stringify(filters || {}));
         return new BaseResponse<T>(resp);
     }
-    // async getFeatured(param?: BaseParameters): Promise<BaseResponse<ITemsTapmed>> {
-    //     return this.get('/list/product_top', param);
-    // }
+    async getPhanLoaiVt<T = any>() {
+        const resp = await this.get('/GetPhanLoaiVT');
+        return new BaseResponse<T>(resp);
+    }
+    async getPhanNhomVt<T = any>() {
+        const resp = await this.get('/GetPhanNhomVT');
+        return new BaseResponse<T>(resp);
+    }
 }

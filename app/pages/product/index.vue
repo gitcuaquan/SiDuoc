@@ -9,95 +9,100 @@
             <input
               v-model="keyword"
               type="text"
-              class="form-control"
+              class="form-control form-control-sm"
               placeholder="Tìm kiếm sản phẩm..."
             />
             <!-- Offcanvas trigger (mobile only) -->
             <button
-              class="btn h-100 d-block d-lg-none btn-outline-secondary"
+              class="btn h-100 d-block btn-sm d-lg-none btn-outline-secondary"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#nhomOffcanvas"
               aria-controls="nhomOffcanvas"
             >
-              <Funnel :size="16" />
+              <Funnel :size="14" />
             </button>
           </div>
         </div>
+
+        <!-- Desktop filters -->
         <div class="d-none d-lg-block">
-          <div
-            v-if="loadingNhomVt"
-            class="text-center d-flex justify-content-center align-items-center w-100 p-5 my-3"
-          >
-            <ui-loading />
-          </div>
-          <div
-            v-else
-            class="accordion accordion-flush"
-            id="nhomAccordionDesktop"
-          >
-            <div
-              class="accordion-item"
-              v-for="(value, name, nhIndex) in listNhomVatTuGrouped"
-              :key="`mobile-${name}-${nhIndex}`"
+          <label class="form-label fw-bold"> Lọc theo phân loại </label>
+          <div class="d-flex flex-wrap gap-2">
+            <input
+              type="radio"
+              class="btn-check"
+              v-model="phanLoaiVtSelected"
+              :value="null"
+              name="phan-loai-vt-dt"
+              id="plvt-dt-all"
+              autocomplete="off"
+            />
+            <label
+              class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
+              for="plvt-dt-all"
             >
-              <h2 class="accordion-header" :id="`heading-mobile-${nhIndex}`">
-                <button
-                  class="accordion-button px-2 collapsed text-capitalize fw-bold"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  :data-bs-target="`#collapse-mobile-${nhIndex}`"
-                  :aria-expanded="nhIndex === 0 ? 'true' : 'false'"
-                  :aria-controls="`collapse-mobile-${nhIndex}`"
-                >
-                  <Funnel :size="16" :stroke-width="1" class="me-2" />
-                  {{ name }}
-                </button>
-              </h2>
-              <div
-                :id="`collapse-mobile-${nhIndex}`"
-                :class="[
-                  'accordion-collapse',
-                  'mb-1',
-                  'collapse',
-                  nhIndex === 0 ? 'show' : '',
-                ]"
-                :aria-labelledby="`heading-mobile-${nhIndex}`"
-                data-bs-parent="#nhomAccordionMobile"
+              Tất cả loại thuốc
+            </label>
+
+            <template v-for="value in phanLoaiVt" :key="value.ma_plvt">
+              <input
+                type="radio"
+                class="btn-check"
+                v-model="phanLoaiVtSelected"
+                :value="value.ma_plvt"
+                name="phan-loai-vt-dt"
+                :id="`plvt-dt-${value.ma_plvt}`"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
+                :for="`plvt-dt-${value.ma_plvt}`"
               >
-                <div
-                  class="accordion-body py-0 pt-1 px-2 overflow-auto"
-                  style="max-height: 700px"
-                >
-                  <template v-if="value && value.length">
-                    <div
-                      v-for="nhom in value"
-                      :key="`mobile-${nhom.ma_nh}`"
-                      class="form-check w-100"
-                    >
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        :name="`nhom-vat-tu`"
-                        @input="toggleNhomVt(nhom)"
-                        :id="`radio-mobile-${nhIndex}-${nhom.ma_nh}`"
-                      />
-                      <label
-                        class="form-check-label"
-                        :for="`radio-mobile-${nhIndex}-${nhom.ma_nh}`"
-                      >
-                        <small>{{ nhom.ten_nh }}</small>
-                      </label>
-                    </div>
-                  </template>
-                  <template v-else>
-                    <div class="text-muted small">Không có mục</div>
-                  </template>
-                </div>
-              </div>
-            </div>
+                {{ value.ten_plvt }}
+              </label>
+            </template>
           </div>
+
+          <label class="form-label fw-bold mt-3"> Lọc theo phân nhóm </label>
+          <ul class="list-unstyled">
+            <li class="mb-1">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  v-model="phanNhomVtSelected"
+                  :value="null"
+                  name="nhom-vat-tu-dt"
+                  id="nhom-vt-dt-all"
+                />
+                <label class="form-check-label" for="nhom-vt-dt-all">
+                  <small> Tất cả nhóm thuốc</small>
+                </label>
+              </div>
+            </li>
+
+            <li v-for="value in phanNhomVt" :key="value.ma_pnvt" class="mb-1">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  v-model="phanNhomVtSelected"
+                  :value="value.ma_pnvt"
+                  name="nhom-vat-tu-dt"
+                  :id="`nhom-vt-dt-${value.ma_pnvt}`"
+                />
+                <label
+                  class="form-check-label"
+                  :for="`nhom-vt-dt-${value.ma_pnvt}`"
+                >
+                  <small> {{ value.ten_pnvt }}</small>
+                </label>
+              </div>
+            </li>
+          </ul>
         </div>
+
         <!-- Mobile offcanvas with accordion duplicate (visible on small screens) -->
         <div
           class="offcanvas offcanvas-start d-lg-none"
@@ -115,65 +120,87 @@
             ></button>
           </div>
           <div class="offcanvas-body">
-            <div class="accordion accordion-flush" id="nhomAccordionMobile">
-              <div
-                class="accordion-item"
-                v-for="(value, name, nhIndex) in listNhomVatTuGrouped"
-                :key="`mobile-${name}-${nhIndex}`"
+            <label class="form-label fw-bold"> Lọc theo phân loại </label>
+            <div class="d-flex flex-wrap gap-2">
+              <input
+                type="radio"
+                class="btn-check"
+                v-model="phanLoaiVtSelected"
+                :value="null"
+                name="phan-loai-vt-mb"
+                id="plvt-mb-all"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
+                for="plvt-mb-all"
               >
-                <h2 class="accordion-header" :id="`heading-mobile-${nhIndex}`">
-                  <button
-                    class="accordion-button px-2 collapsed text-capitalize fw-bold"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    :data-bs-target="`#collapse-mobile-${nhIndex}`"
-                    :aria-expanded="nhIndex === 0 ? 'true' : 'false'"
-                    :aria-controls="`collapse-mobile-${nhIndex}`"
-                  >
-                    <Funnel :size="16" :stroke-width="1" class="me-2" />
-                    {{ name }}
-                  </button>
-                </h2>
-                <div
-                  :id="`collapse-mobile-${nhIndex}`"
-                  :class="[
-                    'accordion-collapse',
-                    'mb-1',
-                    'collapse',
-                    nhIndex === 0 ? 'show' : '',
-                  ]"
-                  :aria-labelledby="`heading-mobile-${nhIndex}`"
-                  data-bs-parent="#nhomAccordionMobile"
+                Tất cả loại thuốc
+              </label>
+
+              <template
+                v-for="value in phanLoaiVt"
+                :key="`mb-${value.ma_plvt}`"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  v-model="phanLoaiVtSelected"
+                  :value="value.ma_plvt"
+                  name="phan-loai-vt-mb"
+                  :id="`plvt-mb-${value.ma_plvt}`"
+                  autocomplete="off"
+                />
+                <label
+                  class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
+                  :for="`plvt-mb-${value.ma_plvt}`"
                 >
-                  <div class="accordion-body py-0 pt-1 px-2">
-                    <template v-if="value && value.length">
-                      <div
-                        v-for="nhom in value"
-                        :key="`mobile-${nhom.ma_nh}`"
-                        class="form-check w-100"
-                      >
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          :name="`nhom-vat-tu`"
-                          @input="toggleNhomVt(nhom)"
-                          :id="`radio-mobile-${nhIndex}-${nhom.ma_nh}`"
-                        />
-                        <label
-                          class="form-check-label"
-                          :for="`radio-mobile-${nhIndex}-${nhom.ma_nh}`"
-                        >
-                          <small>{{ nhom.ten_nh }}</small>
-                        </label>
-                      </div>
-                    </template>
-                    <template v-else>
-                      <div class="text-muted small">Không có mục</div>
-                    </template>
-                  </div>
-                </div>
-              </div>
+                  {{ value.ten_plvt }}
+                </label>
+              </template>
             </div>
+
+            <label class="form-label fw-bold mt-3"> Lọc theo phân nhóm </label>
+            <ul class="list-unstyled">
+              <li class="mb-1">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    v-model="phanNhomVtSelected"
+                    :value="null"
+                    name="nhom-vat-tu-mb"
+                    id="nhom-vt-mb-all"
+                  />
+                  <label class="form-check-label" for="nhom-vt-mb-all">
+                    <small> Tất cả nhóm thuốc</small>
+                  </label>
+                </div>
+              </li>
+
+              <li
+                v-for="value in phanNhomVt"
+                :key="`mb-pn-${value.ma_pnvt}`"
+                class="mb-1"
+              >
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    v-model="phanNhomVtSelected"
+                    :value="value.ma_pnvt"
+                    name="nhom-vat-tu-mb"
+                    :id="`nhom-vt-mb-${value.ma_pnvt}`"
+                  />
+                  <label
+                    class="form-check-label"
+                    :for="`nhom-vt-mb-${value.ma_pnvt}`"
+                  >
+                    <small> {{ value.ten_pnvt }}</small>
+                  </label>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -210,9 +237,10 @@
                 >
                   <div class="card-title m-0 text-dark">{{ item.ten_vt }}</div>
                 </nuxt-link>
-                <div class="fw-bold">
-
-                  <small class="text-primary">{{
+                <div>
+                  Giá:
+                  <small class="text-primary">
+                    {{
                     formatCurrency(item.gia_nt2)
                   }}</small>
                 </div>
@@ -228,7 +256,7 @@
           </div>
         </div>
         <div v-if="!pending && !data?.items.length" class="pt-5">
-          <ui-empty class="mx-auto" />
+          <ui-empty class="mx-auto w-50" />
           <div class="text-center text-muted mt-3">
             Không có sản phẩm nào phù hợp
           </div>
@@ -253,6 +281,7 @@ import {
   type ITemsTapmed,
   type ProjectConfig,
 } from "~/model";
+import type { PhanLoaiVT, PhanNhomVT } from "~/model/item/ITemsTapmed";
 
 // SEO Meta Tags for Product List Page
 useSeoMeta({
@@ -275,20 +304,45 @@ const { isAuthenticated, togglePopupLogin } = useAuth();
 
 const keyword = useDebouncedRef("", 500);
 const nhomVtSleected = ref<Array<Item.NhomVatTu>>([]);
-const loaiNhomVatTuOptions = [
-  { value: Item.LoaiNhomVatTu.PhanNhom, label: "Phân nhóm" },
-  // { value: Item.LoaiNhomVatTu.CongDung, label: "Công dụng" },
-  // { value: Item.LoaiNhomVatTu.PhanLoai, label: "Phân loại" },
-  // { value: Item.LoaiNhomVatTu.NguonGoc, label: "Nguồn gốc" },
-  // { value: Item.LoaiNhomVatTu.QuyCach, label: "Quy cách" },
-];
-const loadingNhomVt = ref(false);
 
-const filterNhomVt = ref(
-  new BodyFilter<Item.NhomVatTu>({
-    pageIndex: 1,
-    pageSize: 1000,
-  })
+const phanLoaiVt = ref<Array<PhanLoaiVT>>([]);
+const phanNhomVt = ref<Array<PhanNhomVT>>([]);
+
+const phanLoaiVtSelected = ref<any>(null);
+watch(
+  () => phanLoaiVtSelected.value,
+  (newVal) => {
+    console.log("Phân loại VT đã chọn:", newVal);
+    filterListProduct.value.pageIndex = 1;
+    if (newVal) {
+      filterListProduct.value.setValue("ma_plvt", newVal, OperatorType.Equal);
+    } else {
+      // Nếu không có phân loại nào được chọn, loại bỏ bộ lọc
+      filterListProduct.value.filters = filterListProduct.value.filters.filter(
+        (filter) => filter.filterValue !== "ma_plvt"
+      );
+    }
+    refresh(); // Gọi lại API khi giá trị thay đổi
+  },
+  { deep: true }
+);
+const phanNhomVtSelected = ref<any>(null);
+watch(
+  () => phanNhomVtSelected.value,
+  (newVal) => {
+    console.log("Phân nhóm VT đã chọn:", newVal);
+    filterListProduct.value.pageIndex = 1;
+    if (newVal) {
+      filterListProduct.value.setValue("ma_pnvt", newVal, OperatorType.Equal);
+    } else {
+      // Nếu không có phân nhóm nào được chọn, loại bỏ bộ lọc
+      filterListProduct.value.filters = filterListProduct.value.filters.filter(
+        (filter) => filter.filterValue !== "ma_pnvt"
+      );
+    }
+    refresh(); // Gọi lại API khi giá trị thay đổi
+  },
+  { deep: true }
 );
 
 const filterListProduct = ref(
@@ -304,18 +358,20 @@ const filterListProduct = ref(
     ],
   })
 );
-const listNhomVatTu = ref<Array<Item.NhomVatTu>>([]);
+// const listNhomVatTu = ref<Array<Item.NhomVatTu>>([]);
 
-const listNhomVatTuGrouped = computed(() => {
-  const grouped: Record<string, Array<Item.NhomVatTu>> = {};
-  for (const option of loaiNhomVatTuOptions) {
-    grouped[option.label] = listNhomVatTu.value.filter(
-      (nhom) => nhom.loai_nh === option.value
-    );
-  }
-  return grouped;
-});
-
+// const listNhomVatTuGrouped = computed(() => {
+//   const grouped: Record<string, Array<Item.NhomVatTu>> = {};
+//   for (const option of loaiNhomVatTuOptions) {
+//     grouped[option.label] = listNhomVatTu.value.filter(
+//       (nhom) => nhom.loai_nh === option.value
+//     );
+//   }
+//   return grouped;
+// });
+/**
+ * Lắng nghe thay đổi từ keyword để gọi lại API
+ */
 watch(
   () => [keyword.value],
   () => {
@@ -330,6 +386,9 @@ watch(
   { deep: true }
 );
 
+/**
+ * Lấy danh sách sản phẩm
+ */
 const { data, pending, refresh } = useAsyncData(
   "get-list-product",
   async () => {
@@ -345,22 +404,48 @@ const { data, pending, refresh } = useAsyncData(
     };
   }
 );
+
 onMounted(() => {
-  getNhomVatTu();
+  // nhaCungCapVt();
+  getPhanNhomVt();
+  getPhanLoaiVt();
 });
-async function getNhomVatTu() {
-  loadingNhomVt.value = true;
+
+/**
+ * Lấy danh sách nhóm vật tư
+ */
+// async function nhaCungCapVt() {
+//   loadingNhomVt.value = true;
+//   try {
+//     const response = await $appServices.items.getNhomVatTu<Item.NhomVatTu>(
+//       filterNhomVt.value
+//     );
+//     console.log("🚀 ~ nhaCungCapVt ~ response=>", response);
+//     listNhomVatTu.value = response.getData || [];
+//   } catch (error) {
+//     console.error("Error fetching Nhom Vat Tu:", error);
+//   } finally {
+//     loadingNhomVt.value = false;
+//   }
+// }
+
+async function getPhanNhomVt() {
   try {
-    const response = await $appServices.items.getNhomVatTu<Item.NhomVatTu>(
-      filterNhomVt.value
-    );
-    listNhomVatTu.value = response.getData || [];
+    const response = await $appServices.items.getPhanNhomVt<PhanNhomVT>();
+    phanNhomVt.value = response.getData || [];
   } catch (error) {
-    console.error("Error fetching Nhom Vat Tu:", error);
-  } finally {
-    loadingNhomVt.value = false;
+    console.error("Error fetching Phan Nhom VT:", error);
   }
 }
+async function getPhanLoaiVt() {
+  try {
+    const response = await $appServices.items.getPhanLoaiVt<PhanLoaiVT>();
+    phanLoaiVt.value = response.getData || [];
+  } catch (error) {
+    console.error("Error fetching Phan Loai VT:", error);
+  }
+}
+
 function onPageChange(newPage: number) {
   filterListProduct.value.pageIndex = newPage;
   window.scrollTo(0, 0);
@@ -406,7 +491,7 @@ function fncAddToCart(item: ITemsTapmed) {
     return;
   }
   item.quantity = 1;
- const status =  addToCart(item, true);
+  const status = addToCart(item, true);
   if (status !== false) {
     useToast().success("Đã thêm vào giỏ hàng");
   }
@@ -443,5 +528,17 @@ function fncAddToCart(item: ITemsTapmed) {
 .card:hover .card-action {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.137);
   top: 0 !important;
+}
+.btn-check:checked + .btn,
+:not(.btn-check) + .btn:active,
+.btn:first-child:active,
+.btn.active,
+.btn.show {
+  color: white !important;
+  background-color: var(--bs-btn-active-bg);
+  border-color: var(--bs-btn-active-border-color);
+}
+.badge {
+  color: var(--bs-primary) !important;
 }
 </style>

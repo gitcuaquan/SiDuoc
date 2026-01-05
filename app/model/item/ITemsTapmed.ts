@@ -182,3 +182,13 @@ export const StatusGiaoVan = [
     "Đã giao",
     "Thất bại"
 ]
+
+export type PhanLoaiVT = {
+    ma_plvt: string;
+    ten_plvt: string;
+}
+
+export type PhanNhomVT = {
+    ma_pnvt: string;
+    ten_pnvt: string;
+}

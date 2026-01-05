@@ -45,7 +45,7 @@ watch(() => cart.value, (newCart) => {
     // Nếu quantity <= 0 => xóa khỏi giỏ
     if (inputQty <= 0 && !auto) {
       removeFromCart(productId);
-      return;
+      return true;
     }
 
     // Số lượng sẽ set sau khi thao tác
@@ -68,6 +68,7 @@ watch(() => cart.value, (newCart) => {
       if (existingProduct.quantity <= 0) {
         removeFromCart(productId);
       }
+      return true;
     } else {
       cart.value.push({
         ...product,
@@ -75,6 +76,7 @@ watch(() => cart.value, (newCart) => {
         quantity: desiredQty,
       } as ITemsTapmedNew);
       asyncCartUpdateToServer();
+      return true;
     }
   };
 

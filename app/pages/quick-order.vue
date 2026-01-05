@@ -51,12 +51,6 @@
                     @click="showMoreFilters = true"
                     class="btn-sm btn btn-light position-relative shadow-sm border"
                   >
-                    <span
-                      class="position-absolute top-0 start-100 translate-middle lh-sm badge rounded-pill bg-danger"
-                    >
-                      {{ listFilter.length }}
-                      <span class="visually-hidden">Filter count</span>
-                    </span>
                     <Funnel :size="16" />
                   </button>
                 </div>
@@ -170,7 +164,7 @@ import {
 const { $appServices } = useNuxtApp();
 
 const { listFilter } = useFilter();
-const { isCartEmpty  } = useCart();
+const { isCartEmpty } = useCart();
 const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Đặt hàng nhanh" },
 ]);
@@ -317,13 +311,12 @@ async function getNhaSX() {
 }
 
 async function getListProduct() {
-  const moreFilters = buildFilter();
+  // const moreFilters = buildFilter();
   const deepCloneFilter = JSON.parse(
     JSON.stringify(filterListProduct.value)
   ) as BodyFilter<ITemsTapmed>;
   pageState.loading = true;
   try {
-    deepCloneFilter.filters = deepCloneFilter.filters.concat(moreFilters);
     const response = await $appServices.items.getItems(deepCloneFilter);
     pageState.listProduct = response;
   } catch (error) {
@@ -333,24 +326,48 @@ async function getListProduct() {
   }
 }
 
-function buildFilter() {
-  const _filter: FilterItem<ITemsTapmed>[] = [];
-  for (const item of listFilter.value) {
-    Object.entries(item).forEach(([key, value]) => {
-      if (key !== "ten_nh") {
-        _filter.push(
-          new FilterItem<ITemsTapmed>({
-            filterValue: key as keyof ITemsTapmed,
-            operatorType: OperatorType.Equal,
-            valueSearch: value.toString(),
-          })
-        );
-      }
-    });
+// function buildFilter() {
+//   const _filter: FilterItem<ITemsTapmed>[] = [];
+//   for (const item of listFilter.value) {
+//     Object.entries(item).forEach(([key, value]) => {
+//       if (key !== "ten_nh") {
+//         _filter.push(
+//           new FilterItem<ITemsTapmed>({
+//             filterValue: key as keyof ITemsTapmed,
+//             operatorType: OperatorType.Equal,
+//             valueSearch: value.toString(),
+//           })
+//         );
+//       }
+//     });
+//   }
+//   return _filter;
+// }
+function applyFilter({
+  phanLoaiVtSelected,
+  phanNhomVtSelected,
+}: {
+  phanLoaiVtSelected: any;
+  phanNhomVtSelected: any;
+}) {
+  if (phanLoaiVtSelected != null) {
+    filterListProduct.value.setValue(
+      "ma_plvt",
+      String(phanLoaiVtSelected),
+      OperatorType.Equal
+    );
+  } else {
+    filterListProduct.value.removeFilter("ma_plvt");
   }
-  return _filter;
-}
-function applyFilter() {
+  if (phanNhomVtSelected != null) {
+    filterListProduct.value.setValue(
+      "ma_pnvt",
+      String(phanNhomVtSelected),
+      OperatorType.Equal
+    );
+  } else {
+    filterListProduct.value.removeFilter("ma_pnvt");
+  }
   getListProduct();
 }
 
