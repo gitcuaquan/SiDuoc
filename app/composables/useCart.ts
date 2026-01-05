@@ -10,55 +10,73 @@ export const useCart = () => {
   let timeOut = ref<any>("")
   const cart = useState<ITemsTapmedNew[]>('cart', () => [])
 
-  const addToCart = (product: ITemsTapmed, auto?: boolean) => {
-  
-    const slToiDa = product.sl_toi_da || 0;
-
-    // Kiểm tra nếu có sl_toi_da và số lượng hiện tại đã đạt giới hạn
-    const currentQty = cart.value.find(item => item.ma_vt.trim() === product.ma_vt.trim())?.quantity || 0;
-
-    if (slToiDa > 0 && currentQty >= slToiDa) {
-      // Có thể hiển thị thông báo cho người dùng biết đã đạt giới hạn
-      useToast().error(`Số lượng tối đa cho sản phẩm này là ${slToiDa}.`);
-      return; // Không thêm vào giỏ hàng nữa
+watch(() => cart.value, (newCart) => {
+  let changed = false
+  newCart.forEach((item) => {
+    const max = Number(item.sl_toi_da) || 0
+    const qty = Number(item.quantity) || 0
+    
+    if (max > 0 && qty > max) {
+      item.quantity = max
+      useToast().error(`Số lượng tối đa cho sản phẩm là ${max}.`)
+      changed = true
     }
-    const productId = product.ma_vt.trim()
-    const existingProduct = cart.value.find(item => item.ma_vt.trim() === productId)
+    
+    if (qty < 0) {
+      item.quantity = 0
+      changed = true
+    }
+  })
+  
+  if (changed) {
+    cart.value = [...newCart]
+  }
+  asyncCartUpdateToServer()
+}, { deep: true })
+
+  const addToCart = (product: ITemsTapmed, auto?: boolean) => {
+    const slToiDa = product.sl_toi_da || 0;
+    const productId = product.ma_vt.trim();
+    const existingProduct = cart.value.find((item) => item.ma_vt.trim() === productId);
 
     // Lấy quantity từ product, đảm bảo luôn là số hợp lệ
-    const inputQty = Number(product.quantity) || 0
+    const inputQty = Number(product.quantity) || 0;
 
     // Nếu quantity <= 0 => xóa khỏi giỏ
     if (inputQty <= 0 && !auto) {
-      removeFromCart(productId)
-      return
+      removeFromCart(productId);
+      return;
+    }
+
+    // Số lượng sẽ set sau khi thao tác
+    const desiredQty = existingProduct
+      ? auto
+        ? (existingProduct.quantity || 0) + 1
+        : inputQty
+      : auto
+        ? 1
+        : Math.max(inputQty, 1);
+
+    if (slToiDa > 0 && desiredQty > slToiDa) {
+      useToast().error(`Số lượng tối đa cho sản phẩm này là ${slToiDa}.`);
+      return false;
     }
 
     if (existingProduct) {
-      if (auto) {
-        // tăng +1
-        existingProduct.quantity = (existingProduct.quantity || 0) + 1
-        asyncCartUpdateToServer();
-      } else {
-        // cập nhật số lượng mới
-        existingProduct.quantity = inputQty
-        asyncCartUpdateToServer();
-      }
-      // Nếu sau cập nhật mà <= 0 thì xóa khỏi giỏ
+      existingProduct.quantity = desiredQty;
+      asyncCartUpdateToServer();
       if (existingProduct.quantity <= 0) {
-        removeFromCart(productId)
+        removeFromCart(productId);
       }
     } else {
-      // Nếu chưa có và auto = true → mặc định quantity = 1
-      const qtyToSet = auto ? 1 : Math.max(inputQty, 1)
-
       cart.value.push({
         ...product,
-        quantity: qtyToSet
-      } as ITemsTapmedNew)
+        sl_toi_da: product.sl_toi_da,
+        quantity: desiredQty,
+      } as ITemsTapmedNew);
       asyncCartUpdateToServer();
     }
-  }
+  };
 
 
   const getQtyById = (productId: string) => {
@@ -68,6 +86,7 @@ export const useCart = () => {
 
   const removeFromCart = (productId: string) => {
     cart.value = cart.value.filter((item) => item.ma_vt !== productId)
+    useToast().success('Đã xóa sản phẩm khỏi giỏ hàng.')
     asyncCartUpdateToServer();
   }
 
@@ -97,13 +116,11 @@ export const useCart = () => {
         await useFetch(`/api/cart/${user.value?.data.ma_kh}`, {
           method: 'POST',
           body: JSON.stringify(cart.value),
-          // headers: {
-          //   'csrf-token': csrf || ''
-          // }
         })
       }
     }, 1000)
   }
+  
   watch(() => user.value?.data.ma_kh, (newToken) => {
     if (newToken) {
       // đồng bộ giỏ hàng từ server

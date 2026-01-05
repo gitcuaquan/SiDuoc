@@ -63,6 +63,7 @@
             </div>
             <div class="d-lg-none mt-2">
               <UiBtnGroup
+                :max="(product.sl_toi_da || 0) == 0 ? 9999999 : product.sl_toi_da"
                 size="sm"
                 v-model="product.quantity"
                 @change="($event) => changeQuantity(product, $event)"
@@ -71,6 +72,7 @@
           </td>
           <td style="width: 10px" class="d-none d-md-table-cell">
             <UiBtnGroup
+              :max="(product.sl_toi_da || 0) == 0 ? 9999999 : product.sl_toi_da"
               size="sm"
               v-model="product.quantity"
               @change="($event) => changeQuantity(product, $event)"

@@ -76,13 +76,16 @@ watch(
   }
 );
 
-// watch(localValue, (newVal) => {
-//   asyncCartUpdateToServer();
-// });
+
 const onInput = () => {
   // Parse the typed value; if it's not a valid number, don't emit (prevents accidental resets)
-  const numeric = Number(localValue.value);
+  let numeric = Number(localValue.value);
   if (Number.isNaN(numeric)) return;
+  if (numeric >= props.max) {
+    localValue.value = props.max;
+    numeric = props.max;
+  }
+  if (numeric > props.max) return; // Không emit nếu vượt max
   emit("update:modelValue", numeric);
   emit("change", numeric);
 };

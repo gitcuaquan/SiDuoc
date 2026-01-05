@@ -63,7 +63,14 @@
             <div class="col-md-3">
               <label class="form-label fw-bold">Số lượng</label>
               <br />
-              <UiBtnGroup v-model="quantity" />
+              <UiBtnGroup
+                v-model="quantity"
+                :max="
+                  (detailProduct?.data?.sl_toi_da || 0) == 0
+                    ? 9999999
+                    : detailProduct?.data?.sl_toi_da
+                "
+              />
             </div>
             <div class="col-md-6">
               <button
@@ -78,8 +85,8 @@
           </div>
           <div class="ingredients-section">
             <h6 class="fw-bold mb-3">Mô tả sản phẩm</h6>
-            <p class="small text-muted line-break-container">
-              {{ detailProduct?.data?.mo_ta_san_pham }}
+            <p class="small m-0 text-muted line-break-container">
+              {{ detailProduct?.data?.mo_ta_san_pham || "Chưa cập nhật dữ liệu" }}
             </p>
           </div>
           <!-- Product Details Table -->
@@ -205,11 +212,30 @@ function addToCartPage() {
     togglePopupLogin();
     return;
   }
+
+  const maxQty = detailProduct.value.data.sl_toi_da || 0;
   const existingQty = getQtyById(detailProduct.value.data.ma_vt);
-  detailProduct.value.data.quantity = 0;
-  detailProduct.value.data.quantity = quantity.value + (existingQty || 0);
+
+  // Nếu đã đạt trần trong giỏ thì dừng
+  if (maxQty > 0 && existingQty >= maxQty) {
+    quantity.value = 0;
+    useToast().error(`Số lượng tối đa cho sản phẩm này là ${maxQty}. Bạn đã đạt mức tối đa trong giỏ.`);
+    return;
+  }
+
+  const desiredQty = quantity.value + (existingQty || 0);
+  const finalQty = maxQty > 0 ? Math.min(desiredQty, maxQty) : desiredQty;
+
+  // Cập nhật input để người dùng thấy số còn lại có thể đặt
+  if (maxQty > 0 && desiredQty > maxQty) {
+    quantity.value = Math.max(0, maxQty - (existingQty || 0));
+    useToast().error(`Số lượng tối đa cho sản phẩm này là ${maxQty}. Đã đặt về mức tối đa.`);
+  } else {
+    useToast().success("Đã thêm vào giỏ hàng");
+  }
+
+  detailProduct.value.data.quantity = finalQty;
   addToCart(detailProduct.value.data);
-  useToast().success("Đã thêm vào giỏ hàng");
 }
 
 // SEO Meta Tags - Dynamic for Product Detail Page

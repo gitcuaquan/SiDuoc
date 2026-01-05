@@ -5,7 +5,7 @@
   >
     <div
       v-if="loading"
-      style="z-index: 9999999;backdrop-filter: blur(2px);"
+      style="z-index: 9999999; backdrop-filter: blur(2px)"
       class="position-absolute w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75"
     >
       <UiLoading />
@@ -96,8 +96,8 @@
         />
       </div>
     </template>
-    <hr />
-    <div class="d-flex justify-content-between align-items-center mb-2">
+    <hr  v-if="listDiscount?.getData.length" />
+    <div  v-if="listDiscount?.getData.length" class="d-flex justify-content-between align-items-center mb-2">
       <span>Khuyến mãi </span>
       <span
         class="badge gap-1 ps-0 fw-normal bg-transparent text-muted d-flex align-items-center"
@@ -117,12 +117,19 @@
       </a> -->
     </div>
 
-    <div class="d-flex flex-wrap gap-1 cupon-list">
+    <div
+      class="d-flex flex-wrap gap-1 cupon-list"
+      v-if="listDiscount?.getData.length"
+    >
       <template v-for="value in listDiscount?.getData">
         <SharedModuleCoupon :coupon="(value as DiscountItem)" />
       </template>
     </div>
-    <hr />
+    <div class="d-flex justify-content-center flex-column align-items-center" v-else>
+      <UiEmpty class="w-50" />
+      <small class="text-muted mt-2">Chưa tìm thấy khuyến mãi phù hợp</small>
+    </div>
+    <hr  />
     <div class="d-flex justify-content-between mb-3">
       <span>Tổng tiền chiết khấu</span>
       <span class="text-danger">

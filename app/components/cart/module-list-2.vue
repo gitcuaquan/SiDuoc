@@ -25,7 +25,7 @@
                   alt="Sản phẩm"
                 />
                 <div>
-                  <div class="fw-normal">
+                  <nuxt-link :to="`/product/${item.ma_vt}`" class="fw-normal">
                     <small
                       style="
                         max-width: 350px;
@@ -36,7 +36,7 @@
                     >
                       {{ item.ten_vt }}
                     </small>
-                  </div>
+                  </nuxt-link>
                   <!-- {{ findDiscountByMaVT(item.ma_vt) }} -->
                 </div>
               </div>
@@ -69,10 +69,15 @@
               </div>
             </td>
             <td class="border-0 text-center" data-label="Số lượng">
-              <UiBtnGroup size="sm" v-model="item.quantity" v-if="!isShow" />
-              <small v-else class="text-center fw-bold">{{
-                item.quantity
-              }}</small>
+              <UiBtnGroup
+                size="sm"
+                :max="(item.sl_toi_da || 0) == 0 ? 999999 : item.sl_toi_da"
+                v-model="item.quantity"
+                v-if="!isShow"
+              />
+              <small v-else class="text-center fw-bold">
+                {{ item.quantity }}
+              </small>
             </td>
             <td class="border-0" data-label="Thành tiền">
               <div class="d-flex flex-column gap-1">

@@ -210,8 +210,11 @@
                 >
                   <div class="card-title m-0 text-dark">{{ item.ten_vt }}</div>
                 </nuxt-link>
-                <div class="text-primary fw-bold">
-                  <small>{{ formatCurrency(item.gia_nt2) }}</small>
+                <div class="fw-bold">
+
+                  <small class="text-primary">{{
+                    formatCurrency(item.gia_nt2)
+                  }}</small>
                 </div>
                 <button
                   @click="fncAddToCart(item)"
@@ -403,8 +406,10 @@ function fncAddToCart(item: ITemsTapmed) {
     return;
   }
   item.quantity = 1;
-  addToCart(item, true);
-  useToast().success("Đã thêm vào giỏ hàng");
+ const status =  addToCart(item, true);
+  if (status !== false) {
+    useToast().success("Đã thêm vào giỏ hàng");
+  }
 }
 </script>
 <style scoped>

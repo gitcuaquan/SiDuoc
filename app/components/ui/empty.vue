@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center" :v-bind="$attrs">
-    <img src="/images/nodata.svg" alt="">
+  <div :v-bind="$attrs" class="d-flex justify-content-center align-items-center">
+    <img src="/images/nodata.svg" class="w-100" alt="">
   </div>
 </template>
 
