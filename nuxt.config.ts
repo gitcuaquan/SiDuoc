@@ -74,7 +74,7 @@ export default defineNuxtConfig({
     headers: {
       contentSecurityPolicy: false,
     },
-    xssValidator: false
-
+    xssValidator: false,
+    rateLimiter: false,
   }
 })
