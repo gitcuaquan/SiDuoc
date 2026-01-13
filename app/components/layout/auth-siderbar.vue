@@ -69,9 +69,7 @@ const { user } = useAuth();
 const emitted = defineEmits<{
   (e: "select-label", label: string): void;
 }>();
-const config = useRuntimeConfig()
-const listAdmin =  config.public.ADMIN_ID?.split(',') || [];
-const isManager = computed(() => listAdmin.includes(user.value?.data.ma_kh ?? ""));
+const isManager = computed(() => user.value?.data.is_admin);
 
 const sidebarItems = [
   { icon: User, label: "Hồ sơ của tôi", to: "/auth/info" },
@@ -92,6 +90,17 @@ const sidebarItems = [
   { icon: MessageCircle, label: "Hỗ trợ khách hàng", to: "/auth/ticket" },
 ];
 const route = useRoute();
+watch(
+  () => route.fullPath,
+  (newVal) => {
+    if (
+      ["/auth/product-suggest", "/auth/news"].includes(newVal) &&
+      !isManager.value
+    ) {
+      useRouter().push("/auth");
+    }
+  }
+);
 
 const menuWithManager = computed(() => {
   if (!isManager.value) {
