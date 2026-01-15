@@ -1,14 +1,16 @@
 <template>
   <div id="main-image" class="position-relative">
-    <div class="ratio rounded overflow-hidden ratio-1x1">
-      <img :src="selectedImage?.url || '/images/image-error.svg'" alt="main image" />
+    <div class="d-flex w-100 justify-content-center align-items-center">
+      <div class="ratio rounded overflow-hidden ratio-1x1" style="width: 60%; height: 60%;">
+        <img :src="selectedImage?.url || '/images/image-error.svg'" alt="main image " />
+      </div>
     </div>
-    <div class="position-absolute top-50 start-0 ms-3">
+    <!-- <div class="position-absolute top-50 start-0 ms-3">
       <CircleChevronLeft @click="prevImage" role="button" :size="36" />
     </div>
     <div class="position-absolute top-50 end-0 me-3">
       <CircleChevronRight @click="nextImage" role="button" :size="36" />
-    </div>
+    </div> -->
   </div>
   <div id="thumbnail-container" v-if="(props.images?.length || 0) > 1"
     class="d-flex gap-2 mt-3 flex-nowrap overflow-auto w-100 justify-content-start">

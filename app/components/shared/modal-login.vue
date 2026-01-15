@@ -120,7 +120,7 @@
       const user = await $appServices.customer.detail();
       setUser(user.data);
       useToast().success("Đăng nhập thành công");
-      useRouter().push("/auth");
+      useRouter().push("/quick-order");
       modalInstance.value?.hide();
     } catch (error: any) {
       useToast().error(error.data.message || "Đăng nhập thất bại");

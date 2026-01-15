@@ -10,29 +10,29 @@ export const useCart = () => {
   let timeOut = ref<any>("")
   const cart = useState<ITemsTapmedNew[]>('cart', () => [])
 
-watch(() => cart.value, (newCart) => {
-  let changed = false
-  newCart.forEach((item) => {
-    const max = Number(item.sl_toi_da) || 0
-    const qty = Number(item.quantity) || 0
-    
-    if (max > 0 && qty > max) {
-      item.quantity = max
-      useToast().error(`Số lượng tối đa cho sản phẩm là ${max}.`)
-      changed = true
+  watch(() => cart.value, (newCart) => {
+    let changed = false
+    newCart.forEach((item) => {
+      const max = Number(item.sl_toi_da) || 0
+      const qty = Number(item.quantity) || 0
+
+      if (max > 0 && qty > max) {
+        item.quantity = max
+        useToast().error(`Số lượng tối đa cho sản phẩm là ${max}.`)
+        changed = true
+      }
+
+      if (qty < 0) {
+        item.quantity = 0
+        changed = true
+      }
+    })
+
+    if (changed) {
+      cart.value = [...newCart]
     }
-    
-    if (qty < 0) {
-      item.quantity = 0
-      changed = true
-    }
-  })
-  
-  if (changed) {
-    cart.value = [...newCart]
-  }
-  asyncCartUpdateToServer()
-}, { deep: true })
+    asyncCartUpdateToServer()
+  }, { deep: true })
 
   const addToCart = (product: ITemsTapmed, auto?: boolean) => {
     const slToiDa = product.sl_toi_da || 0;
@@ -74,6 +74,7 @@ watch(() => cart.value, (newCart) => {
         ...product,
         sl_toi_da: product.sl_toi_da,
         quantity: desiredQty,
+        han_sd_web: product.han_sd_web || '',
       } as ITemsTapmedNew);
       asyncCartUpdateToServer();
       return true;
@@ -122,7 +123,7 @@ watch(() => cart.value, (newCart) => {
       }
     }, 1000)
   }
-  
+
   watch(() => user.value?.data.ma_kh, (newToken) => {
     if (newToken) {
       // đồng bộ giỏ hàng từ server

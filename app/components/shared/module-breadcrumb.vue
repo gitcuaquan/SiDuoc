@@ -3,7 +3,7 @@
     <div class="container py-3">
       <div class="d-flex fw-bold flex-nowrap gap-2 align-items-center">
         <NuxtLink class="text-decoration-none text-small" to="/">
-          <div class="d-flex align-items-center gap-1">
+          <div class="d-flex align-items-center text-nowrap gap-1">
             <Home :size="16" /> Trang Chủ
           </div>
         </NuxtLink>

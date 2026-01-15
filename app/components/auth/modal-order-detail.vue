@@ -86,15 +86,32 @@
             class="cart-item d-block d-lg-table-row align-middle border rounded-3 p-3 mb-3 bg-white shadow-sm">
             <!-- Product -->
             <div class="cart-product mb-lg-0 mb-3 d-flex align-items-center gap-3 d-lg-table-cell p-lg-3">
-              <div class="d-flex align-items-center">
-                <!-- <img src="https://placehold.co/400" width="60" height="60" class="rounded border" alt="Sản phẩm" /> -->
+              <div class="d-flex align-items-center gap-2">
+                <img src="https://placehold.co/400" width="60" height="60" class="rounded border" alt="Sản phẩm" />
                 <span class="fw-medium">{{ detail.ten_vt }}</span>
+                <!-- {{ detail }} -->
+              </div>
+            </div>
+            <div class="d-flex w-100 gap-3 align-items-center justify-content-start d-md-none">
+              {{ formatCurrency(detail.gia_nt2 as number) }}
+              <X :size="16" />
+              <div>
+                {{ detail.so_luong }}
+                / {{ detail.dvt }}
+              </div>
+              <Equal :size="16" />
+              <div class="fw-bold">
+                {{
+                  formatCurrency(
+                    (detail.gia_nt2 as number) * (detail.so_luong as number)
+                  )
+                }}
               </div>
             </div>
 
             <!-- Price -->
             <div
-              class="cart-price text-lg-end d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3">
+              class="cart-price d-none text-lg-end d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3">
               <span class="d-lg-none fw-semibold">Giá:</span>
               <span class="text-lg-center">
                 {{ formatCurrency(detail.gia_nt2 as number) }}</span>
@@ -102,14 +119,14 @@
 
             <!-- Quantity -->
             <div
-              class="cart-qty align-middle d-flex text-lg-center mb-2 mb-lg-0 justify-content-between align-items-center d-lg-table-cell p-lg-3">
+              class="cart-qty d-none align-middle d-flex text-lg-center mb-2 mb-lg-0 justify-content-between align-items-center d-lg-table-cell p-lg-3">
               <span class="d-lg-none fw-semibold">Số lượng:</span>
-             <b class="me-2"> {{ detail.so_luong }} </b>{{ detail.dvt }}
+              <b class="me-2"> {{ detail.so_luong }} </b>{{ detail.dvt }}
             </div>
 
             <!-- Total -->
             <div
-              class="cart-total align-middle d-flex mb-2 text-lg-end mb-lg-0 justify-content-between d-lg-table-cell p-lg-3">
+              class="cart-total d-none align-middle d-flex mb-2 text-lg-end mb-lg-0 justify-content-between d-lg-table-cell p-lg-3">
               <span class="d-lg-none fw-semibold">Tổng:</span>
               <span class="fw-bold text-success text-lg-end">{{
                 formatCurrency(

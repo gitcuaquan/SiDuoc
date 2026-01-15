@@ -51,7 +51,7 @@
                 </div>
                 <p class="mb-0 small text-muted">
                   CT1-CT2, khu nhà ở CBNV viện bỏng Lê Hữu Trác,<br />
-                  Tân Triều, Thanh Trì, Hà Nội
+                  phường Hà Đông, thành phố Hà Nội
                 </p>
               </div>
 
