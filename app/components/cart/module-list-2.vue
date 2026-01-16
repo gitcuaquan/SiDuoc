@@ -160,7 +160,7 @@
                   <div
                     class="d-flex w-100 text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded">
                     <template v-if="data.itemNameGift?.trim()">
-                      <small class="text-small d-flex align-items-start gap-1 d-block">
+                      <small class="text-small d-flex w-100 align-items-start gap-1 d-block">
                         Tặng kèm
                         <template v-if="(data.quantityGift || 0) > 0">
                           {{ data.quantityGift }}
@@ -169,19 +169,20 @@
                       </small>
                     </template>
                     <template v-if="data.discountType?.trim()?.toUpperCase() === 'D'">
-                      <small class="text-small d-flex align-items-md-center align-items-sta gap-1 d-block"
+                      <small class="text-small d-flex w-100 align-items-md-center align-items-start gap-1 d-block"
                         v-if="data.discountRate">
                         Giảm
                         {{ data.discountRate }} % trên mỗi mặt hàng</small>
-                      <small class="text-small d-flex align-items-center gap-1 d-block" v-if="data.discountAmount">
+                      <small class="text-small d-flex w-100 align-items-center gap-1 d-block"
+                        v-if="data.discountAmount">
                         Giảm tiền trên từng mặt hàng tổng cộng
                         {{ formatCurrency(data.discountAmount) }}
                       </small>
-                      <small class="text-small d-flex align-items-center gap-1 d-block" v-if="data.moneyVoucher">
+                      <small class="text-small d-flex w-100 align-items-center gap-1 d-block" v-if="data.moneyVoucher">
                         Tất cả sản phẩm được đồng giá
                         {{ formatCurrency(data.moneyVoucher) }}
                       </small>
-                      <small class="text-small d-flex align-items-center gap-1 d-block" v-if="data.totalDiscount">
+                      <small class="text-small d-flex w-100 align-items-center gap-1 d-block" v-if="data.totalDiscount">
                         Đã được giảm
                         {{ formatCurrency(data.totalDiscount) }}
                       </small>

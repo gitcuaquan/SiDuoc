@@ -93,11 +93,13 @@
               </div>
             </div>
             <div class="d-flex w-100 gap-3 align-items-center justify-content-start d-md-none">
-              {{ formatCurrency(detail.gia_nt2 as number) }}
+
+              <div class="fw-bold">
+                {{ detail.so_luong }}
+              </div>
               <X :size="16" />
               <div>
-                {{ detail.so_luong }}
-                / {{ detail.dvt }}
+                {{ formatCurrency(detail.gia_nt2 as number) }}/ {{ detail.dvt }}
               </div>
               <Equal :size="16" />
               <div class="fw-bold">

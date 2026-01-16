@@ -4,6 +4,9 @@ $font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
   Roboto, "Helvetica Neue", Arial, sans-serif;
 // main color
 $primary: #189847;
+html {
+  scroll-behavior: smooth;
+}
 :root {
   --swiper-theme-color: $primary !important;
 }

@@ -51,17 +51,14 @@
                     <CartModuleSummary is-show>
                       <div class="my-3">
                         <label for="dien_gian"> Ghi chú đơn hàng </label><br />
-                        <small class="text-muted fw-light fst-italic">
-                          Thêm các thông tin cần chăm sóc viên chú ý.
-                        </small>
                         <textarea id="dien_gian" v-model="prevOrder!.header!.ghi_chu_giao_hang" class="form-control"
                           rows="3"></textarea>
                       </div>
 
                       <small class="text-muted">
-                        Chú ý: Các sản phẩn có đơn giá hiển thị <br />
-                        <b class="fst-normal fw-bold text-primary">liên hệ</b>
-                        sẽ được nhân viên của chúng tôi liên hệ để báo giá.
+                        Đối với các sản phẩm có đơn giá <b class="fst-normal fw-bold text-primary">"Liên hệ"</b>. <br>
+                        Bộ
+                        phận kinh doanh sẽ phản hồi và báo giá trực tiếp đến quý khách hàng.
                       </small>
                     </CartModuleSummary>
                   </div>
