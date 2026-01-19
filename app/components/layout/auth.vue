@@ -2,20 +2,16 @@
   <SharedModuleBreadcrumb :data="breadcrumb" />
   <div class="container mt-3">
     <div class="row py-3 g-3">
-      <div class="col-lg-3 h-100">
-        <LayoutAuthSiderbar class="sticky-top" style="z-index: 0" />
+      <div class="col-lg-3">
+        <LayoutAuthSiderbar class="sticky-top" style="z-index: 0;top: 100px;" />
       </div>
       <div class="col-lg-9 position-relative" style="min-height: 60vh">
-        <div
-          v-if="loading"
+        <div v-if="loading"
           class="position-absolute w-100 h-100 top-0 end-0 d-flex justify-content-center align-items-center bg-white bg-opacity-75"
-          style="backdrop-filter: blur(3px); z-index: 9999"
-        >
+          style="backdrop-filter: blur(3px); z-index: 9999">
           <UiLoading />
         </div>
-        <div
-          class="d-flex flex-wrap justify-content-between align-items-center gap-3"
-        >
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
           <h2 class="text-capitalize mb-3">
             {{ props.name }}
           </h2>
@@ -23,12 +19,8 @@
             <slot name="actions"> </slot>
           </div>
         </div>
-        <div v-if="!props.isEmpty">
+        <div>
           <slot> mặc định </slot>
-        </div>
-        <div v-else>
-          <UiEmpty />
-          <div class="text-center">Không Thấy Dữ Liệu Phù Hợp</div>
         </div>
       </div>
     </div>

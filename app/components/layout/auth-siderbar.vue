@@ -9,45 +9,29 @@
           </div>
         </ClientOnly>
       </div>
-      <button
-        class="btn d-lg-none ms-auto btn-sm"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#collapseMenuAuth"
-      >
+      <button class="btn d-lg-none ms-auto btn-sm" type="button" data-bs-toggle="collapse"
+        data-bs-target="#collapseMenuAuth">
         <Menu />
       </button>
     </div>
-    <ul
-      class="list-unstyled mb-0 mt-3 collapse d-lg-block"
-      id="collapseMenuAuth"
-    >
+    <ul class="list-unstyled mb-0 mt-3 collapse d-lg-block" id="collapseMenuAuth">
       <ClientOnly>
         <template v-for="(item, idx) in menuWithManager" :key="idx">
-          <li
-            :class="[
-              'account-item mb-1 d-flex align-items-center position-relative p-2 rounded',
-              route.path === item.to ? 'active' : '',
-            ]"
-          >
-            <nuxt-link
-              :to="item.to"
-              @click="selectLabel(item.label)"
-              class="text-decoration-none stretched-link text-dark d-flex align-items-center w-100"
-            >
+          <li :class="[
+            'account-item mb-1 d-flex align-items-center position-relative p-2 rounded',
+            route.path === item.to ? 'active' : '',
+          ]">
+            <nuxt-link :to="item.to" @click="selectLabel(item.label)"
+              class="text-decoration-none stretched-link text-dark d-flex align-items-center w-100">
               <component :is="item.icon" class="me-2 text-primary" :size="20" />
               <span>{{ item.label }}</span>
             </nuxt-link>
           </li>
         </template>
       </ClientOnly>
-      <li
-        class="account-item mb-1 d-flex align-items-center position-relative p-2 rounded"
-      >
-        <div
-          @click="logoutUser()"
-          class="text-decoration-none stretched-link text-dark d-flex align-items-center w-100 cursor-pointer"
-        >
+      <li class="account-item mb-1 d-flex align-items-center position-relative p-2 rounded">
+        <div @click="logoutUser()"
+          class="text-decoration-none stretched-link text-dark d-flex align-items-center w-100 cursor-pointer">
           <LogOut class="me-2 text-primary" :size="20" />
           <span>Đăng xuất</span>
         </div>
@@ -83,7 +67,7 @@ const sidebarItems = [
   },
   {
     icon: Newspaper,
-    label: "Sản phẩm nổi bật",
+    label: "Quản lý sản phẩm",
     to: "/auth/product-suggest",
     is_manager: true,
   },

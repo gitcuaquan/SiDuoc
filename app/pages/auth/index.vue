@@ -3,7 +3,7 @@
     :loading="loading"
     :is-empty="listOrder?.getData?.length == 0"
     :breadcrumb="breadcrumb"
-    name="Theo dõi đơn hàng"
+    name="Theo dõi đơn hàng "
   >
     <div class="row">
       <div class="col-lg-8">
@@ -141,7 +141,7 @@
       v-else
       class="d-flex w-100 flex-column align-items-center justify-content-center gap-2"
     >
-      <UiEmpty />
+      <UiEmpty style="max-width: 200px;" />
       <h5 class="text-center text-capitalize">bạn chưa có đơn hàng nào.</h5>
     </div>
   </LayoutAuth>
