@@ -99,7 +99,17 @@
           <small>Chứng chỉ hành nghề dược</small>
         </label>
         <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
-          <img :src="urlGiayTo['url_giay_to1']" alt="" />
+          <img
+            v-if="urlGiayTo['url_giay_to1']"
+            :src="urlGiayTo['url_giay_to1']"
+            alt="Chứng chỉ hành nghề dược"
+          />
+          <div
+            v-else
+            class="d-flex justify-content-center align-items-center bg-light text-muted"
+          >
+            <small class="text-center px-2">Chưa cập nhật</small>
+          </div>
         </div>
       </div>
       <div class="col-6 col-md-4">
@@ -107,7 +117,17 @@
           <small>Chứng nhận đăng ký kinh doanh</small>
         </label>
         <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
-          <img :src="urlGiayTo['url_giay_to2']" alt="" />
+          <img
+            v-if="urlGiayTo['url_giay_to2']"
+            :src="urlGiayTo['url_giay_to2']"
+            alt="Chứng nhận đăng ký kinh doanh"
+          />
+          <div
+            v-else
+            class="d-flex justify-content-center align-items-center bg-light text-muted"
+          >
+            <small class="text-center px-2">Chưa cập nhật</small>
+          </div>
         </div>
       </div>
       <div class="col-6 col-md-4">
@@ -115,7 +135,17 @@
           <small>Chứng nhận đủ điều kiện kinh doanh dược</small>
         </label>
         <div class="ratio ratio-1x1 img-thumbnail overflow-hidden">
-          <img :src="urlGiayTo['url_giay_to3']" alt="" />
+          <img
+            v-if="urlGiayTo['url_giay_to3']"
+            :src="urlGiayTo['url_giay_to3']"
+            alt="Chứng nhận đủ điều kiện kinh doanh dược"
+          />
+          <div
+            v-else
+            class="d-flex justify-content-center align-items-center bg-light text-muted"
+          >
+            <small class="text-center px-2">Chưa cập nhật</small>
+          </div>
         </div>
       </div>
     </div>
@@ -182,9 +212,10 @@ async function getDetailUser() {
     const response = await $appServices.customer.detail();
     detailUser.value = response.data as CustomerResponse;
     const nhom_thuoc_kinh_doanh = response.data.nhoms || [];
-     getGiayToData("url_giay_to1", response.data.data.url_giay_to1);
-     getGiayToData("url_giay_to2", response.data.data.url_giay_to2);
-     getGiayToData("url_giay_to3", response.data.data.url_giay_to3);
+    console.log("🚀 ~ getDetailUser ~ response:", response);
+    getGiayToData("url_giay_to1", response.data.data.url_giay_to1);
+    getGiayToData("url_giay_to2", response.data.data.url_giay_to2);
+    getGiayToData("url_giay_to3", response.data.data.url_giay_to3);
     medicineGroups.value?.forEach((group) => {
       group.checked = nhom_thuoc_kinh_doanh
         .map((item: NhomThuocKinhDoanh) => item.ma_nh)
