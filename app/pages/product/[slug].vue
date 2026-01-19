@@ -23,9 +23,16 @@
              </span>
           </p> -->
           <!-- Rating and Reviews -->
-          <div v-if="detailProduct?.data?.han_sd_web" class="d-flex align-items-center gap-2 mb-3">
-            <span class="text-muted me-2">HSD:
-              <b class="text-danger">{{ detailProduct?.data?.han_sd_web }}</b></span>
+          <div
+            v-if="detailProduct?.data?.han_sd_web"
+            class="d-flex align-items-center gap-2 mb-3"
+          >
+            <span class="text-muted me-2"
+              >HSD:
+              <b class="text-danger">{{
+                detailProduct?.data?.han_sd_web
+              }}</b></span
+            >
           </div>
 
           <!-- Price -->
@@ -38,10 +45,15 @@
                     : "Liên hệ"
                 }}
                 /
-                <span class="text-dark"> {{ detailProduct?.data?.dvt || "đơn vị" }}</span>
+                <span class="text-dark">
+                  {{ detailProduct?.data?.dvt || "đơn vị" }}</span
+                >
               </h2>
             </div>
-            <p v-if="detailProduct?.data?.gia2" class="text-muted text-decoration-line-through mb-3">
+            <p
+              v-if="detailProduct?.data?.gia2"
+              class="text-muted text-decoration-line-through mb-3"
+            >
               {{ formatCurrency(detailProduct?.data?.gia2 || 0) }}
             </p>
           </div>
@@ -49,12 +61,18 @@
           <div id="action" class="row mt-3 bg-white align-items-end pb-3 g-3">
             <div class="col-md-6">
               <div class="d-flex align-items-center gap-3">
-                <label class="form-label m-0 text-nowrap fw-bold">Số lượng</label>
+                <label class="form-label m-0 text-nowrap fw-bold"
+                  >Số lượng</label
+                >
 
-                <UiBtnGroup v-model="quantity" :max="(detailProduct?.data?.sl_toi_da || 0) == 0
-                  ? 9999999
-                  : detailProduct?.data?.sl_toi_da
-                  " />
+                <UiBtnGroup
+                  v-model="quantity"
+                  :max="
+                    (detailProduct?.data?.sl_toi_da || 0) == 0
+                      ? 9999999
+                      : detailProduct?.data?.sl_toi_da
+                  "
+                />
               </div>
             </div>
             <!-- <div class="col-md-6">
@@ -67,7 +85,9 @@
           <div class="ingredients-section">
             <h6 class="fw-bold mb-3">Mô tả sản phẩm</h6>
             <p class="small m-0 text-muted line-break-container">
-              {{ detailProduct?.data?.mo_ta_san_pham || "Chưa cập nhật dữ liệu" }}
+              {{
+                detailProduct?.data?.mo_ta_san_pham || "Chưa cập nhật dữ liệu"
+              }}
             </p>
           </div>
 
@@ -76,12 +96,13 @@
             <table class="table table-borderless">
               <tbody>
                 <tr>
-                  <td class="text-muted text-nowrap  fw-bold py-2" style="width: 100px">
+                  <td
+                    class="text-muted text-nowrap fw-bold py-2"
+                    style="width: 100px"
+                  >
                     Nhà sản xuất
                   </td>
-                  <td class="py-2">
-                    TapMed
-                  </td>
+                  <td class="py-2">TapMed</td>
                 </tr>
                 <tr>
                   <td class="text-muted fw-bold py-2" style="width: 100px">
@@ -95,9 +116,7 @@
                   <td class="text-muted fw-bold py-2" style="width: 100px">
                     Quy cách
                   </td>
-                  <td class="py-2">
-                    50 hộp / kiện
-                  </td>
+                  <td class="py-2">50 hộp / kiện</td>
                 </tr>
                 <tr>
                   <td class="text-muted fw-bold py-2">Thành phần</td>
@@ -111,7 +130,9 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="text-muted fw-bold text-nowrap py-2">Nhóm thuốc</td>
+                  <td class="text-muted fw-bold text-nowrap py-2">
+                    Nhóm thuốc
+                  </td>
                   <td class="py-2 line-break-container">
                     {{ detailProduct?.data?.ten_nhthkd }}
                   </td>
@@ -180,169 +201,176 @@
 </template>
 
 <script setup lang="ts">
-  import { computed } from "vue";
-  import type { ProjectConfig } from "~/model";
-  const { $appServices } = useNuxtApp();
-  const { addToCart, getQtyById } = useCart();
-  const route = useRoute();
+import { computed } from "vue";
+import type { ProjectConfig } from "~/model";
+const { $appServices } = useNuxtApp();
+const { addToCart, getQtyById } = useCart();
+const route = useRoute();
 
-  const { isAuthenticated, togglePopupLogin } = useAuth();
+const { isAuthenticated, togglePopupLogin } = useAuth();
 
-  const quantity = ref(1);
+// reactive slug and data fetch: ensure refetch when route param changes
+const slug = computed(() => route.params.slug as string);
 
-  // reactive slug and data fetch: ensure refetch when route param changes
-  const slug = computed(() => route.params.slug as string);
+//@ts-ignore
+const { data: detailProduct, error } = await useAsyncData(
+  () => `product-details-${slug.value}`,
+  async () => {
+    return await $appServices.items.getItemById(slug.value);
+  },
+  { watch: [slug] },
+);
 
-  const { data: detailProduct, error } = await useAsyncData(
-    () => `product-details-${slug.value}`,
-    async () => {
-      return await $appServices.items.getItemById(slug.value);
-    },
-    { watch: [slug] }
-  );
+// Khởi tạo quantity từ giỏ hàng nếu sản phẩm đã có, không thì là 0
+const quantity = ref(getQtyById(detailProduct?.value?.data?.ma_vt || "") || 0);
 
-  function addToCartPage() {
-    if (!detailProduct?.value?.data) return;
-    if (!isAuthenticated.value) {
-      useToast().error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
-      togglePopupLogin();
-      return;
-    }
+// Flag để tránh loop khi sync
+let isSyncing = false;
 
-    const maxQty = detailProduct.value.data.sl_toi_da || 0;
-    const existingQty = getQtyById(detailProduct.value.data.ma_vt);
-
-    // Nếu đã đạt trần trong giỏ thì dừng
-    if (maxQty > 0 && existingQty >= maxQty) {
-      quantity.value = 0;
-      useToast().error(`Số lượng tối đa cho sản phẩm này là ${maxQty}. Bạn đã đạt mức tối đa trong giỏ.`);
-      return;
-    }
-
-    const desiredQty = quantity.value + (existingQty || 0);
-    const finalQty = maxQty > 0 ? Math.min(desiredQty, maxQty) : desiredQty;
-
-    // Cập nhật input để người dùng thấy số còn lại có thể đặt
-    if (maxQty > 0 && desiredQty > maxQty) {
-      quantity.value = Math.max(0, maxQty - (existingQty || 0));
-      useToast().error(`Số lượng tối đa cho sản phẩm này là ${maxQty}. Đã đặt về mức tối đa.`);
-    } else {
-      useToast().success("Đã thêm vào giỏ hàng");
-    }
-    detailProduct.value.data.quantity = finalQty;
-    addToCart(detailProduct.value.data);
+// Watch quantity để tự động cập nhật giỏ hàng
+watch(quantity, (newQty) => {
+  if (isSyncing) return;
+  if (!detailProduct?.value?.data) return;
+  if (!isAuthenticated.value) {
+    useToast().error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+    togglePopupLogin();
+    // Reset lại giá trị cũ
+    isSyncing = true;
+    quantity.value = getQtyById(detailProduct.value.data.ma_vt) || 0;
+    isSyncing = false;
+    return;
   }
 
-  // SEO Meta Tags - Dynamic for Product Detail Page
-  useSeoMeta({
-    title: () => `${detailProduct?.value?.data?.ten_vt || "Sản phẩm"} | Sỉ Dược`,
-    ogTitle: () => detailProduct?.value?.data?.ten_vt || "Sản phẩm",
-    description: () =>
-      detailProduct?.value?.data?.mo_ta_san_pham ||
-      "Chi tiết sản phẩm dược phẩm từ Sỉ Dược",
-    ogImage: () =>
-      detailProduct?.value?.data?.image_urls?.[0]?.url ||
-      "/images/final-medial.png",
-    ogImageAlt: () => detailProduct?.value?.data?.ten_vt || "Sản phẩm",
-    ogDescription: () =>
-      detailProduct?.value?.data?.mo_ta_san_pham || "Chi tiết sản phẩm dược phẩm",
-    keywords: () =>
-      detailProduct?.value?.data?.ten_vt
-        ? `${detailProduct.value.data.ten_vt}, dược phẩm, vitamin, sỉ dược`
-        : "dược phẩm, vitamin, sỉ dược",
-    author: "Sỉ Dược",
-  });
-  // Schema.org Product Structured Data
-  useSchemaOrg({
-    type: "Product",
-    name: detailProduct?.value?.data?.ten_vt || "Sản phẩm",
-    description:
-      detailProduct?.value?.data?.cong_dung || "Chi tiết sản phẩm dược phẩm",
-    image:
-      detailProduct?.value?.data?.image_urls?.[0]?.url ||
-      "/images/final-medial.png",
-    sku: detailProduct?.value?.data?.ma_vt || "00000000",
-    brand: {
-      "@type": "Brand",
-      name: "Sỉ Dược",
-    },
-    category: "Dược phẩm",
-    manufacturer: {
-      "@type": "Organization",
-      name: "Sỉ Dược",
-    },
-    offers: {
-      "@type": "Offer",
-      price: detailProduct?.value?.data?.gia_nt2 || 0,
-      priceCurrency: "VND",
-      availability: "https://schema.org/OutOfStock",
-    },
-  });
-  const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
-    { label: detailProduct?.value?.data?.ten_vt || "Sản phẩm" },
-  ]);
+  const maxQty = detailProduct.value.data.sl_toi_da || 0;
+
+  // Kiểm tra số lượng tối đa
+  if (maxQty > 0 && newQty > maxQty) {
+    isSyncing = true;
+    quantity.value = maxQty;
+    isSyncing = false;
+    useToast().error(`Số lượng tối đa cho sản phẩm này là ${maxQty}`);
+    return;
+  }
+
+  // Cập nhật vào giỏ hàng
+  detailProduct.value.data.quantity = newQty;
+  addToCart(detailProduct.value.data);
+
+  if (newQty > 0) {
+    useToast().success("Đã cập nhật giỏ hàng");
+  }
+});
+
+// SEO Meta Tags - Dynamic for Product Detail Page
+useSeoMeta({
+  title: () => `${detailProduct?.value?.data?.ten_vt || "Sản phẩm"} | Sỉ Dược`,
+  ogTitle: () => detailProduct?.value?.data?.ten_vt || "Sản phẩm",
+  description: () =>
+    detailProduct?.value?.data?.mo_ta_san_pham ||
+    "Chi tiết sản phẩm dược phẩm từ Sỉ Dược",
+  ogImage: () =>
+    detailProduct?.value?.data?.image_urls?.[0]?.url ||
+    "/images/final-medial.png",
+  ogImageAlt: () => detailProduct?.value?.data?.ten_vt || "Sản phẩm",
+  ogDescription: () =>
+    detailProduct?.value?.data?.mo_ta_san_pham || "Chi tiết sản phẩm dược phẩm",
+  keywords: () =>
+    detailProduct?.value?.data?.ten_vt
+      ? `${detailProduct.value.data.ten_vt}, dược phẩm, vitamin, sỉ dược`
+      : "dược phẩm, vitamin, sỉ dược",
+  author: "Sỉ Dược",
+});
+// Schema.org Product Structured Data
+useSchemaOrg({
+  type: "Product",
+  name: detailProduct?.value?.data?.ten_vt || "Sản phẩm",
+  description:
+    detailProduct?.value?.data?.cong_dung || "Chi tiết sản phẩm dược phẩm",
+  image:
+    detailProduct?.value?.data?.image_urls?.[0]?.url ||
+    "/images/final-medial.png",
+  sku: detailProduct?.value?.data?.ma_vt || "00000000",
+  brand: {
+    "@type": "Brand",
+    name: "Sỉ Dược",
+  },
+  category: "Dược phẩm",
+  manufacturer: {
+    "@type": "Organization",
+    name: "Sỉ Dược",
+  },
+  offers: {
+    "@type": "Offer",
+    price: detailProduct?.value?.data?.gia_nt2 || 0,
+    priceCurrency: "VND",
+    availability: "https://schema.org/OutOfStock",
+  },
+});
+const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
+  { label: detailProduct?.value?.data?.ten_vt || "Sản phẩm" },
+]);
 </script>
 
 <style scoped>
+.price-section .h2 {
+  font-size: 2.5rem;
+}
+
+.badge.bg-danger {
+  background: linear-gradient(45deg, #dc3545, #ff6b7a) !important;
+}
+
+.table td {
+  border: none;
+  padding: 0.75rem 0.5rem;
+}
+
+.table tr:not(:last-child) {
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.ingredients-section {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--bs-primary);
+}
+
+@media (max-width: 768px) {
   .price-section .h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
-  .badge.bg-danger {
-    background: linear-gradient(45deg, #dc3545, #ff6b7a) !important;
+  .table-responsive {
+    font-size: 0.9rem;
   }
 
-  .table td {
-    border: none;
-    padding: 0.75rem 0.5rem;
+  #add-to-cart {
+    width: 100%;
   }
+}
 
-  .table tr:not(:last-child) {
-    border-bottom: 1px solid #f8f9fa;
-  }
+/* Hide number input arrows for Chrome, Safari, Edge, Opera */
+.input-number::-webkit-outer-spin-button,
+.input-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
-  .ingredients-section {
-    background: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    border-left: 4px solid var(--bs-primary);
-  }
+/* Hide number input arrows for Firefox */
+.input-number[type="number"] {
+  -moz-appearance: textfield;
+}
 
-  @media (max-width: 768px) {
-    .price-section .h2 {
-      font-size: 2rem;
-    }
+.input-number {
+  width: 45px;
+}
 
-    .table-responsive {
-      font-size: 0.9rem;
-    }
+.small {
+  font-size: 0.875rem;
+}
 
-    #add-to-cart {
-      width: 100%;
-    }
-  }
-
-  /* Hide number input arrows for Chrome, Safari, Edge, Opera */
-  .input-number::-webkit-outer-spin-button,
-  .input-number::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Hide number input arrows for Firefox */
-  .input-number[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  .input-number {
-    width: 45px;
-  }
-
-  .small {
-    font-size: 0.875rem;
-  }
-
-  .line-break-container {
-    white-space: pre-line;
-  }
+.line-break-container {
+  white-space: pre-line;
+}
 </style>
