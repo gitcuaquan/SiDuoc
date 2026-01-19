@@ -12,16 +12,17 @@
               <div class="col-lg-6 order-1 order-lg-2">
                 <div class="d-flex gap-2 h-100">
                   <div class="dropdown h-100 w-100">
-                    <input type="search" readonly data-bs-toggle="dropdown" class="form-control h-100 form-control-sm"
-                      placeholder="Nhà sản xuất" />
+                    <input type="search" readonly v-model="nhaSanXuatSelected" data-bs-toggle="dropdown"
+                      class="form-control h-100 form-control-sm" placeholder="Nhà sản xuất" />
                     <ul class="dropdown-menu w-100" style="max-height: 400px; overflow: auto">
                       <li style="top: -10px" class="px-3 py-2 bg-white sticky-top shadow-sm">
                         <input type="search" v-model="ten_nhasx" placeholder="Tìm kiếm nhà sản xuất"
                           class="form-control form-control-sm" />
                       </li>
-                      <li v-for="value in listNhaSanXuat">
-                        <a @click="selectNhaSX(value)" role="button" class="dropdown-item">
-                          {{ value.ten_nhasanxuat }}
+                      <li v-for="value in listNhomVatTu">
+                        <a role="button" @click.prevent="selectNhaSanXuat(value.ten_nh)"
+                          :class="`dropdown-item d-flex align-items-start text-wrap ${nhaSanXuatSelected === value.ten_nh ? 'active' : ''}`">
+                          <small>{{ value.ten_nh }}</small>
                         </a>
                       </li>
                     </ul>
@@ -89,291 +90,289 @@
 </template>
 
 <script lang="ts" setup>
-  useHead({
-    title: "Đặt hàng nhanh - Sỉ Dược",
-    meta: [
-      {
-        name: "description",
-        content:
-          "Đặt hàng nhanh các sản phẩm y tế và chăm sóc sức khỏe chất lượng cao từ Sỉ Dược. Tận hưởng quy trình mua sắm tiện lợi và nhanh chóng với đa dạng sản phẩm.",
-      },
-    ],
-  });
-  import type { BaseParameters, ProjectConfig, TapmedDiscount } from "~/model";
-  import { Item } from "~/model/Item";
-  import {
-    BodyFilter,
-    FilterItem,
-    OperatorType,
-    type BaseResponse,
-    type ITemsTapmed,
-  } from "~/model";
-  const { $appServices } = useNuxtApp();
-
-  const { listFilter } = useFilter();
-  const { isCartEmpty } = useCart();
-  const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
-    { label: "Đặt hàng nhanh" },
-  ]);
-
-  const showMoreFilters = ref(false);
-  const keyword = useDebouncedRef("", 500);
-  const ten_nhasx = useDebouncedRef("", 500);
-
-  const showCheckoutModal = ref(false);
-
-  const pageState = reactive({
-    loading: true,
-    listProduct: {} as BaseResponse<ITemsTapmed>,
-  });
-
-  const filterListProduct = ref(
-    new BodyFilter<ITemsTapmed>({
-      pageIndex: 1,
-      pageSize: 30,
-      filters: [
-        new FilterItem<ITemsTapmed>({
-          filterValue: "ten_vt",
-          operatorType: OperatorType.Contains,
-          valueSearch: keyword.value,
-        }),
-        new FilterItem<ITemsTapmed>({
-          filterValue: "ten_nhasanxuat",
-          operatorType: OperatorType.Contains,
-          valueSearch: "",
-        }),
-      ],
-    })
-  );
-
-  const filterNhomVt = ref(
-    new BodyFilter<Item.NhomVatTu>({
-      pageIndex: 1,
-      pageSize: 1000,
-      filters: [
-        new FilterItem<Item.NhomVatTu>({
-          filterValue: "loai_nh",
-          operatorType: OperatorType.Contains,
-          valueSearch: Item.LoaiNhomVatTu.NguonGoc.toString(),
-        }),
-      ],
-    })
-  );
-
-  const filterNhaSX = ref(
-    new BodyFilter<any>({
-      pageIndex: 1,
-      pageSize: 1000,
-      filters: [
-        new FilterItem<any>({
-          filterValue: "ten_nhasanxuat",
-          operatorType: OperatorType.Contains,
-          valueSearch: ten_nhasx.value,
-        }),
-      ],
-    })
-  );
-  const listNhomVatTu = ref<Item.NhomVatTu[]>([]);
-  const listNhaSanXuat = ref<Item.NhaSanXuat[]>([]);
-  const listNews = ref<any>();
-  const loading = ref(true);
-  watch(
-    () => pageState.loading,
-    (newVal) => {
-      if (window) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    }
-  );
-  const queryList = ref({
-    page: 1,
-    limit: 4,
-    category: "promotion",
-  });
-  watch(keyword, (newVal) => {
-    filterListProduct.value.setValue("ten_vt", newVal, OperatorType.Contains);
-    filterListProduct.value.pageIndex = 1;
-    getListProduct();
-  });
-
-  watch(ten_nhasx, (newVal) => {
-    getNhaSX();
-  });
-  watch(
-    () => filterNhomVt.value,
-    (val) => {
-      getNhomVatTu();
+useHead({
+  title: "Đặt hàng nhanh - Sỉ Dược",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Đặt hàng nhanh các sản phẩm y tế và chăm sóc sức khỏe chất lượng cao từ Sỉ Dược. Tận hưởng quy trình mua sắm tiện lợi và nhanh chóng với đa dạng sản phẩm.",
     },
-    { deep: true }
-  );
+  ],
+});
+import type { BaseParameters, ProjectConfig, TapmedDiscount } from "~/model";
+import { Item } from "~/model/Item";
+import {
+  BodyFilter,
+  FilterItem,
+  OperatorType,
+  type BaseResponse,
+  type ITemsTapmed,
+} from "~/model";
+import { select } from "three/tsl";
+const { $appServices } = useNuxtApp();
 
-  async function fetchNewsList() {
-    loading.value = true;
-    try {
-      const rsData = await $fetch("/api/post/list", {
-        query: {
-          ...queryList.value,
-        },
-      });
-      listNews.value = rsData;
-    } catch (error) {
-      console.error("Error fetching news list:", error);
-    } finally {
-      loading.value = false;
+const { listFilter } = useFilter();
+const { isCartEmpty } = useCart();
+const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
+  { label: "Đặt hàng nhanh" },
+]);
+
+const showMoreFilters = ref(false);
+const keyword = useDebouncedRef("", 500);
+const ten_nhasx = useDebouncedRef("", 500);
+
+const showCheckoutModal = ref(false);
+
+const pageState = reactive({
+  loading: true,
+  listProduct: {} as BaseResponse<ITemsTapmed>,
+});
+const nhaSanXuatSelected = ref<string>("");
+
+watch(nhaSanXuatSelected, (newVal) => {
+  filterListProduct.value.setValue("ten_nhasanxuat", newVal);
+  filterListProduct.value.pageIndex = 1;
+  getListProduct();
+});
+
+const filterListProduct = ref(
+  new BodyFilter<ITemsTapmed>({
+    pageIndex: 1,
+    pageSize: 30,
+    filters: [
+      new FilterItem<ITemsTapmed>({
+        filterValue: "ten_vt",
+        operatorType: OperatorType.Contains,
+        valueSearch: keyword.value,
+      }),
+      new FilterItem<ITemsTapmed>({
+        filterValue: "ten_nhasanxuat",
+        operatorType: OperatorType.Contains,
+        valueSearch: "",
+      }),
+    ],
+  })
+);
+
+const filterNhomVt = ref(
+  new BodyFilter<Item.NhomVatTu>({
+    pageIndex: 1,
+    pageSize: 200,
+    filters: [
+      new FilterItem<Item.NhomVatTu>({
+        filterValue: "loai_nh",
+        operatorType: OperatorType.Contains,
+        valueSearch: Item.LoaiNhomVatTu.PhanNhom.toString(),
+      }),
+    ],
+  })
+);
+
+const filterNhaSX = ref(
+  new BodyFilter<any>({
+    pageIndex: 1,
+    pageSize: 1000,
+    filters: [
+      new FilterItem<any>({
+        filterValue: "ten_nhasanxuat",
+        operatorType: OperatorType.Contains,
+        valueSearch: ten_nhasx.value,
+      }),
+    ],
+  })
+);
+const listNhomVatTu = ref<Item.NhomVatTu[]>([]);
+const listNhaSanXuat = ref<Item.NhaSanXuat[]>([]);
+const listNews = ref<any>();
+const loading = ref(true);
+watch(
+  () => pageState.loading,
+  (newVal) => {
+    if (window) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
-  // ======================== HOOKS ========================
-  onBeforeMount(() => {
-    getListProduct();
-    getNhomVatTu();
-    getNhaSX();
-    fetchNewsList();
-  });
-  // ======================== METHODS ========================
+);
+const queryList = ref({
+  page: 1,
+  limit: 4,
+  category: "promotion",
+});
+watch(keyword, (newVal) => {
+  filterListProduct.value.setValue("ten_vt", newVal, OperatorType.Contains);
+  filterListProduct.value.pageIndex = 1;
+  getListProduct();
+});
 
-  async function getNhomVatTu() {
-    try {
-      const response = await $appServices.items.getNhomVatTu<Item.NhomVatTu>(
-        filterNhomVt.value
-      );
-      listNhomVatTu.value = response.getData || [];
-    } catch (error) {
-      console.error("Error fetching Nhom Vat Tu:", error);
-    }
+watch(() => ten_nhasx.value, (newVal) => {
+  filterNhomVt.value.setValue("ten_nh", newVal, OperatorType.Contains);
+  filterNhomVt.value.pageIndex = 1;
+  getNhomVatTu();
+});
+
+
+
+
+function selectNhaSanXuat(ten_nh: string) {
+  if (nhaSanXuatSelected.value === ten_nh) {
+    nhaSanXuatSelected.value = "";
+  } else {
+    nhaSanXuatSelected.value = ten_nh;
   }
+}
 
-  async function getNhaSX() {
-    try {
-      const response = await $appServices.items.getNhaSX<Item.NhaSanXuat>(
-        filterNhaSX.value
-      );
-      listNhaSanXuat.value = response.getData || [];
-    } catch (error) {
-      console.error("Error fetching Nha San Xuat:", error);
-    }
+async function fetchNewsList() {
+  loading.value = true;
+  try {
+    const rsData = await $fetch("/api/post/list", {
+      query: {
+        ...queryList.value,
+      },
+    });
+    listNews.value = rsData;
+  } catch (error) {
+    console.error("Error fetching news list:", error);
+  } finally {
+    loading.value = false;
   }
+}
+// ======================== HOOKS ========================
+onBeforeMount(() => {
+  getListProduct();
+  getNhomVatTu();
+  getNhaSX();
+  fetchNewsList();
+});
+// ======================== METHODS ========================
 
-  async function getListProduct() {
-    // const moreFilters = buildFilter();
-    const deepCloneFilter = JSON.parse(
-      JSON.stringify(filterListProduct.value)
-    ) as BodyFilter<ITemsTapmed>;
-    pageState.loading = true;
-    try {
-      const response = await $appServices.items.getItems(deepCloneFilter);
-      pageState.listProduct = response;
-    } catch (error) {
-      console.error("Error fetching product list:", error);
-    } finally {
-      pageState.loading = false;
-    }
-  }
-
-  // function buildFilter() {
-  //   const _filter: FilterItem<ITemsTapmed>[] = [];
-  //   for (const item of listFilter.value) {
-  //     Object.entries(item).forEach(([key, value]) => {
-  //       if (key !== "ten_nh") {
-  //         _filter.push(
-  //           new FilterItem<ITemsTapmed>({
-  //             filterValue: key as keyof ITemsTapmed,
-  //             operatorType: OperatorType.Equal,
-  //             valueSearch: value.toString(),
-  //           })
-  //         );
-  //       }
-  //     });
-  //   }
-  //   return _filter;
-  // }
-  function applyFilter({
-    phanLoaiVtSelected,
-    phanNhomVtSelected,
-  }: {
-    phanLoaiVtSelected: any;
-    phanNhomVtSelected: any;
-  }) {
-    if (phanLoaiVtSelected != null) {
-      filterListProduct.value.setValue(
-        "ma_plvt",
-        String(phanLoaiVtSelected),
-        OperatorType.Equal
-      );
-    } else {
-      filterListProduct.value.removeFilter("ma_plvt");
-    }
-    if (phanNhomVtSelected != null) {
-      filterListProduct.value.setValue(
-        "ma_pnvt",
-        String(phanNhomVtSelected),
-        OperatorType.Equal
-      );
-    } else {
-      filterListProduct.value.removeFilter("ma_pnvt");
-    }
-    getListProduct();
-  }
-
-  function selectNhaSX(nhasx: Item.NhaSanXuat) {
-    filterListProduct.value.setValue(
-      "ten_nhasanxuat",
-      nhasx.ten_nhasanxuat,
-      OperatorType.Contains
+async function getNhomVatTu() {
+  try {
+    const response = await $appServices.items.getNhomVatTu<Item.NhomVatTu>(
+      filterNhomVt.value
     );
-    filterListProduct.value.pageIndex = 1;
-    getListProduct();
+    listNhomVatTu.value = response.getData || [];
+  } catch (error) {
+    console.error("Error fetching Nhom Vat Tu:", error);
   }
+}
+
+async function getNhaSX() {
+  try {
+    const response = await $appServices.items.getNhaSX<Item.NhaSanXuat>(
+      filterNhaSX.value
+    );
+    listNhaSanXuat.value = response.getData || [];
+  } catch (error) {
+    console.error("Error fetching Nha San Xuat:", error);
+  }
+}
+
+async function getListProduct() {
+  // const moreFilters = buildFilter();
+  const deepCloneFilter = JSON.parse(
+    JSON.stringify(filterListProduct.value)
+  ) as BodyFilter<ITemsTapmed>;
+  pageState.loading = true;
+  try {
+    const response = await $appServices.items.getItems(deepCloneFilter);
+    pageState.listProduct = response;
+  } catch (error) {
+    console.error("Error fetching product list:", error);
+  } finally {
+    pageState.loading = false;
+  }
+}
+
+function applyFilter({
+  phanLoaiVtSelected,
+  phanNhomVtSelected,
+}: {
+  phanLoaiVtSelected: any;
+  phanNhomVtSelected: any;
+}) {
+  if (phanLoaiVtSelected != null) {
+    filterListProduct.value.setValue(
+      "ma_plvt",
+      String(phanLoaiVtSelected?.ma_plvt || ''),
+      OperatorType.Equal
+    );
+  } else {
+    filterListProduct.value.removeFilter("ma_plvt");
+  }
+
+  if (phanNhomVtSelected != null) {
+    filterListProduct.value.setValue(
+      "ma_pnvt",
+      String(phanNhomVtSelected?.ma_pnvt || ''),
+      OperatorType.Equal
+    );
+  } else {
+    filterListProduct.value.removeFilter("ma_pnvt");
+  }
+  getListProduct();
+}
+
+function selectNhaSX(nhasx: Item.NhaSanXuat) {
+  filterListProduct.value.setValue(
+    "ten_nhasanxuat",
+    nhasx.ten_nhasanxuat,
+    OperatorType.Contains
+  );
+  filterListProduct.value.pageIndex = 1;
+  getListProduct();
+}
 </script>
 
 <style scoped>
+.top-custom {
+  top: 65px;
+  z-index: 1 !important;
+}
+
+.z-height {
+  z-index: 999999999;
+}
+
+.dropdown-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.dropdown-menu-custom {
+  width: 500px;
+  overflow-y: auto;
+}
+
+@media screen and (max-width: 768px) {
   .top-custom {
-    top: 65px;
-    z-index: 1 !important;
-  }
-
-  .z-height {
-    z-index: 999999999;
-  }
-
-  .dropdown-list {
-    max-height: 400px;
-    overflow-y: auto;
+    top: 0;
   }
 
   .dropdown-menu-custom {
-    width: 500px;
-    overflow-y: auto;
+    width: 350px !important;
+    margin: auto;
   }
+}
 
-  @media screen and (max-width: 768px) {
-    .top-custom {
-      top: 0;
-    }
+.sticky-custom {
+  position: sticky;
+  top: 60px;
+  z-index: 0;
+}
 
-    .dropdown-menu-custom {
-      width: 350px !important;
-      margin: auto;
-    }
-  }
+.badge {
+  font-size: 0.6rem;
+  padding: 0.3rem 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+}
 
-  .sticky-custom {
-    position: sticky;
-    top: 60px;
-    z-index: 0;
-  }
-
-  .badge {
-    font-size: 0.6rem;
-    padding: 0.3rem 0.5rem;
-    font-weight: 500;
-    cursor: pointer;
-  }
-
-  .tag-scroll {
-    overflow-x: auto;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-    padding-bottom: 5px;
-    padding-top: 5px;
-  }
+.tag-scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
 </style>
