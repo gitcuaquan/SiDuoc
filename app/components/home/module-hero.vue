@@ -3,7 +3,9 @@
     <div class="container overflow-hidden">
       <div class="row align-items-center pt-3 pt-lg-0">
         <!-- Left content -->
-        <div class="col-lg-6 mb-5 position-relative mb-lg-0 text-lg-start text-center">
+        <div
+          class="col-lg-6 mb-5 position-relative mb-lg-0 text-lg-start text-center"
+        >
           <!-- <h6 class="text-primary fw-bold mb-lg-5">Công Ty TapMed</h6> -->
           <h1 class="hero-title text-capitalize text-primary">
             Nhà Phân Phối Thuốc, Dược <br />
@@ -14,16 +16,30 @@
             nhanh chóng và chất lượng. Cam kết về nguồn gốc sản phẩm và hiệu quả
             chi phí
           </p>
-          <div class="d-flex align-items-center justify-content-lg-start justify-content-center">
+          <div
+            class="d-flex align-items-center justify-content-lg-start justify-content-center"
+          >
             <div class="avatar-group me-3">
               <div class="avatar overflow-hidden">
-                <img src="https://tapmed.vn/TapMedVn/images/av2.jpg" class="w-100 object-fit-cover" alt="" />
+                <img
+                  src="/images/avatar/av1.jpg"
+                  class="w-100 object-fit-cover"
+                  alt=""
+                />
               </div>
               <div class="avatar overflow-hidden">
-                <img src="https://tapmed.vn/TapMedVn/images/av3.jpg" class="w-100 object-fit-cover" alt="" />
+                <img
+                  src="/images/avatar/av2.jpg"
+                  class="w-100 object-fit-cover"
+                  alt=""
+                />
               </div>
               <div class="avatar overflow-hidden">
-                <img src="https://tapmed.vn/TapMedVn/images/av4.jpg" class="w-100 object-fit-cover" alt="" />
+                <img
+                  src="/images/avatar/av4.jpg"
+                  class="w-100 object-fit-cover"
+                  alt=""
+                />
               </div>
               <!-- <div class="avatar overflow-hidden">
                   <img src="https://tapmed.vn/TapMedVn/images/av5.jpg" class="w-100 object-fit-cover" alt="" />
@@ -38,18 +54,38 @@
         <!-- Right image -->
         <div class="col-lg-6">
           <ClientOnly>
-            <swiper-container class="swiper-cards" :slides-per-view="1" effect="cards" style="z-index: 0"
-              :grabCursor="true" :autoplay="{
+            <swiper-container
+              class="swiper-cards"
+              :slides-per-view="1"
+              effect="cards"
+              style="z-index: 0; max-width: 320px; margin: 0 auto"
+              :grabCursor="true"
+              :autoplay="{
                 delay: 3000,
-              }">
-              <swiper-slide v-for="(product, index) in listProduct?.getData" :key="`slide-card-${index}`"
-                class="card position-relative border-0 shadow-sm">
-                <NuxtLink :to="`/product/${product.ma_vt}`" class="stretched-link"></NuxtLink>
+              }"
+            >
+              <swiper-slide
+                v-for="(product, index) in listProduct?.getData"
+                :key="`slide-card-${index}`"
+                class="card position-relative border-0 shadow-sm"
+              >
+                <NuxtLink
+                  :to="`/product/${product.ma_vt}`"
+                  class="stretched-link"
+                ></NuxtLink>
                 <div class="ratio ratio-1x1">
-                  <img :src="product.image_urls?.[0]?.url || '/images/image-error.svg'" class="card-img-top" alt="" />
+                  <img
+                    :src="
+                      product.image_urls?.[0]?.url || '/images/image-error.svg'
+                    "
+                    class="card-img-top"
+                    alt=""
+                  />
                 </div>
                 <div class="card-body">
-                  <small class="text-primary fw-bold">Giá bán : {{ formatCurrency(product.gia_nt2) }}</small>
+                  <small class="text-primary fw-bold"
+                    >Giá bán : {{ formatCurrency(product.gia_nt2) }}</small
+                  >
                   <div class="text-dark mb-2 mt-2 text-truncate-2">
                     {{ product.ten_vt }}
                   </div>
@@ -64,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseResponse, type ITemsTapmed } from '~/model';
+import { BaseResponse, type ITemsTapmed } from "~/model";
 
 const { $appServices } = useNuxtApp();
 const listProduct = ref<BaseResponse<ITemsTapmed>>();
@@ -72,12 +108,14 @@ const queryListTop = ref({
   PageIndex: 1,
   PageSize: 8,
   search: "",
-  list_code: "TopProduct"
+  list_code: "TopProduct",
 });
 
 async function getProducts() {
   try {
-    const rsData = await $appServices.items.productSuggest<any>(queryListTop.value);
+    const rsData = await $appServices.items.productSuggest<any>(
+      queryListTop.value,
+    );
     listProduct.value = rsData;
   } catch (error) {
     console.error("Error fetching featured products:", error);
@@ -94,9 +132,11 @@ onBeforeMount(() => {
   min-height: 70vh;
   display: flex;
   align-items: center;
-  background: linear-gradient(180deg,
-      rgba(var(--bs-primary-rgb), 0.6) 0%,
-      #ffffff 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(var(--bs-primary-rgb), 0.6) 0%,
+    #ffffff 100%
+  );
   /* background-image: url('/images/hero-bg.jpg'); */
 }
 

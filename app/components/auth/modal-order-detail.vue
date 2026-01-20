@@ -1,10 +1,17 @@
 <template>
   <div class="modal fade" id="modal-register" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div
+      class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+    >
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Chi tiết đơn hàng</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body p-0">
           <div class="order-header-info mb-2 p-3">
@@ -35,7 +42,8 @@
                 <div>
                   <strong>Ghi chú: </strong>
                   <span>
-                    {{ orderDetails?.data?.header?.ghi_chu_giao_hang }}</span>
+                    {{ orderDetails?.data?.header?.ghi_chu_giao_hang }}</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-md-6">
@@ -43,7 +51,7 @@
                   <strong>Tổng tiền hàng: </strong>
                   <span class="fw-semibold text-success">{{
                     formatCurrency(
-                      orderDetails?.data?.header?.tien_hang_nt ?? 0
+                      orderDetails?.data?.header?.tien_hang_nt ?? 0,
                     )
                   }}</span>
                 </div>
@@ -65,8 +73,8 @@
                     {{
                       orderDetails?.data?.header?.status !== undefined
                         ? StatusGiaoVan[
-                        orderDetails.data.header.status as number
-                        ]
+                            orderDetails.data.header.status as number
+                          ]
                         : ""
                     }}
                   </span>
@@ -74,26 +82,41 @@
               </div>
             </div>
           </div>
-          <div class="cart-header d-none border d-lg-table-row bg-light fw-semibold">
+          <div
+            class="cart-header d-none border d-lg-table-row bg-light fw-semibold"
+          >
             <span class="d-lg-table-cell p-3 py-2">Sản phẩm</span>
             <span class="d-lg-table-cell p-3 py-2 text-center">Giá</span>
-            <span class="d-lg-table-cell p-3 py-2 text-center text-nowrap">Số lượng</span>
+            <span class="d-lg-table-cell p-3 py-2 text-center text-nowrap"
+              >Số lượng</span
+            >
             <span class="d-lg-table-cell p-3 py-2 text-end">Tổng</span>
           </div>
 
           <!-- Item -->
-          <div v-for="detail in orderDetails?.data?.details"
-            class="cart-item d-block d-lg-table-row align-middle border rounded-3 p-3 mb-3 bg-white shadow-sm">
+          <div
+            v-for="detail in orderDetails?.data?.details"
+            class="cart-item d-block d-lg-table-row align-middle border rounded-3 p-3 mb-3 bg-white shadow-sm"
+          >
             <!-- Product -->
-            <div class="cart-product mb-lg-0 mb-3 d-flex align-items-center gap-3 d-lg-table-cell p-lg-3">
+            <div
+              class="cart-product mb-lg-0 mb-3 d-flex align-items-center gap-3 d-lg-table-cell p-lg-3"
+            >
               <div class="d-flex align-items-center gap-2">
-                <img src="https://placehold.co/400" width="60" height="60" class="rounded border" alt="Sản phẩm" />
+                <img
+                  :src="detail.image_urls?.[0]?.url"
+                  width="60"
+                  height="60"
+                  class="rounded border"
+                  alt="Sản phẩm"
+                />
                 <span class="fw-medium">{{ detail.ten_vt }}</span>
                 <!-- {{ detail }} -->
               </div>
             </div>
-            <div class="d-flex w-100 gap-3 align-items-center justify-content-start d-md-none">
-
+            <div
+              class="d-flex w-100 gap-3 align-items-center justify-content-start d-md-none"
+            >
               <div class="fw-bold">
                 {{ detail.so_luong }}
               </div>
@@ -105,7 +128,7 @@
               <div class="fw-bold">
                 {{
                   formatCurrency(
-                    (detail.gia_nt2 as number) * (detail.so_luong as number)
+                    (detail.gia_nt2 as number) * (detail.so_luong as number),
                   )
                 }}
               </div>
@@ -113,33 +136,41 @@
 
             <!-- Price -->
             <div
-              class="cart-price d-none text-lg-end d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3">
+              class="cart-price d-none text-lg-end d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3"
+            >
               <span class="d-lg-none fw-semibold">Giá:</span>
               <span class="text-lg-center">
-                {{ formatCurrency(detail.gia_nt2 as number) }}</span>
+                {{ formatCurrency(detail.gia_nt2 as number) }}</span
+              >
             </div>
 
             <!-- Quantity -->
             <div
-              class="cart-qty d-none align-middle d-flex text-lg-center mb-2 mb-lg-0 justify-content-between align-items-center d-lg-table-cell p-lg-3">
+              class="cart-qty d-none align-middle d-flex text-lg-center mb-2 mb-lg-0 justify-content-between align-items-center d-lg-table-cell p-lg-3"
+            >
               <span class="d-lg-none fw-semibold">Số lượng:</span>
               <b class="me-2"> {{ detail.so_luong }} </b>{{ detail.dvt }}
             </div>
 
             <!-- Total -->
             <div
-              class="cart-total d-none align-middle d-flex mb-2 text-lg-end mb-lg-0 justify-content-between d-lg-table-cell p-lg-3">
+              class="cart-total d-none align-middle d-flex mb-2 text-lg-end mb-lg-0 justify-content-between d-lg-table-cell p-lg-3"
+            >
               <span class="d-lg-none fw-semibold">Tổng:</span>
               <span class="fw-bold text-success text-lg-end">{{
                 formatCurrency(
-                  (detail.gia_nt2 as number) * (detail.so_luong as number)
+                  (detail.gia_nt2 as number) * (detail.so_luong as number),
                 )
               }}</span>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary border-0" data-bs-dismiss="modal">
+          <button
+            type="button"
+            class="btn btn-outline-secondary border-0"
+            data-bs-dismiss="modal"
+          >
             Đóng
           </button>
           <button type="button" class="btn btn-primary" @click="addToCartPage">
@@ -152,58 +183,58 @@
 </template>
 
 <script lang="ts" setup>
-  import { Modal } from "bootstrap";
-  import type { BaseResponseOne } from "~/model/http/BaseResponse";
-  import { StatusGiaoVan, type TapmedOrder } from "~/model/item/ITemsTapmed";
+import { Modal } from "bootstrap";
+import type { BaseResponseOne } from "~/model/http/BaseResponse";
+import { StatusGiaoVan, type TapmedOrder } from "~/model/item/ITemsTapmed";
 
-  const modalInstance = ref<Modal | null>(null);
-  const { $bootstrap, $appServices } = useNuxtApp();
-  const props = defineProps<{
-    order_id: string;
-  }>();
-  const emit = defineEmits(["close", "ticket"]);
+const modalInstance = ref<Modal | null>(null);
+const { $bootstrap, $appServices } = useNuxtApp();
+const props = defineProps<{
+  order_id: string;
+}>();
+const emit = defineEmits(["close", "ticket"]);
 
-  const orderDetails = ref<BaseResponseOne<TapmedOrder> | null>(null);
+const orderDetails = ref<BaseResponseOne<TapmedOrder> | null>(null);
 
-  onMounted(() => {
-    initModal();
-    getDetailOrder();
+onMounted(() => {
+  initModal();
+  getDetailOrder();
+});
+
+function initModal() {
+  const modal = document.getElementById("modal-register");
+  modalInstance.value = new $bootstrap.Modal(modal!);
+  modalInstance.value.show();
+  modal!.addEventListener("hidden.bs.modal", () => {
+    emit("close");
   });
+}
+function createTicket() {
+  modalInstance.value?.hide();
+  emit("ticket");
+}
 
-  function initModal() {
-    const modal = document.getElementById("modal-register");
-    modalInstance.value = new $bootstrap.Modal(modal!);
-    modalInstance.value.show();
-    modal!.addEventListener("hidden.bs.modal", () => {
-      emit("close");
-    });
+async function getDetailOrder() {
+  try {
+    const res = await $appServices.order.detail(props.order_id);
+    orderDetails.value = res;
+  } catch (error) {
+    console.log("🚀 ~ getDetailOrder ~ error=>", error);
   }
-  function createTicket() {
-    modalInstance.value?.hide();
-    emit("ticket");
-  }
+}
 
-  async function getDetailOrder() {
-    try {
-      const res = await $appServices.order.detail(props.order_id);
-      orderDetails.value = res;
-    } catch (error) {
-      console.log("🚀 ~ getDetailOrder ~ error=>", error);
-    }
-  }
+function addToCartPage() {
+  if (!orderDetails.value?.data?.details) return;
+  const { addToCart } = useCart();
 
-  function addToCartPage() {
-    if (!orderDetails.value?.data?.details) return;
-    const { addToCart } = useCart();
-
-    orderDetails.value.data.details.forEach((item: any) => {
-      item.quantity = item.so_luong as number;
-      addToCart(item);
-    });
-    modalInstance.value?.hide();
-    useRouter().push("/cart");
-    useToast().success("Đã thêm sản phẩm vào giỏ hàng.");
-  }
+  orderDetails.value.data.details.forEach((item: any) => {
+    item.quantity = item.so_luong as number;
+    addToCart(item);
+  });
+  modalInstance.value?.hide();
+  useRouter().push("/cart");
+  useToast().success("Đã thêm sản phẩm vào giỏ hàng.");
+}
 </script>
 
 <style></style>

@@ -8,13 +8,16 @@
       />
     </div>
     <div class="card-body">
-      <h5 class="card-title">
+      <h6 class="card-title">
         {{ news.title }}
-      </h5>
+      </h6>
       <small class="card-text text-truncate-2">
         {{ news.seo_content }}
       </small>
-      <nuxt-link :to="`/${props.category || 'news'}/${news.slug}`" class="stretched-link">
+      <nuxt-link
+        :to="`/${props.category || 'news'}/${news.slug}`"
+        class="stretched-link"
+      >
         Chi tiết <MoveRight :size="16" />
       </nuxt-link>
     </div>

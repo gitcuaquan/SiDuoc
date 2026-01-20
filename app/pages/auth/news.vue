@@ -5,9 +5,7 @@
     name="Quản lý bài viết"
   >
     <template #actions>
-      <button class="btn btn-primary me-2" @click="showModal = true">
-        Thêm mới
-      </button>
+      <button class="btn btn-primary me-2" @click="addNew">Thêm mới</button>
     </template>
     <div class="row g-3">
       <div class="col-lg-8 col-12">
@@ -35,123 +33,90 @@
         </select>
       </div>
       <div class="col-12" v-if="listNews">
-        <div
-          class="cart-header table-fake d-none border w-100 d-lg-table-row bg-light fw-semibold"
-        >
-          <span class="d-lg-table-cell text-nowrap p-3 py-2">Ảnh đại diện</span>
-          <span class="d-lg-table-cell text-nowrap p-3 py-2">Tiêu đề</span>
-          <span class="d-lg-table-cell text-nowrap p-3 py-2">Trạng thái</span>
-          <span class="d-lg-table-cell text-nowrap p-3 py-2">Chuyên mục</span>
-          <span
-            class="d-lg-table-cell text-nowrap p-3 py-2 text-end text-nowrap"
-          >
-            Ngày tạo
-          </span>
-          <span
-            class="d-lg-table-cell text-nowrap p-3 py-2 text-end text-nowrap"
-          >
-            Hành động
-          </span>
-        </div>
-        <!-- Item -->
-        <div
-          v-for="value in listNews.data"
-          class="cart-item d-block border w-100 d-lg-table-row border rounded-3 p-3 mb-3 bg-white shadow-sm"
-        >
-          <div
-            class="cart-product mb-lg-0 mb-3 d-flex justify-content-between align-items-start gap-3 d-lg-table-cell p-lg-3"
-          >
-            <span class="d-lg-none fw-semibold">Ảnh đại diện:</span>
-            <div
-              class="d-flex flex-column align-items-center justify-content-center"
-            >
-              <div class="ratio ratio-1x1" style="width: 80px; height: 80px">
-                <img
-                  :src="value.thumbnail || '/images/image-error.svg'"
-                  alt="thumbnail"
-                  class="img-thumbnail"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="cart-product text-lg-start d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3"
-          >
-            <span class="d-lg-none text-nowrap me-2 fw-semibold">Tiêu đề:</span>
-            <div
-              class="d-flex flex-column align-items-end align-items-lg-start justify-content-center"
-            >
-              <span class="fw-medium">
-                {{ textTruncate(value.title, 60) }}</span
-              >
-              <small class="text-muted">
-                <NuxtLink
-                  v-if="value.category != 'policy'"
-                  class=""
-                  :to="`/${value.category}/${value.slug}`"
-                >
-                  {{ textTruncate(value.slug, 60) }}
-                </NuxtLink>
-              </small>
-            </div>
-          </div>
-          <div
-            class="cart-price text-lg-start d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3"
-          >
-            <span class="d-lg-none fw-semibold">Trạng thái:</span>
-            <div class="d-flex flex-column">
-              <div class="text-nowrap">
-                {{ value.public ? "Đang hiển thị" : "Không hiển thị" }}
-              </div>
-              <div class="text-nowrap">
-                {{ value.show_in_home ? "Hiển thị trang chủ" : "" }}
-              </div>
-            </div>
-          </div>
-          <!-- Price -->
-          <div
-            class="cart-price text-lg-start d-flex mb-2 mb-lg-0 justify-content-between d-lg-table-cell align-middle p-lg-3"
-          >
-            <span class="d-lg-none fw-semibold">Chuyên mục:</span>
-            <div class="d-flex flex-column">
-              {{
-                categoryOptions.find(
-                  (option) => option.value === value.category
-                )?.label
-              }}
-            </div>
-          </div>
-
-          <div
-            class="cart-total align-middle d-flex mb-2 text-lg-end mb-lg-0 justify-content-between d-lg-table-cell p-lg-3"
-          >
-            <span class="d-lg-none fw-semibold">Ngày tạo:</span>
-            <div class="d-flex justify-content-end">
-              <span class="text-lg-end">
-                {{ formatDate(value.created_at) }}
-              </span>
-            </div>
-          </div>
-          <div
-            class="cart-action align-middle d-flex mb-2 text-lg-end mb-lg-0 justify-content-between d-lg-table-cell p-lg-3"
-          >
-            <span class="d-lg-none fw-semibold">Hành động:</span>
-            <div class="d-flex justify-content-end gap-2">
-              <button
-                @click="editNews(value._id)"
-                class="btn btn-sm btn-primary"
-              >
-                Sửa
-              </button>
-              <button
-                @click="deleteNews(value._id)"
-                class="btn btn-sm btn-danger"
-              >
-                Xóa
-              </button>
-            </div>
-          </div>
+        <div class="table-responsive rounded shadow-sm">
+          <table class="table table-hover align-middle mb-0 bg-white">
+            <thead class="table-light">
+              <tr>
+                <th class="ps-3" style="width: 60px">Ảnh</th>
+                <th>Tiêu đề</th>
+                <th class="text-center" style="width: 100px">Trạng thái</th>
+                <th style="width: 90px" class="text-nowrap">Chuyên mục</th>
+                <th style="width: 90px" class="text-nowrap">Ngày tạo</th>
+                <th class="text-center text-nowrap" style="width: 80px">
+                  Thao tác
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="value in listNews.data" :key="value._id">
+                <td class="ps-3">
+                  <img
+                    :src="value.thumbnail || '/images/image-error.svg'"
+                    alt="thumbnail"
+                    class="rounded"
+                    style="width: 40px; height: 40px; object-fit: cover"
+                  />
+                </td>
+                <td>
+                  <div class="fw-medium">
+                    <small>{{ textTruncate(value.title, 55) }}</small>
+                  </div>
+                  <small class="text-muted">
+                    <NuxtLink
+                      v-if="value.category != 'policy'"
+                      :to="`/${value.category}/${value.slug}`"
+                      class="text-decoration-none"
+                    >
+                      {{ textTruncate(value.slug, 35) }}
+                    </NuxtLink>
+                  </small>
+                </td>
+                <td class="text-center">
+                  <span
+                    class="badge rounded-pill"
+                    :class="value.public ? 'bg-success' : 'bg-secondary'"
+                  >
+                    {{ value.public ? "Hiện" : "Ẩn" }}
+                  </span>
+                  <br v-if="value.show_in_home" />
+                  <span
+                    v-if="value.show_in_home"
+                    class="badge rounded-pill bg-info mt-1"
+                  >
+                    Trang chủ
+                  </span>
+                </td>
+                <td>
+                  <small>{{
+                    categoryOptions.find(
+                      (option) => option.value === value.category,
+                    )?.label
+                  }}</small>
+                </td>
+                <td>
+                  <small>{{ formatDate(value.created_at) }}</small>
+                </td>
+                <td class="text-center">
+                  <div class="d-flex gap-2">
+                    <button
+                      @click="editNews(value._id)"
+                      class="btn btn-sm btn-outline-primary"
+                      title="Sửa"
+                    >
+                      <Pencil :size="14" />
+                    </button>
+                    <button
+                      @click="deleteNews(value._id)"
+                      class="btn btn-sm btn-outline-danger"
+                      title="Xóa"
+                    >
+                      <Trash2 :size="14" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="mt-3" v-if="listNews">
           <SharedModulePagination
@@ -197,7 +162,7 @@ const categoryOptions = [
 
 const queryList = ref({
   page: 1,
-  limit: 5,
+  limit: 10,
   category: "",
   keyword: "",
 });
@@ -207,7 +172,7 @@ watch(
   (newVal) => {
     queryList.value.keyword = newVal;
     fetchNewsList();
-  }
+  },
 );
 async function fetchNewsList() {
   loading.value = true;
@@ -230,11 +195,14 @@ function pageChanged(page: number) {
   fetchNewsList();
 }
 
+function addNew() {
+  editId.value = undefined; // Clear editId để form trống
+  showModal.value = true;
+}
+
 function editNews(id: string) {
   editId.value = id;
   showModal.value = true;
-  // Emit event to modal to load news data for editing
-  // You may need to implement this in AuthModalActNews component
 }
 async function deleteNews(id: string) {
   if (confirm("Bạn có chắc chắn muốn xóa tin tức này không?")) {
