@@ -55,10 +55,9 @@
         <div class="col-lg-6">
           <ClientOnly>
             <swiper-container
-              class="swiper-cards"
+              class="swiper-cards hero-swiper"
               :slides-per-view="1"
               effect="cards"
-              style="z-index: 0; max-width: 320px; margin: 0 auto"
               :grabCursor="true"
               :autoplay="{
                 delay: 3000,
@@ -129,7 +128,7 @@ onBeforeMount(() => {
 
 <style scoped>
 .hero {
-  min-height: 70vh;
+  min-height: 800px;
   display: flex;
   align-items: center;
   background: linear-gradient(
@@ -194,5 +193,36 @@ onBeforeMount(() => {
 .bg-ovelay {
   z-index: -1;
   opacity: 0.3;
+}
+
+/* Responsive Swiper */
+.hero-swiper {
+  z-index: 0;
+  margin: 0 auto;
+  max-width: 280px; /* Mobile default */
+}
+
+@media screen and (min-width: 576px) {
+  .hero-swiper {
+    max-width: 320px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .hero-swiper {
+    max-width: 380px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .hero-swiper {
+    max-width: 400px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .hero-swiper {
+    max-width: 420px;
+  }
 }
 </style>
