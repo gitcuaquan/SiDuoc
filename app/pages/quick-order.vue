@@ -4,7 +4,9 @@
     <div class="row gy-2 gx-3">
       <div class="col-lg-8">
         <div class="card bg-white border-0 shadow-sm">
-          <div class="card-header sticky-top top-custom shadow-sm px-1 py-1 px-md-2 bg-white border-0">
+          <div
+            class="card-header sticky-top top-custom shadow-sm px-1 py-1 px-md-2 bg-white border-0"
+          >
             <div class="row g-2 align-items-center">
               <div class="col-lg-6 order-2">
                 <UiInputSearch class="h-100" v-model="keyword" />
@@ -12,23 +14,44 @@
               <div class="col-lg-6 order-1 order-lg-2">
                 <div class="d-flex gap-2 h-100">
                   <div class="dropdown h-100 w-100">
-                    <input type="search" readonly v-model="nhaSanXuatSelected" data-bs-toggle="dropdown"
-                      class="form-control h-100 form-control-sm" placeholder="Nhà sản xuất" />
-                    <ul class="dropdown-menu w-100" style="max-height: 400px; overflow: auto">
-                      <li style="top: -10px" class="px-3 py-2 bg-white sticky-top shadow-sm">
-                        <input type="search" v-model="ten_nhasx" placeholder="Tìm kiếm nhà sản xuất"
-                          class="form-control form-control-sm" />
+                    <input
+                      type="search"
+                      readonly
+                      :value="tenNhaSanXuatSelected"
+                      data-bs-toggle="dropdown"
+                      class="form-control h-100 form-control-sm"
+                      placeholder="Nhà sản xuất"
+                    />
+                    <ul
+                      class="dropdown-menu w-100"
+                      style="max-height: 400px; overflow: auto"
+                    >
+                      <li
+                        style="top: -10px"
+                        class="px-3 py-2 bg-white sticky-top shadow-sm"
+                      >
+                        <input
+                          type="search"
+                          v-model="ten_nhasx"
+                          placeholder="Tìm kiếm nhà sản xuất"
+                          class="form-control form-control-sm"
+                        />
                       </li>
                       <li v-for="value in listNhomVatTu">
-                        <a role="button" @click.prevent="selectNhaSanXuat(value.ten_nh)"
-                          :class="`dropdown-item d-flex align-items-start text-wrap ${nhaSanXuatSelected === value.ten_nh ? 'active' : ''}`">
+                        <a
+                          role="button"
+                          @click.prevent="selectNhaSanXuat(value.ma_nh)"
+                          :class="`dropdown-item d-flex align-items-start text-wrap ${nhaSanXuatSelected === value.ma_nh ? 'active' : ''}`"
+                        >
                           <small>{{ value.ten_nh }}</small>
                         </a>
                       </li>
                     </ul>
                   </div>
-                  <button @click="showMoreFilters = true"
-                    class="btn-sm btn btn-light position-relative shadow-sm border">
+                  <button
+                    @click="showMoreFilters = true"
+                    class="btn-sm btn btn-light position-relative shadow-sm border"
+                  >
                     <Funnel :size="16" />
                   </button>
                 </div>
@@ -36,12 +59,19 @@
             </div>
           </div>
           <div class="card-body px-1 px-md-2">
-            <OrderModuleList :loading="pageState.loading" :list="pageState.listProduct.getData" />
-            <SharedModulePagination v-if="pageState.listProduct.getData?.length" class="mt-3"
-              :pagination="pageState.listProduct.pagination" @page-change="
+            <OrderModuleList
+              :loading="pageState.loading"
+              :list="pageState.listProduct.getData"
+            />
+            <SharedModulePagination
+              v-if="pageState.listProduct.getData?.length"
+              class="mt-3"
+              :pagination="pageState.listProduct.pagination"
+              @page-change="
                 filterListProduct.pageIndex = $event;
-              getListProduct();
-              " />
+                getListProduct();
+              "
+            />
           </div>
         </div>
       </div>
@@ -61,7 +91,11 @@
             </div>
             <ClientOnly>
               <div class="card-footer border-0 bg-white shadow-sm">
-                <button class="btn btn-primary w-100 mt-2" :disabled="isCartEmpty" @click="showCheckoutModal = true">
+                <button
+                  class="btn btn-primary w-100 mt-2"
+                  :disabled="isCartEmpty"
+                  @click="showCheckoutModal = true"
+                >
                   Xác nhận đơn hàng
                 </button>
               </div>
@@ -69,13 +103,26 @@
           </div>
           <h6>Chương trình khuyến mãi</h6>
           <ul class="list-group list-group-flush">
-            <li v-for="discount in listNews?.data" :key="discount._id"
-              class="list-group-item d-flex gap-2 p-1 position-relative justify-content-between align-items-center">
-              <NuxtLink :to="`/promotion/${discount.slug}`" class="stretched-link"></NuxtLink>
-              <div class="ratio ratio-16x9 rounded overflow-hidden flex-shrink-0" style="width: 70px">
-                <img :src="discount.thumbnail || '/images/image-error.svg'" :alt="discount.title"
-                  style="object-fit: cover" />
+            <li
+              v-for="discount in listNews?.data"
+              :key="discount._id"
+              class="list-group-item d-flex gap-2 p-1 position-relative justify-content-start align-items-center"
+            >
+              <NuxtLink
+                :to="`/promotion/${discount.slug}`"
+                class="stretched-link"
+              ></NuxtLink>
+              <div
+                class="ratio ratio-16x9 rounded overflow-hidden flex-shrink-0"
+                style="width: 70px"
+              >
+                <img
+                  :src="discount.thumbnail || '/images/image-error.svg'"
+                  :alt="discount.title"
+                  style="object-fit: cover"
+                />
               </div>
+
               <small>{{ discount.title }}</small>
             </li>
           </ul>
@@ -84,8 +131,15 @@
     </div>
   </div>
   <ClientOnly>
-    <OrderModuleFilter :show="showMoreFilters" @close="showMoreFilters = false" @apply="applyFilter" />
-    <CheckoutModalCheckOut v-if="showCheckoutModal" @close="showCheckoutModal = false" />
+    <OrderModuleFilter
+      :show="showMoreFilters"
+      @close="showMoreFilters = false"
+      @apply="applyFilter"
+    />
+    <CheckoutModalCheckOut
+      v-if="showCheckoutModal"
+      @close="showCheckoutModal = false"
+    />
   </ClientOnly>
 </template>
 
@@ -130,8 +184,14 @@ const pageState = reactive({
 });
 const nhaSanXuatSelected = ref<string>("");
 
+const tenNhaSanXuatSelected = computed(() => {
+  return listNhomVatTu.value.find(
+    (item) => item.ma_nh === nhaSanXuatSelected.value,
+  )?.ten_nh;
+});
+
 watch(nhaSanXuatSelected, (newVal) => {
-  filterListProduct.value.setValue("ten_nhasanxuat", newVal);
+  filterListProduct.value.setValue("nh_vt3", newVal, OperatorType.Equal);
   filterListProduct.value.pageIndex = 1;
   getListProduct();
 });
@@ -152,7 +212,7 @@ const filterListProduct = ref(
         valueSearch: "",
       }),
     ],
-  })
+  }),
 );
 
 const filterNhomVt = ref(
@@ -166,7 +226,7 @@ const filterNhomVt = ref(
         valueSearch: Item.LoaiNhomVatTu.PhanNhom.toString(),
       }),
     ],
-  })
+  }),
 );
 
 const filterNhaSX = ref(
@@ -180,7 +240,7 @@ const filterNhaSX = ref(
         valueSearch: ten_nhasx.value,
       }),
     ],
-  })
+  }),
 );
 const listNhomVatTu = ref<Item.NhomVatTu[]>([]);
 const listNhaSanXuat = ref<Item.NhaSanXuat[]>([]);
@@ -192,7 +252,7 @@ watch(
     if (window) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }
+  },
 );
 const queryList = ref({
   page: 1,
@@ -205,26 +265,27 @@ watch(keyword, (newVal) => {
   getListProduct();
 });
 
-watch(() => ten_nhasx.value, (newVal) => {
-  filterNhomVt.value.setValue("ten_nh", newVal, OperatorType.Contains);
-  filterNhomVt.value.pageIndex = 1;
-  getNhomVatTu();
-});
+watch(
+  () => ten_nhasx.value,
+  (newVal) => {
+    filterNhomVt.value.setValue("ten_nh", newVal, OperatorType.Contains);
+    filterNhomVt.value.pageIndex = 1;
+    getNhomVatTu();
+  },
+);
 
-
-
-
-function selectNhaSanXuat(ten_nh: string) {
-  if (nhaSanXuatSelected.value === ten_nh) {
+function selectNhaSanXuat(ma_nh: string) {
+  if (nhaSanXuatSelected.value === ma_nh) {
     nhaSanXuatSelected.value = "";
   } else {
-    nhaSanXuatSelected.value = ten_nh;
+    nhaSanXuatSelected.value = ma_nh;
   }
 }
 
 async function fetchNewsList() {
   loading.value = true;
   try {
+    //@ts-ignore
     const rsData = await $fetch("/api/post/list", {
       query: {
         ...queryList.value,
@@ -249,7 +310,7 @@ onBeforeMount(() => {
 async function getNhomVatTu() {
   try {
     const response = await $appServices.items.getNhomVatTu<Item.NhomVatTu>(
-      filterNhomVt.value
+      filterNhomVt.value,
     );
     listNhomVatTu.value = response.getData || [];
   } catch (error) {
@@ -260,7 +321,7 @@ async function getNhomVatTu() {
 async function getNhaSX() {
   try {
     const response = await $appServices.items.getNhaSX<Item.NhaSanXuat>(
-      filterNhaSX.value
+      filterNhaSX.value,
     );
     listNhaSanXuat.value = response.getData || [];
   } catch (error) {
@@ -271,7 +332,7 @@ async function getNhaSX() {
 async function getListProduct() {
   // const moreFilters = buildFilter();
   const deepCloneFilter = JSON.parse(
-    JSON.stringify(filterListProduct.value)
+    JSON.stringify(filterListProduct.value),
   ) as BodyFilter<ITemsTapmed>;
   pageState.loading = true;
   try {
@@ -294,8 +355,8 @@ function applyFilter({
   if (phanLoaiVtSelected != null) {
     filterListProduct.value.setValue(
       "ma_plvt",
-      String(phanLoaiVtSelected?.ma_plvt || ''),
-      OperatorType.Equal
+      String(phanLoaiVtSelected?.ma_plvt || ""),
+      OperatorType.Equal,
     );
   } else {
     filterListProduct.value.removeFilter("ma_plvt");
@@ -304,8 +365,8 @@ function applyFilter({
   if (phanNhomVtSelected != null) {
     filterListProduct.value.setValue(
       "ma_pnvt",
-      String(phanNhomVtSelected?.ma_pnvt || ''),
-      OperatorType.Equal
+      String(phanNhomVtSelected?.ma_pnvt || ""),
+      OperatorType.Equal,
     );
   } else {
     filterListProduct.value.removeFilter("ma_pnvt");
@@ -317,7 +378,7 @@ function selectNhaSX(nhasx: Item.NhaSanXuat) {
   filterListProduct.value.setValue(
     "ten_nhasanxuat",
     nhasx.ten_nhasanxuat,
-    OperatorType.Contains
+    OperatorType.Contains,
   );
   filterListProduct.value.pageIndex = 1;
   getListProduct();
