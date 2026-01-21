@@ -1,43 +1,49 @@
-import type { ITemsTapmed } from "~/model"
+import type { ITemsTapmed } from "~/model";
 
 interface ITemsTapmedNew extends ITemsTapmed {
   gia_moi?: number;
 }
 export const useCart = () => {
   // const { csrf } = useCsrf();
-  const { user } = useAuth()
+  const { user } = useAuth();
   // giới hạn debounce
-  let timeOut = ref<any>("")
-  const cart = useState<ITemsTapmedNew[]>('cart', () => [])
+  let timeOut = ref<any>("");
+  const cart = useState<ITemsTapmedNew[]>("cart", () => []);
 
-  watch(() => cart.value, (newCart) => {
-    let changed = false
-    newCart.forEach((item) => {
-      const max = Number(item.sl_toi_da) || 0
-      const qty = Number(item.quantity) || 0
+  watch(
+    () => cart.value,
+    (newCart) => {
+      let changed = false;
+      newCart.forEach((item) => {
+        const max = Number(item.sl_toi_da) || 0;
+        const qty = Number(item.quantity) || 0;
 
-      if (max > 0 && qty > max) {
-        item.quantity = max
-        useToast().error(`Số lượng tối đa cho sản phẩm là ${max}.`)
-        changed = true
+        if (max > 0 && qty > max) {
+          item.quantity = max;
+          useToast().error(`Số lượng tối đa cho sản phẩm là ${max}.`);
+          changed = true;
+        }
+
+        if (qty < 0) {
+          item.quantity = 0;
+          changed = true;
+        }
+      });
+
+      if (changed) {
+        cart.value = [...newCart];
       }
-
-      if (qty < 0) {
-        item.quantity = 0
-        changed = true
-      }
-    })
-
-    if (changed) {
-      cart.value = [...newCart]
-    }
-    asyncCartUpdateToServer()
-  }, { deep: true })
+      asyncCartUpdateToServer();
+    },
+    { deep: true },
+  );
 
   const addToCart = (product: ITemsTapmed, auto?: boolean) => {
     const slToiDa = product.sl_toi_da || 0;
     const productId = product.ma_vt.trim();
-    const existingProduct = cart.value.find((item) => item.ma_vt.trim() === productId);
+    const existingProduct = cart.value.find(
+      (item) => item.ma_vt.trim() === productId,
+    );
 
     // Lấy quantity từ product, đảm bảo luôn là số hợp lệ
     const inputQty = Number(product.quantity) || 0;
@@ -74,80 +80,99 @@ export const useCart = () => {
         ...product,
         sl_toi_da: product.sl_toi_da,
         quantity: desiredQty,
-        han_sd_web: product.han_sd_web || '',
+        han_sd_web: product.han_sd_web || "",
       } as ITemsTapmedNew);
       asyncCartUpdateToServer();
       return true;
     }
   };
 
-
   const getQtyById = (productId: string) => {
-    const product = cart.value.find((item) => item.ma_vt === productId)
-    return product ? product.quantity || 0 : 0
-  }
+    const product = cart.value.find((item) => item.ma_vt === productId);
+    return product ? product.quantity || 0 : 0;
+  };
 
   const removeFromCart = (productId: string) => {
-    cart.value = cart.value.filter((item) => item.ma_vt !== productId)
-    useToast().success('Đã xóa sản phẩm khỏi giỏ hàng.')
+    cart.value = cart.value.filter((item) => item.ma_vt !== productId);
+    useToast().success("Đã xóa sản phẩm khỏi giỏ hàng.");
     asyncCartUpdateToServer();
-  }
+  };
 
-  const clearCart = () => {
-    cart.value = []
-    asyncCartUpdateToServer();
-  }
+  const clearCart = async () => {
+    cart.value = [];
+    // Xóa luôn localStorage
+    localStorage.removeItem("cart_siduoc");
+    // Gọi đồng bộ để đảm bảo server được cập nhật trước khi logout
+    if (user.value) {
+      //@ts-ignore
+      await $fetch(`/api/cart/${user.value?.data.ma_kh}`, {
+        method: "DELETE",
+      });
+    }
+  };
 
-  const totalProducts = computed(() => cart.value.length)
+  const totalProducts = computed(() => cart.value.length);
 
   const totalItems = computed(() =>
-    cart.value.reduce((total, item) => total + (item.quantity || 0), 0)
-  )
+    cart.value.reduce((total, item) => total + (item.quantity || 0), 0),
+  );
 
   const totalPrice = computed(() =>
-    cart.value.reduce((total, item) => total + item.gia_nt2 * (item.quantity || 0), 0)
-  )
+    cart.value.reduce(
+      (total, item) => total + item.gia_nt2 * (item.quantity || 0),
+      0,
+    ),
+  );
 
-  watch(() => cart.value, (newCart) => {
-    localStorage.setItem('cart_siduoc', JSON.stringify(newCart))
-  }, { deep: true })
+  watch(
+    () => cart.value,
+    (newCart) => {
+      localStorage.setItem("cart_siduoc", JSON.stringify(newCart));
+    },
+    { deep: true },
+  );
 
   function asyncCartUpdateToServer() {
-    if (timeOut.value) clearTimeout(timeOut.value)
+    if (timeOut.value) clearTimeout(timeOut.value);
     timeOut.value = window.setTimeout(async () => {
       if (user.value) {
+        //@ts-ignore
         await useFetch(`/api/cart/${user.value?.data.ma_kh}`, {
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify(cart.value),
-        })
+        });
       }
-    }, 1000)
+    }, 1000);
   }
 
-  watch(() => user.value?.data.ma_kh, (newToken) => {
-    if (newToken) {
-      // đồng bộ giỏ hàng từ server
-      useFetch<{
-        data: any[];
-      }>(`/api/cart/${user.value?.data.ma_kh}`, {
-        method: 'GET',
-        // headers: {
-        //   'csrf-token': csrf || ''
-        // }
-      }).then(({ data }) => {
-        if (data.value && Array.isArray(data.value.data)) {
-          cart.value = data.value.data;
+  watch(
+    () => user.value?.data.ma_kh,
+    async (newToken) => {
+      if (newToken) {
+        // đồng bộ giỏ hàng từ server (dùng $fetch để tránh cache)
+        try {
+          const response = await $fetch<{ data: any[] }>(
+            `/api/cart/${user.value?.data.ma_kh}`,
+            {
+              method: "GET",
+            },
+          );
+          if (response?.data && Array.isArray(response.data)) {
+            cart.value = response.data;
+          }
+        } catch (error) {
+          console.error("Error fetching cart:", error);
         }
-      })
-    }
-  });
+      }
+    },
+  );
 
   const initCartFromStorage = () => {
-    const cartInStorage = localStorage.getItem('cart_siduoc');
+    const cartInStorage = localStorage.getItem("cart_siduoc");
     if (cartInStorage) {
       cart.value = JSON.parse(cartInStorage);
     }
-  }
+  };
   const isCartEmpty = computed(() => cart.value.length === 0);
   return {
     cart,
@@ -160,5 +185,5 @@ export const useCart = () => {
     initCartFromStorage,
     totalProducts,
     isCartEmpty,
-  }
-}
+  };
+};
