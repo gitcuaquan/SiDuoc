@@ -354,6 +354,7 @@
     clearCart();
     clearToken();
     clearUser();
+    useOrder().resetOrder();
     togglePopupLogin();
     useRouter().push("/");
     useToast().success("Đăng xuất thành công");

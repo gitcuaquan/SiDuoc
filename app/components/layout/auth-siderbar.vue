@@ -95,6 +95,7 @@ const menuWithManager = computed(() => {
 function logoutUser() {
   useAuth().clearToken();
   useAuth().clearUser();
+  useOrder().resetOrder();
   useRouter().push("/");
 }
 function selectLabel(label: string) {
