@@ -17,22 +17,26 @@
           <h1 class="h3 fw-bold mb-3 mt-4 mt-md-0 text-dark">
             {{ detailProduct?.data?.ten_vt || "Tên sản phẩm không xác định" }}
           </h1>
+          <template v-if="detailProduct?.applicableVouchers">
+            <small class="text-muted">Sản phẩm đang có các chương trình : </small>
+            <div class="alert d-flex mt-2 border-0 align-items-center gap-2 p-1 px-2 alert-primary"
+              style="width: fit-content; font-size: 14px;" role="alert">
+              <Gift :size="16" class="text-success" />
+              {{ detailProduct?.applicableVouchers?.voucherName }}
+            </div>
+          </template>
+
           <!-- <p class="text-muted mb-2">
             Nhóm thuốc:
             <span class="text-primary fw-bold">
              </span>
           </p> -->
           <!-- Rating and Reviews -->
-          <div
-            v-if="detailProduct?.data?.han_sd_web"
-            class="d-flex align-items-center gap-2 mb-3"
-          >
-            <span class="text-muted me-2"
-              >HSD:
+          <div v-if="detailProduct?.data?.han_sd_web" class="d-flex align-items-center gap-2 mb-3">
+            <span class="text-muted me-2">HSD:
               <b class="text-danger">{{
                 detailProduct?.data?.han_sd_web
-              }}</b></span
-            >
+              }}</b></span>
           </div>
 
           <!-- Price -->
@@ -46,14 +50,10 @@
                 }}
                 /
                 <span class="text-dark">
-                  {{ detailProduct?.data?.dvt || "đơn vị" }}</span
-                >
+                  {{ detailProduct?.data?.dvt || "đơn vị" }}</span>
               </h2>
             </div>
-            <p
-              v-if="detailProduct?.data?.gia2"
-              class="text-muted text-decoration-line-through mb-3"
-            >
+            <p v-if="detailProduct?.data?.gia2" class="text-muted text-decoration-line-through mb-3">
               {{ formatCurrency(detailProduct?.data?.gia2 || 0) }}
             </p>
           </div>
@@ -61,18 +61,12 @@
           <div id="action" class="row mt-3 bg-white align-items-end pb-3 g-3">
             <div class="col-md-6">
               <div class="d-flex align-items-center gap-3">
-                <label class="form-label m-0 text-nowrap fw-bold"
-                  >Số lượng</label
-                >
+                <label class="form-label m-0 text-nowrap fw-bold">Số lượng</label>
 
-                <UiBtnGroup
-                  v-model="quantity"
-                  :max="
-                    (detailProduct?.data?.sl_toi_da || 0) == 0
-                      ? 9999999
-                      : detailProduct?.data?.sl_toi_da
-                  "
-                />
+                <UiBtnGroup v-model="quantity" :max="(detailProduct?.data?.sl_toi_da || 0) == 0
+                  ? 9999999
+                  : detailProduct?.data?.sl_toi_da
+                  " />
               </div>
             </div>
             <!-- <div class="col-md-6">
@@ -96,10 +90,7 @@
             <table class="table table-borderless">
               <tbody>
                 <tr>
-                  <td
-                    class="text-muted text-nowrap fw-bold py-2"
-                    style="width: 100px"
-                  >
+                  <td class="text-muted text-nowrap fw-bold py-2" style="width: 100px">
                     Nhà sản xuất
                   </td>
                   <td class="py-2">TapMed</td>

@@ -22,7 +22,10 @@ export type ITemsTapmed = {
     trang_thai_hang_hoa?: 1 | 2; // 1: Còn hàng, 2: Hết hàng, 3: Ngừng kinh doanh
     // Số lượng tạm thêm vào giỏ hàng [ chỉ ở client ]
     quantity?: number;
-    sl_toi_da?: number; // Số lượng tối đa có thể mua
+    sl_toi_da?: number; // Số lượng tối đa có thể mua,
+    ma_plvt?: string;
+    ma_pnvt?: string;
+    co_ck?: string;
 }
 
 
