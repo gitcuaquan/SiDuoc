@@ -67,7 +67,7 @@
             <small class="text-muted me-2">
               Hạn lô:
               <b class="text-danger">{{
-                detailProduct?.data?.han_lo.split("T")[0]
+                format(new Date(detailProduct?.data?.han_lo), "dd/MM/yyyy")
               }}</b>
             </small>
           </div>
@@ -244,6 +244,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { ProjectConfig } from "~/model";
+import { format } from "date-fns";
 const { $appServices } = useNuxtApp();
 const { addToCart, getQtyById } = useCart();
 const route = useRoute();
