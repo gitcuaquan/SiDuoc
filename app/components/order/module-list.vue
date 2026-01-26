@@ -1,22 +1,47 @@
 <template>
   <div class="position-relative">
-    <table v-if="list?.length" class="table align-middle mb-0 table-sm table-borderless">
+    <table
+      v-if="list?.length"
+      class="table align-middle mb-0 table-sm table-borderless"
+    >
       <tbody>
-        <tr v-for="product in listProduct" class="border-bottom" :key="product.ma_vt">
+        <tr
+          v-for="product in listProduct"
+          class="border-bottom"
+          :key="product.ma_vt"
+        >
           <td style="width: 100px">
-            <div class="ratio z-low overflow-hidden bg-light rounded ratio-1x1" style="width: 100px">
-              <img :src="product.image_urls?.[0]?.url || '/images/image-error.svg'" alt="" />
+            <div
+              class="ratio z-low overflow-hidden bg-light rounded ratio-1x1"
+              style="width: 100px"
+            >
+              <img
+                :src="product.image_urls?.[0]?.url || '/images/image-error.svg'"
+                alt=""
+              />
+              <div
+                v-if="product.co_ck == '1'"
+                class="position-absolute d-flex justify-content-end align-items-start top-0 end-0"
+              >
+                <div
+                  style="width: 25px; height: 25px"
+                  class="bg-primary rounded-circle d-flex justify-content-center align-items-center"
+                >
+                  <Gift class="text-white" :size="16" />
+                </div>
+              </div>
             </div>
           </td>
           <td>
-            <NuxtLink :to="`/product/${product.ma_vt}`"
-              class="text-decoration-none text-mobile fs-6 link-dark link-product">
+            <NuxtLink
+              :to="`/product/${product.ma_vt}`"
+              class="text-decoration-none text-mobile fs-6 link-dark link-product"
+            >
               {{ product.ten_vt }}
             </NuxtLink>
-
             <div class="d-flex flex-wrap mt-1 gap-2">
-
-              <div> Giá:
+              <div>
+                Giá:
                 <strong class="text-primary text-opacity-75 fw-bold">
                   {{ formatCurrency(product.gia_nt2) || "Liên hệ" }}
                 </strong>
@@ -30,9 +55,7 @@
                 HSD :
                 <strong class="text-danger text-opacity-75 fw-bold">
                   {{
-                    product.han_sd_web
-                      ? product.han_sd_web
-                      : "Đang cập nhật"
+                    product.han_sd_web ? product.han_sd_web : "Đang cập nhật"
                   }}
                 </strong>
               </div>
@@ -46,13 +69,23 @@
               </template>
             </div>
             <div class="d-lg-none mt-2">
-              <UiBtnGroup :max="(product.sl_toi_da || 0) == 0 ? 9999999 : product.sl_toi_da" size="sm"
-                v-model="product.quantity" @change="($event) => changeQuantity(product, $event)" />
+              <UiBtnGroup
+                :max="
+                  (product.sl_toi_da || 0) == 0 ? 9999999 : product.sl_toi_da
+                "
+                size="sm"
+                v-model="product.quantity"
+                @change="($event) => changeQuantity(product, $event)"
+              />
             </div>
           </td>
           <td style="width: 10px" class="d-none d-md-table-cell">
-            <UiBtnGroup :max="(product.sl_toi_da || 0) == 0 ? 9999999 : product.sl_toi_da" size="sm"
-              v-model="product.quantity" @change="($event) => changeQuantity(product, $event)" />
+            <UiBtnGroup
+              :max="(product.sl_toi_da || 0) == 0 ? 9999999 : product.sl_toi_da"
+              size="sm"
+              v-model="product.quantity"
+              @change="($event) => changeQuantity(product, $event)"
+            />
           </td>
         </tr>
       </tbody>
@@ -62,88 +95,89 @@
     </div>
     <div
       class="d-flex position-absolute bd-blur top-0 start-0 w-100 h-100 bg-white bg-opacity-75 justify-content-center align-items-center"
-      v-if="props.loading">
+      v-if="props.loading"
+    >
       <UiLoading />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import type { ITemsTapmed } from "~/model";
+import type { ITemsTapmed } from "~/model";
 
-  const { addToCart, getQtyById, cart } = useCart();
-  const { isAuthenticated, togglePopupLogin } = useAuth();
+const { addToCart, getQtyById, cart } = useCart();
+const { isAuthenticated, togglePopupLogin } = useAuth();
 
-  const props = defineProps<{
-    list?: ITemsTapmed[];
-    loading?: boolean;
-  }>();
+const props = defineProps<{
+  list?: ITemsTapmed[];
+  loading?: boolean;
+}>();
 
-  const listProduct = ref<ITemsTapmed[]>(props.list || []);
+const listProduct = ref<ITemsTapmed[]>(props.list || []);
 
-  watch(
-    () => props.list,
-    (newList) => {
-      listProduct.value =
-        newList?.map((item) => ({
-          ...item,
-          quantity: getQtyById(item.ma_vt),
-        })) || [];
-    }
-  );
-  watch(
-    () => cart.value,
-    () => {
-      listProduct.value = listProduct.value.map((item) => ({
+watch(
+  () => props.list,
+  (newList) => {
+    listProduct.value =
+      newList?.map((item) => ({
         ...item,
         quantity: getQtyById(item.ma_vt),
-      }));
-    },
-    { deep: true }
-  );
+      })) || [];
+  },
+);
+watch(
+  () => cart.value,
+  () => {
+    listProduct.value = listProduct.value.map((item) => ({
+      ...item,
+      quantity: getQtyById(item.ma_vt),
+    }));
+  },
+  { deep: true },
+);
 
-  function changeQuantity(item: ITemsTapmed, quantity: number) {
-    if (isAuthenticated.value) {
-      item.quantity = quantity;
-      addToCart(item);
-    } else {
-      useToast().error("Vui lòng đăng nhập để sử dụng chức năng này");
-      togglePopupLogin();
-    }
+function changeQuantity(item: ITemsTapmed, quantity: number) {
+  if (isAuthenticated.value) {
+    item.quantity = quantity;
+    addToCart(item);
+  } else {
+    useToast().error("Vui lòng đăng nhập để sử dụng chức năng này");
+    togglePopupLogin();
   }
+}
 </script>
 
 <style scoped>
-  .bd-blur {
-    backdrop-filter: blur(4px);
-    min-height: 500px;
-  }
+.bd-blur {
+  backdrop-filter: blur(4px);
+  min-height: 500px;
+}
 
-  .ratio img {
-    object-fit: contain;
-  }
+.ratio img {
+  object-fit: contain;
+}
 
-  small {
-    font-size: 0.75rem;
-  }
+small {
+  font-size: 0.75rem;
+}
 
-  .link-product {
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
+.link-product {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
 
-  .link-product:hover {
-    color: var(--bs-primary) !important;
-    text-decoration: underline !important;
-  }
+.link-product:hover {
+  color: var(--bs-primary) !important;
+  text-decoration: underline !important;
+}
 
-  .z-low {
-    z-index: 0 !important;
-  }
+.z-low {
+  z-index: 0 !important;
+}
 
-  @media (max-width: 768px) {
-    .text-mobile {
-      font-size: 14px !important;
-    }
+@media (max-width: 768px) {
+  .text-mobile {
+    font-size: 14px !important;
   }
+}
 </style>
