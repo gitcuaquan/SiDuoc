@@ -163,7 +163,6 @@ import {
   type BaseResponse,
   type ITemsTapmed,
 } from "~/model";
-import { select } from "three/tsl";
 const { $appServices } = useNuxtApp();
 
 const { listFilter } = useFilter();
