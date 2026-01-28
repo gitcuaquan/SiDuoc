@@ -209,11 +209,26 @@ function createOrder() {
     return;
   }
   loading.value = true;
+  const requestBody = prevOrder.value;
   $appServices.order
-    .createOrder(prevOrder.value)
-    .then((res) => {
+    .createOrder(requestBody)
+    .then(async (res) => {
       loading.value = false;
       idOrder.value = res.data.stt_rec;
+
+      // Log order: ghi lại request body và response
+      try {
+        await $fetch("/api/logOrder", {
+          method: "POST",
+          body: {
+            request: requestBody,
+            response: res,
+          },
+        });
+      } catch (logError) {
+        console.error("Failed to log order:", logError);
+      }
+
       clearCart();
       resetOrder();
     })
