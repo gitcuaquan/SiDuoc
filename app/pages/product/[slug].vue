@@ -246,7 +246,7 @@ import { computed } from "vue";
 import type { ProjectConfig } from "~/model";
 import { format } from "date-fns";
 const { $appServices } = useNuxtApp();
-const { addToCart, getQtyById } = useCart();
+const { addToCart, getQtyById, updateQuantity } = useCart();
 const route = useRoute();
 
 const { isAuthenticated, togglePopupLogin } = useAuth();
@@ -283,25 +283,31 @@ watch(quantity, (newQty) => {
     return;
   }
 
-  const maxQty = detailProduct.value.data.sl_toi_da || 0;
+  const currentQtyInCart = getQtyById(detailProduct.value.data.ma_vt);
 
-  // Kiểm tra số lượng tối đa
-  if (maxQty > 0 && newQty > maxQty) {
-    isSyncing = true;
-    quantity.value = maxQty;
-    isSyncing = false;
-    useToast().error(`Số lượng tối đa cho sản phẩm này là ${maxQty}`);
-    return;
-  }
-
-  // Cập nhật vào giỏ hàng
-  detailProduct.value.data.quantity = newQty;
-  addToCart(detailProduct.value.data);
-
-  if (newQty > 0) {
-    useToast().success("Đã cập nhật giỏ hàng");
+  // Nếu sản phẩm đã có trong giỏ, dùng updateQuantity
+  if (currentQtyInCart > 0) {
+    updateQuantity(detailProduct.value.data.ma_vt, newQty);
+  } else if (newQty > 0) {
+    // Sản phẩm chưa có trong giỏ và quantity > 0, dùng addToCart
+    detailProduct.value.data.quantity = newQty;
+    addToCart(detailProduct.value.data);
+    useToast().success("Đã thêm vào giỏ hàng");
   }
 });
+
+// Đồng bộ quantity khi giỏ hàng thay đổi (ví dụ khi sản phẩm bị xóa)
+const { cart } = useCart();
+watch(
+  () => cart.value,
+  () => {
+    if (!detailProduct?.value?.data) return;
+    isSyncing = true;
+    quantity.value = getQtyById(detailProduct.value.data.ma_vt) || 0;
+    isSyncing = false;
+  },
+  { deep: true },
+);
 
 // SEO Meta Tags - Dynamic for Product Detail Page
 useSeoMeta({

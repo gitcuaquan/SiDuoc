@@ -92,10 +92,43 @@ export const useCart = () => {
     return product ? product.quantity || 0 : 0;
   };
 
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = (productId: string, showToast: boolean = true) => {
     cart.value = cart.value.filter((item) => item.ma_vt !== productId);
-    useToast().success("Đã xóa sản phẩm khỏi giỏ hàng.");
+    if (showToast) {
+      useToast().success("Đã xóa sản phẩm khỏi giỏ hàng.");
+    }
     asyncCartUpdateToServer();
+  };
+
+  /**
+   * Cập nhật số lượng sản phẩm trong giỏ hàng
+   * Nếu quantity = 0, tự động xóa sản phẩm
+   */
+  const updateQuantity = (productId: string, quantity: number) => {
+    const product = cart.value.find(
+      (item) => item.ma_vt.trim() === productId.trim(),
+    );
+    if (!product) return false;
+
+    const max = Number(product.sl_toi_da) || 0;
+    let newQty = Number(quantity) || 0;
+
+    // Kiểm tra giới hạn max
+    if (max > 0 && newQty > max) {
+      useToast().error(`Số lượng tối đa cho sản phẩm này là ${max}.`);
+      newQty = max;
+    }
+
+    // Nếu quantity <= 0, xóa sản phẩm
+    if (newQty <= 0) {
+      removeFromCart(productId);
+      return true;
+    }
+
+    // Cập nhật quantity
+    product.quantity = newQty;
+    asyncCartUpdateToServer();
+    return true;
   };
 
   const clearCart = async () => {
@@ -178,6 +211,7 @@ export const useCart = () => {
     cart,
     addToCart,
     removeFromCart,
+    updateQuantity,
     clearCart,
     totalItems,
     totalPrice,

@@ -105,7 +105,7 @@
 <script lang="ts" setup>
 import type { ITemsTapmed } from "~/model";
 
-const { addToCart, getQtyById, cart } = useCart();
+const { addToCart, getQtyById, cart, updateQuantity } = useCart();
 const { isAuthenticated, togglePopupLogin } = useAuth();
 
 const props = defineProps<{
@@ -138,8 +138,18 @@ watch(
 
 function changeQuantity(item: ITemsTapmed, quantity: number) {
   if (isAuthenticated.value) {
-    item.quantity = quantity;
-    addToCart(item);
+    // Nếu quantity = 0 và sản phẩm chưa có trong giỏ, bỏ qua
+    if (quantity === 0 && getQtyById(item.ma_vt) === 0) {
+      return;
+    }
+    // Nếu sản phẩm đã có trong giỏ, dùng updateQuantity
+    if (getQtyById(item.ma_vt) > 0) {
+      updateQuantity(item.ma_vt, quantity);
+    } else {
+      // Sản phẩm chưa có trong giỏ, dùng addToCart
+      item.quantity = quantity;
+      addToCart(item);
+    }
   } else {
     useToast().error("Vui lòng đăng nhập để sử dụng chức năng này");
     togglePopupLogin();

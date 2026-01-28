@@ -6,11 +6,20 @@
       <div class="col-lg-3">
         <div class="mb-3">
           <div class="d-flex gap-2 align-items-center">
-            <input v-model="keyword" type="text" class="form-control form-control-sm"
-              placeholder="Tìm kiếm sản phẩm..." />
+            <input
+              v-model="keyword"
+              type="text"
+              class="form-control form-control-sm"
+              placeholder="Tìm kiếm sản phẩm..."
+            />
             <!-- Offcanvas trigger (mobile only) -->
-            <button class="btn h-100 d-block btn-sm d-lg-none btn-outline-secondary" type="button"
-              data-bs-toggle="offcanvas" data-bs-target="#nhomOffcanvas" aria-controls="nhomOffcanvas">
+            <button
+              class="btn h-100 d-block btn-sm d-lg-none btn-outline-secondary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#nhomOffcanvas"
+              aria-controls="nhomOffcanvas"
+            >
               <Funnel :size="14" />
             </button>
           </div>
@@ -20,18 +29,36 @@
         <div class="d-none d-lg-block">
           <label class="form-label fw-bold"> Lọc theo phân loại </label>
           <div class="d-flex flex-wrap gap-2">
-            <input type="radio" class="btn-check" v-model="phanLoaiVtSelected" :value="null" name="phan-loai-vt-dt"
-              id="plvt-dt-all" autocomplete="off" />
-            <label class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
-              for="plvt-dt-all">
+            <input
+              type="radio"
+              class="btn-check"
+              v-model="phanLoaiVtSelected"
+              :value="null"
+              name="phan-loai-vt-dt"
+              id="plvt-dt-all"
+              autocomplete="off"
+            />
+            <label
+              class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
+              for="plvt-dt-all"
+            >
               Tất cả loại thuốc
             </label>
 
             <template v-for="value in phanLoaiVt" :key="value.ma_plvt">
-              <input type="radio" class="btn-check" v-model="phanLoaiVtSelected" :value="value.ma_plvt"
-                name="phan-loai-vt-dt" :id="`plvt-dt-${value.ma_plvt}`" autocomplete="off" />
-              <label class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
-                :for="`plvt-dt-${value.ma_plvt}`">
+              <input
+                type="radio"
+                class="btn-check"
+                v-model="phanLoaiVtSelected"
+                :value="value.ma_plvt"
+                name="phan-loai-vt-dt"
+                :id="`plvt-dt-${value.ma_plvt}`"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
+                :for="`plvt-dt-${value.ma_plvt}`"
+              >
                 {{ value.ten_plvt }}
               </label>
             </template>
@@ -41,8 +68,14 @@
           <ul class="list-unstyled">
             <li class="mb-1">
               <div class="form-check">
-                <input class="form-check-input" type="radio" v-model="phanNhomVtSelected" :value="null"
-                  name="nhom-vat-tu-dt" id="nhom-vt-dt-all" />
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  v-model="phanNhomVtSelected"
+                  :value="null"
+                  name="nhom-vat-tu-dt"
+                  id="nhom-vt-dt-all"
+                />
                 <label class="form-check-label" for="nhom-vt-dt-all">
                   <small> Tất cả nhóm thuốc</small>
                 </label>
@@ -51,9 +84,18 @@
 
             <li v-for="value in phanNhomVt" :key="value.ma_pnvt" class="mb-1">
               <div class="form-check">
-                <input class="form-check-input" type="radio" v-model="phanNhomVtSelected" :value="value.ma_pnvt"
-                  name="nhom-vat-tu-dt" :id="`nhom-vt-dt-${value.ma_pnvt}`" />
-                <label class="form-check-label" :for="`nhom-vt-dt-${value.ma_pnvt}`">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  v-model="phanNhomVtSelected"
+                  :value="value.ma_pnvt"
+                  name="nhom-vat-tu-dt"
+                  :id="`nhom-vt-dt-${value.ma_pnvt}`"
+                />
+                <label
+                  class="form-check-label"
+                  :for="`nhom-vt-dt-${value.ma_pnvt}`"
+                >
                   <small> {{ value.ten_pnvt }}</small>
                 </label>
               </div>
@@ -62,27 +104,57 @@
         </div>
 
         <!-- Mobile offcanvas with accordion duplicate (visible on small screens) -->
-        <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="nhomOffcanvas"
-          aria-labelledby="nhomOffcanvasLabel">
+        <div
+          class="offcanvas offcanvas-start d-lg-none"
+          tabindex="-1"
+          id="nhomOffcanvas"
+          aria-labelledby="nhomOffcanvasLabel"
+        >
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="nhomOffcanvasLabel">Bộ lọc</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="offcanvas-body">
             <label class="form-label fw-bold"> Lọc theo phân loại </label>
             <div class="d-flex flex-wrap gap-2">
-              <input type="radio" class="btn-check" v-model="phanLoaiVtSelected" :value="null" name="phan-loai-vt-mb"
-                id="plvt-mb-all" autocomplete="off" />
-              <label class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
-                for="plvt-mb-all">
+              <input
+                type="radio"
+                class="btn-check"
+                v-model="phanLoaiVtSelected"
+                :value="null"
+                name="phan-loai-vt-mb"
+                id="plvt-mb-all"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
+                for="plvt-mb-all"
+              >
                 Tất cả loại thuốc
               </label>
 
-              <template v-for="value in phanLoaiVt" :key="`mb-${value.ma_plvt}`">
-                <input type="radio" class="btn-check" v-model="phanLoaiVtSelected" :value="value.ma_plvt"
-                  name="phan-loai-vt-mb" :id="`plvt-mb-${value.ma_plvt}`" autocomplete="off" />
-                <label class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
-                  :for="`plvt-mb-${value.ma_plvt}`">
+              <template
+                v-for="value in phanLoaiVt"
+                :key="`mb-${value.ma_plvt}`"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  v-model="phanLoaiVtSelected"
+                  :value="value.ma_plvt"
+                  name="phan-loai-vt-mb"
+                  :id="`plvt-mb-${value.ma_plvt}`"
+                  autocomplete="off"
+                />
+                <label
+                  class="btn btn-sm rounded-1 d-flex align-items-center gap-2 fw-normal btn-outline-primary badge"
+                  :for="`plvt-mb-${value.ma_plvt}`"
+                >
                   {{ value.ten_plvt }}
                 </label>
               </template>
@@ -92,19 +164,38 @@
             <ul class="list-unstyled">
               <li class="mb-1">
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" v-model="phanNhomVtSelected" :value="null"
-                    name="nhom-vat-tu-mb" id="nhom-vt-mb-all" />
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    v-model="phanNhomVtSelected"
+                    :value="null"
+                    name="nhom-vat-tu-mb"
+                    id="nhom-vt-mb-all"
+                  />
                   <label class="form-check-label" for="nhom-vt-mb-all">
                     <small> Tất cả nhóm thuốc</small>
                   </label>
                 </div>
               </li>
 
-              <li v-for="value in phanNhomVt" :key="`mb-pn-${value.ma_pnvt}`" class="mb-1">
+              <li
+                v-for="value in phanNhomVt"
+                :key="`mb-pn-${value.ma_pnvt}`"
+                class="mb-1"
+              >
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" v-model="phanNhomVtSelected" :value="value.ma_pnvt"
-                    name="nhom-vat-tu-mb" :id="`nhom-vt-mb-${value.ma_pnvt}`" />
-                  <label class="form-check-label" :for="`nhom-vt-mb-${value.ma_pnvt}`">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    v-model="phanNhomVtSelected"
+                    :value="value.ma_pnvt"
+                    name="nhom-vat-tu-mb"
+                    :id="`nhom-vt-mb-${value.ma_pnvt}`"
+                  />
+                  <label
+                    class="form-check-label"
+                    :for="`nhom-vt-mb-${value.ma_pnvt}`"
+                  >
                     <small> {{ value.ten_pnvt }}</small>
                   </label>
                 </div>
@@ -114,33 +205,54 @@
         </div>
       </div>
       <div class="col-lg-9 position-relative" style="min-height: 100vh">
-        <div v-if="pending" style="z-index: 1; backdrop-filter: blur(4px)"
-          class="top-0 bg-dark bg-opacity-10 position-absolute end-0 w-100 h-100 d-flex justify-content-center align-items-center p-3">
+        <div
+          v-if="pending"
+          style="z-index: 1; backdrop-filter: blur(4px)"
+          class="top-0 bg-dark bg-opacity-10 position-absolute end-0 w-100 h-100 d-flex justify-content-center align-items-center p-3"
+        >
           <ui-loading />
         </div>
         <div v-if="!pending && data?.items.length" class="row g-4">
           <div class="col-6 col-md-4 col-lg-3" v-for="item in data?.items">
             <div class="card overflow-hidden position-relative h-100">
-              <nuxt-link :to="`/product/${item.ma_vt}`" class="text-decoration-none">
+              <nuxt-link
+                :to="`/product/${item.ma_vt}`"
+                class="text-decoration-none"
+              >
                 <template v-if="(Number(item.co_ck) || 0) == 1">
-                  <div class="position-absolute w-100 bg-white top-0 shadow-sm bg-opacity-50 text-center p-1"
-                    style="z-index: 999999; backdrop-filter: blur(4px);">
-                    <small class="text-center d-flex align-items-center gap-1 justify-content-center text-primary"
-                      style="font-size: 12px; font-weight: 500;">
+                  <div
+                    class="position-absolute w-100 bg-white top-0 shadow-sm bg-opacity-50 text-center p-1"
+                    style="z-index: 999999; backdrop-filter: blur(4px)"
+                  >
+                    <small
+                      class="text-center d-flex align-items-center gap-1 justify-content-center text-primary"
+                      style="font-size: 12px; font-weight: 500"
+                    >
                       <Gift :size="16" /> Sản phẩm đang có khuyến mãi
                     </small>
                   </div>
                 </template>
                 <div class="ratio-1x1 ratio card-img-top overflow-hidden">
-                  <img :src="item.image_urls?.[0]?.url || '/images/image-error.svg'
-                    " alt="" />
+                  <img
+                    :src="
+                      item.image_urls?.[0]?.url || '/images/image-error.svg'
+                    "
+                    alt=""
+                  />
                 </div>
               </nuxt-link>
-              <div class="card-body d-flex flex-column gap-2 justify-content-between p-1 position-relative">
-                <nuxt-link :to="`/product/${item.ma_vt}`" class="text-decoration-none">
+              <div
+                class="card-body d-flex flex-column gap-2 justify-content-between p-1 position-relative"
+              >
+                <nuxt-link
+                  :to="`/product/${item.ma_vt}`"
+                  class="text-decoration-none"
+                >
                   <div class="card-title m-0 text-dark">{{ item.ten_vt }}</div>
                 </nuxt-link>
-                <div class="d-flex align-items-center flex-wrap justify-content-between">
+                <div
+                  class="d-flex align-items-center flex-wrap justify-content-between"
+                >
                   <div>
                     Giá:
                     <small class="text-primary">
@@ -148,9 +260,15 @@
                     </small>
                   </div>
                   <template v-if="isAuthenticated">
-                    <UiBtnGroup :max="(item.sl_toi_da || 0) == 0 ? 9999999 : item.sl_toi_da
-                      " size="sm" class="mt-auto" v-model="item.quantity"
-                      @change="($event: number) => changeQuantity(item, $event)" />
+                    <UiBtnGroup
+                      :max="
+                        (item.sl_toi_da || 0) == 0 ? 9999999 : item.sl_toi_da
+                      "
+                      size="sm"
+                      class="mt-auto"
+                      v-model="item.quantity"
+                      @change="($event: number) => changeQuantity(item, $event)"
+                    />
                   </template>
                 </div>
               </div>
@@ -163,8 +281,12 @@
             Không có sản phẩm nào phù hợp
           </div>
         </div>
-        <shared-module-pagination class="mt-3" v-if="!pending && data?.items.length" @page-change="onPageChange"
-          :pagination="data?.pagination" />
+        <shared-module-pagination
+          class="mt-3"
+          v-if="!pending && data?.items.length"
+          @page-change="onPageChange"
+          :pagination="data?.pagination"
+        />
       </div>
     </div>
   </div>
@@ -197,7 +319,7 @@ const breadcrumb = ref<Array<ProjectConfig.BreadcrumbItem>>([
   { label: "Danh sách sản phẩm" },
 ]);
 const { $appServices } = useNuxtApp();
-const { addToCart, getQtyById, cart } = useCart();
+const { addToCart, getQtyById, cart, updateQuantity } = useCart();
 const { isAuthenticated, togglePopupLogin } = useAuth();
 
 const keyword = useDebouncedRef("", 500);
@@ -402,8 +524,18 @@ function buildFilter() {
 
 function changeQuantity(item: ITemsTapmed, quantity: number) {
   if (isAuthenticated.value) {
-    item.quantity = quantity;
-    addToCart(item);
+    // Nếu quantity = 0 và sản phẩm chưa có trong giỏ, bỏ qua
+    if (quantity === 0 && getQtyById(item.ma_vt) === 0) {
+      return;
+    }
+    // Nếu sản phẩm đã có trong giỏ, dùng updateQuantity
+    if (getQtyById(item.ma_vt) > 0) {
+      updateQuantity(item.ma_vt, quantity);
+    } else {
+      // Sản phẩm chưa có trong giỏ, dùng addToCart
+      item.quantity = quantity;
+      addToCart(item);
+    }
   } else {
     useToast().error("Vui lòng đăng nhập để sử dụng chức năng này");
     togglePopupLogin();
@@ -443,8 +575,8 @@ function changeQuantity(item: ITemsTapmed, quantity: number) {
   top: 0 !important;
 }
 
-.btn-check:checked+.btn,
-:not(.btn-check)+.btn:active,
+.btn-check:checked + .btn,
+:not(.btn-check) + .btn:active,
 .btn:first-child:active,
 .btn.active,
 .btn.show {

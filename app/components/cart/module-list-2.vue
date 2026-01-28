@@ -7,7 +7,9 @@
             <small>Sản Phẩm</small>
           </th>
           <th scope="col" class="text-nowrap"><small>Đơn giá</small></th>
-          <th scope="col" class="text-nowrap text-center"><small>Số lượng</small></th>
+          <th scope="col" class="text-nowrap text-center">
+            <small>Số lượng</small>
+          </th>
           <th scope="col" class="text-nowrap"><small>Thành tiền</small></th>
           <th scope="col" class="text-nowrap"></th>
         </tr>
@@ -17,33 +19,65 @@
           <tr class="card-product">
             <td class="border-0">
               <div class="d-flex align-items-start gap-3 w-100">
-                <img :src="item.image_urls?.[0]?.url || '/images/image-error.svg'" width="50" height="50"
-                  class="rounded" alt="Sản phẩm" />
+                <img
+                  :src="item.image_urls?.[0]?.url || '/images/image-error.svg'"
+                  width="50"
+                  height="50"
+                  class="rounded"
+                  alt="Sản phẩm"
+                />
                 <div>
-                  <nuxt-link :to="`/product/${item.ma_vt}`" class="fw-normal text-decoration-none text-dark">
-                    <div class="d-flex flex-column" style="
+                  <nuxt-link
+                    :to="`/product/${item.ma_vt}`"
+                    class="fw-normal text-decoration-none text-dark"
+                  >
+                    <div
+                      class="d-flex flex-column"
+                      style="
                         max-width: 370px;
                         white-space: normal;
                         word-break: break-word;
-                      ">
-                      <div class="text-mobile"> {{ item.ten_vt }}</div>
-                      <small v-if="item.han_sd_web" class="text-danger fw-bold text-mobile">
-                        HSD: <span class="text-danger"> {{ item.han_sd_web ? `${item.han_sd_web}` : "" }}</span>
+                      "
+                    >
+                      <div class="text-mobile">{{ item.ten_vt }}</div>
+                      <small
+                        v-if="item.han_sd_web"
+                        class="text-danger fw-bold text-mobile"
+                      >
+                        HSD:
+                        <span class="text-danger">
+                          {{
+                            item.han_sd_web ? `${item.han_sd_web}` : ""
+                          }}</span
+                        >
                       </small>
                     </div>
                   </nuxt-link>
-
                 </div>
-                <Trash2 :size="16" class="mb-auto text-danger ms-auto d-md-none" v-if="!isShow"
-                  @click="removeFromCart(item.ma_vt)" :stroke-width="2" />
+                <Trash2
+                  :size="16"
+                  class="mb-auto text-danger ms-auto d-md-none"
+                  v-if="!isShow"
+                  @click="removeFromCart(item.ma_vt)"
+                  :stroke-width="2"
+                />
               </div>
             </td>
             <td class="d-md-none">
-              <div class="d-flex px-1 mt-1 w-100 align-items-center justify-content-between gap-2">
+              <div
+                class="d-flex px-1 mt-1 w-100 align-items-center justify-content-between gap-2"
+              >
                 <!--  số lượng -->
                 <div>
-                  <UiBtnGroup size="sm" :max="(item.sl_toi_da || 0) == 0 ? 999999 : item.sl_toi_da"
-                    v-model="item.quantity" v-if="!isShow" />
+                  <UiBtnGroup
+                    size="sm"
+                    :max="(item.sl_toi_da || 0) == 0 ? 999999 : item.sl_toi_da"
+                    v-model="item.quantity"
+                    v-if="!isShow"
+                    @change="
+                      (qty: number) => handleQuantityChange(item.ma_vt, qty)
+                    "
+                  />
                   <small v-else class="text-center fw-bold">
                     {{ item.quantity }}
                   </small>
@@ -51,21 +85,26 @@
                 <X :size="16" />
                 <!--  đơn giá -->
                 <div>
-                  <small :class="{
-                    'text-decoration-line-through fw-normal text-muted':
+                  <small
+                    :class="{
+                      'text-decoration-line-through fw-normal text-muted':
+                        findItemInPrevOrder(item.ma_vt) &&
+                        (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
+                          item.gia_nt2,
+                    }"
+                    >{{ formatCurrency(item.gia_nt2) }}
+                  </small>
+                  <small
+                    class="fw-bold"
+                    v-if="
                       findItemInPrevOrder(item.ma_vt) &&
                       (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                      item.gia_nt2,
-                  }">{{ formatCurrency(item.gia_nt2) }}
-                  </small>
-                  <small class="fw-bold" v-if="
-                    findItemInPrevOrder(item.ma_vt) &&
-                    (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                    item.gia_nt2
-                  ">
+                        item.gia_nt2
+                    "
+                  >
                     {{
                       formatCurrency(
-                        findItemInPrevOrder(item.ma_vt)?.gia_nt2 || 0
+                        findItemInPrevOrder(item.ma_vt)?.gia_nt2 || 0,
                       )
                     }}
                   </small>
@@ -74,22 +113,27 @@
                 <Equal :size="16" />
                 <!--  thành tiền -->
                 <div class="fw-bold">
-                  <small :class="{
-                    'text-decoration-line-through fw-normal text-muted':
+                  <small
+                    :class="{
+                      'text-decoration-line-through fw-normal text-muted':
+                        findItemInPrevOrder(item.ma_vt) &&
+                        (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
+                          item.gia_nt2,
+                    }"
+                    >{{ formatCurrency(item.gia_nt2 * (item.quantity ?? 1)) }}
+                  </small>
+                  <small
+                    class="fw-bold"
+                    v-if="
                       findItemInPrevOrder(item.ma_vt) &&
                       (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                      item.gia_nt2,
-                  }">{{ formatCurrency(item.gia_nt2 * (item.quantity ?? 1)) }}
-                  </small>
-                  <small class="fw-bold" v-if="
-                    findItemInPrevOrder(item.ma_vt) &&
-                    (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                    item.gia_nt2
-                  ">
+                        item.gia_nt2
+                    "
+                  >
                     {{
                       formatCurrency(
                         (findItemInPrevOrder(item.ma_vt)?.gia_nt2 || 0) *
-                        (item.quantity ?? 1)
+                          (item.quantity ?? 1),
                       )
                     }}
                   </small>
@@ -98,69 +142,89 @@
             </td>
             <td class="border-0 d-none d-md-table-cell">
               <div class="d-flex flex-column gap-1">
-                <small :class="{
-                  'text-decoration-line-through fw-normal text-muted':
+                <small
+                  :class="{
+                    'text-decoration-line-through fw-normal text-muted':
+                      findItemInPrevOrder(item.ma_vt) &&
+                      (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
+                        item.gia_nt2,
+                  }"
+                  >{{ formatCurrency(item.gia_nt2) }}
+                </small>
+                <small
+                  class="fw-bold"
+                  v-if="
                     findItemInPrevOrder(item.ma_vt) &&
                     (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                    item.gia_nt2,
-                }">{{ formatCurrency(item.gia_nt2) }}
-                </small>
-                <small class="fw-bold" v-if="
-                  findItemInPrevOrder(item.ma_vt) &&
-                  (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                  item.gia_nt2
-                ">
+                      item.gia_nt2
+                  "
+                >
                   {{
                     formatCurrency(
-                      findItemInPrevOrder(item.ma_vt)?.gia_nt2 || 0
+                      findItemInPrevOrder(item.ma_vt)?.gia_nt2 || 0,
                     )
                   }}
                 </small>
               </div>
             </td>
             <td class="border-0 text-center d-none d-md-table-cell">
-              <UiBtnGroup size="sm" :max="(item.sl_toi_da || 0) == 0 ? 999999 : item.sl_toi_da" v-model="item.quantity"
-                v-if="!isShow" />
+              <UiBtnGroup
+                size="sm"
+                :max="(item.sl_toi_da || 0) == 0 ? 999999 : item.sl_toi_da"
+                v-model="item.quantity"
+                v-if="!isShow"
+                @change="(qty: number) => handleQuantityChange(item.ma_vt, qty)"
+              />
               <small v-else class="text-center fw-bold">
                 {{ item.quantity }}
               </small>
             </td>
             <td class="border-0 d-none d-md-table-cell">
               <div class="d-flex fw-bold flex-column gap-1">
-                <small :class="{
-                  'text-decoration-line-through fw-normal text-muted':
+                <small
+                  :class="{
+                    'text-decoration-line-through fw-normal text-muted':
+                      findItemInPrevOrder(item.ma_vt) &&
+                      (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
+                        item.gia_nt2,
+                  }"
+                  >{{ formatCurrency(item.gia_nt2 * (item.quantity ?? 1)) }}
+                </small>
+                <small
+                  class="fw-bold"
+                  v-if="
                     findItemInPrevOrder(item.ma_vt) &&
                     (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                    item.gia_nt2,
-                }">{{ formatCurrency(item.gia_nt2 * (item.quantity ?? 1)) }}
-                </small>
-                <small class="fw-bold" v-if="
-                  findItemInPrevOrder(item.ma_vt) &&
-                  (findItemInPrevOrder(item.ma_vt)?.gia_nt2 ?? 0) <
-                  item.gia_nt2
-                ">
+                      item.gia_nt2
+                  "
+                >
                   {{
                     formatCurrency(
                       (findItemInPrevOrder(item.ma_vt)?.gia_nt2 || 0) *
-                      (item.quantity ?? 1)
+                        (item.quantity ?? 1),
                     )
                   }}
                 </small>
               </div>
             </td>
             <td class="border-0" v-if="!isShow">
-              <button class="btn btn-sm btn-outline-danger border-0 d-none d-md-inline-flex"
-                @click="removeFromCart(item.ma_vt)">
+              <button
+                class="btn btn-sm btn-outline-danger border-0 d-none d-md-inline-flex"
+                @click="removeFromCart(item.ma_vt)"
+              >
                 <Trash2 :size="16" :stroke-width="1" />
               </button>
             </td>
             <td class="d-md-none">
-              <div class="d-flex flex-column  gap-1">
+              <div class="d-flex flex-column gap-1">
                 <template v-for="data in findDiscountByMaVT(item.ma_vt)">
                   <div
-                    class="d-flex w-100 text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded">
+                    class="d-flex w-100 text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded"
+                  >
                     <template v-if="data.itemNameGift?.trim()">
-                      <small class="text-small d-flex w-100 align-items-start gap-1 d-block">
+                      <small
+                        class="text-small d-flex w-100 align-items-start gap-1 d-block"
+                      >
                         Tặng kèm
                         <template v-if="(data.quantityGift || 0) > 0">
                           {{ data.quantityGift }}
@@ -168,21 +232,34 @@
                         {{ data.itemNameGift }}
                       </small>
                     </template>
-                    <template v-if="data.discountType?.trim()?.toUpperCase() === 'D'">
-                      <small class="text-small d-flex w-100 align-items-md-center align-items-start gap-1 d-block"
-                        v-if="data.discountRate">
+                    <template
+                      v-if="data.discountType?.trim()?.toUpperCase() === 'D'"
+                    >
+                      <small
+                        class="text-small d-flex w-100 align-items-md-center align-items-start gap-1 d-block"
+                        v-if="data.discountRate"
+                      >
                         Giảm
-                        {{ data.discountRate }} % trên mỗi mặt hàng</small>
-                      <small class="text-small d-flex w-100 align-items-center gap-1 d-block"
-                        v-if="data.discountAmount">
+                        {{ data.discountRate }} % trên mỗi mặt hàng</small
+                      >
+                      <small
+                        class="text-small d-flex w-100 align-items-center gap-1 d-block"
+                        v-if="data.discountAmount"
+                      >
                         Giảm tiền trên từng mặt hàng tổng cộng
                         {{ formatCurrency(data.discountAmount) }}
                       </small>
-                      <small class="text-small d-flex w-100 align-items-center gap-1 d-block" v-if="data.moneyVoucher">
+                      <small
+                        class="text-small d-flex w-100 align-items-center gap-1 d-block"
+                        v-if="data.moneyVoucher"
+                      >
                         Tất cả sản phẩm được đồng giá
                         {{ formatCurrency(data.moneyVoucher) }}
                       </small>
-                      <small class="text-small d-flex w-100 align-items-center gap-1 d-block" v-if="data.totalDiscount">
+                      <small
+                        class="text-small d-flex w-100 align-items-center gap-1 d-block"
+                        v-if="data.totalDiscount"
+                      >
                         Đã được giảm
                         {{ formatCurrency(data.totalDiscount) }}
                       </small>
@@ -193,11 +270,18 @@
             </td>
           </tr>
 
-          <tr v-for="data in findDiscountByMaVT(item.ma_vt)" class="p-md-2 d-none d-md-table-row p-0">
+          <tr
+            v-for="data in findDiscountByMaVT(item.ma_vt)"
+            class="p-md-2 d-none d-md-table-row p-0"
+          >
             <td colspan="5" class="border-0 px-0 px-md-1">
-              <div class="d-flex text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded">
+              <div
+                class="d-flex text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded"
+              >
                 <template v-if="data.itemNameGift?.trim()">
-                  <small class="text-small d-flex align-items-start gap-1 d-block">
+                  <small
+                    class="text-small d-flex align-items-start gap-1 d-block"
+                  >
                     Tặng kèm
                     <template v-if="(data.quantityGift || 0) > 0">
                       {{ data.quantityGift }}
@@ -205,20 +289,34 @@
                     {{ data.itemNameGift }}
                   </small>
                 </template>
-                <template v-if="data.discountType?.trim()?.toUpperCase() === 'D'">
-                  <small class="text-small d-flex align-items-md-center align-items-sta gap-1 d-block"
-                    v-if="data.discountRate">
+                <template
+                  v-if="data.discountType?.trim()?.toUpperCase() === 'D'"
+                >
+                  <small
+                    class="text-small d-flex align-items-md-center align-items-sta gap-1 d-block"
+                    v-if="data.discountRate"
+                  >
                     Giảm
-                    {{ data.discountRate }} % trên mỗi mặt hàng</small>
-                  <small class="text-small d-flex align-items-center gap-1 d-block" v-if="data.discountAmount">
+                    {{ data.discountRate }} % trên mỗi mặt hàng</small
+                  >
+                  <small
+                    class="text-small d-flex align-items-center gap-1 d-block"
+                    v-if="data.discountAmount"
+                  >
                     Giảm tiền trên từng mặt hàng tổng cộng
                     {{ formatCurrency(data.discountAmount) }}
                   </small>
-                  <small class="text-small d-flex align-items-center gap-1 d-block" v-if="data.moneyVoucher">
+                  <small
+                    class="text-small d-flex align-items-center gap-1 d-block"
+                    v-if="data.moneyVoucher"
+                  >
                     Tất cả sản phẩm được đồng giá
                     {{ formatCurrency(data.moneyVoucher) }}
                   </small>
-                  <small class="text-small d-flex align-items-center gap-1 d-block" v-if="data.totalDiscount">
+                  <small
+                    class="text-small d-flex align-items-center gap-1 d-block"
+                    v-if="data.totalDiscount"
+                  >
                     Đã được giảm
                     {{ formatCurrency(data.totalDiscount) }}
                   </small>
@@ -234,7 +332,9 @@
       <tbody>
         <tr v-for="value in findItemTang()" class="p-0">
           <td colspan="5" class="border-0 p-0 p-md-1">
-            <div class="d-flex text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded">
+            <div
+              class="d-flex text-primary fw-normal bg-primary bg-opacity-10 w-100 flex-column p-2 rounded"
+            >
               <small class="text-small d-flex align-items-center gap-1 d-block">
                 Tặng thêm
                 {{ value.quantityGift }}
@@ -249,99 +349,103 @@
 </template>
 
 <script lang="ts" setup>
-  const { cart, removeFromCart } = useCart();
-  const { prevOrder, globalOrder } = useOrder();
+const { cart, removeFromCart, updateQuantity } = useCart();
+const { prevOrder, globalOrder } = useOrder();
 
-  const props = defineProps<{
-    isShow?: boolean;
-  }>();
+const props = defineProps<{
+  isShow?: boolean;
+}>();
 
-  function findDiscountByMaVT(mavt: string) {
-    const data = globalOrder.value.selectedDiscounts?.filter((discount: any) => {
-      return discount.itemCodeBuy.trim() === mavt.trim();
-    });
-    return data || [];
-  }
-  function findItemTang() {
-    const data = globalOrder.value.selectedDiscounts?.filter((discount: any) => {
-      return (
-        discount.itemCodeBuy?.trim() === "" &&
-        discount.itemNameGift?.trim() !== ""
-      );
-    });
-    return data || [];
-  }
+function handleQuantityChange(productId: string, quantity: number) {
+  updateQuantity(productId, quantity);
+}
 
-  function findItemInPrevOrder(mavt: string) {
-    const item = prevOrder.value?.details?.find((it) => {
-      return it.ma_vt?.trim() === mavt.trim();
-    });
-    return item;
-  }
+function findDiscountByMaVT(mavt: string) {
+  const data = globalOrder.value.selectedDiscounts?.filter((discount: any) => {
+    return discount.itemCodeBuy.trim() === mavt.trim();
+  });
+  return data || [];
+}
+function findItemTang() {
+  const data = globalOrder.value.selectedDiscounts?.filter((discount: any) => {
+    return (
+      discount.itemCodeBuy?.trim() === "" &&
+      discount.itemNameGift?.trim() !== ""
+    );
+  });
+  return data || [];
+}
+
+function findItemInPrevOrder(mavt: string) {
+  const item = prevOrder.value?.details?.find((it) => {
+    return it.ma_vt?.trim() === mavt.trim();
+  });
+  return item;
+}
 </script>
 
 <style scoped>
-  .text-small {
+.text-small {
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .text-mobile {
     font-size: 12px;
+    font-weight: 500;
   }
 
-  @media (max-width: 768px) {
-    .text-mobile {
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .card-product {
-      border-radius: 8px;
-      margin-bottom: 0.25rem !important;
-    }
-
-    tbody tr.card-product td {
-      border: 0 !important;
-      padding: 0.75rem 1rem !important;
-      background: transparent !important;
-    }
-
-    table.table {
-      border: 0;
-    }
-
-    table.table thead {
-      display: none;
-    }
-
-    table.table tbody tr {
-      display: block;
-      margin-bottom: 0.75rem;
-      background: #efefef41;
-      padding: 0.5rem 0.25rem;
-      border-radius: 6px;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.02);
-    }
-
-    table.table tbody tr td {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.25rem !important;
-      border: 0;
-    }
-
-    table.table tbody tr td[data-label]:before {
-      content: attr(data-label);
-      color: #000000;
-      font-size: 13px;
-      margin-right: 0.75rem;
-      white-space: nowrap;
-      font-weight: 600;
-    }
-
-    table.table tbody tr td:first-child {
-      align-items: center;
-    }
-
-    .bg-secondary.py-0 {
-      display: none;
-    }
+  .card-product {
+    border-radius: 8px;
+    margin-bottom: 0.25rem !important;
   }
+
+  tbody tr.card-product td {
+    border: 0 !important;
+    padding: 0.75rem 1rem !important;
+    background: transparent !important;
+  }
+
+  table.table {
+    border: 0;
+  }
+
+  table.table thead {
+    display: none;
+  }
+
+  table.table tbody tr {
+    display: block;
+    margin-bottom: 0.75rem;
+    background: #efefef41;
+    padding: 0.5rem 0.25rem;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.02);
+  }
+
+  table.table tbody tr td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem !important;
+    border: 0;
+  }
+
+  table.table tbody tr td[data-label]:before {
+    content: attr(data-label);
+    color: #000000;
+    font-size: 13px;
+    margin-right: 0.75rem;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  table.table tbody tr td:first-child {
+    align-items: center;
+  }
+
+  .bg-secondary.py-0 {
+    display: none;
+  }
+}
 </style>

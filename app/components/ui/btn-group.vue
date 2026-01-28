@@ -73,9 +73,8 @@ watch(
     // Keep localValue in sync with parent but ensure it's a number
     const num = Number(val);
     localValue.value = Number.isFinite(num) ? num : 0;
-  }
+  },
 );
-
 
 const onInput = () => {
   // Parse the typed value; if it's not a valid number, don't emit (prevents accidental resets)
@@ -108,7 +107,7 @@ const decrease = () => {
     togglePopupLogin();
     return;
   }
-  if (localValue.value > 1) {
+  if (localValue.value > 0) {
     localValue.value--;
     emit("update:modelValue", Number(localValue.value));
     emit("change", Number(localValue.value));
